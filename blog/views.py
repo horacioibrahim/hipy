@@ -15,7 +15,6 @@ def index(request):
     categories = models.Category.objects(is_main=True)[0:5]
     return render_to_response('index.html', {'categories': categories})
 
-
 def category_posts(request, category_anchor):
     '''
     The bellow anchor of Category can contain #anchor or page (domain/page).
@@ -41,9 +40,6 @@ def post_view(request, slug_title):
         pass # Todo: return erro 404
 
     return render_to_response('pages.html', {'post': post})
-
-
-# Creator content tasks
 
 #@login_required
 def post_add(request):
@@ -77,6 +73,9 @@ def post_add(request):
     return render(request, 'to_post.html', {'form': form, 'posts': posts})
 
 def post_image(request, posts=None):
+    """
+    Post like Image (rather than Text, Podcast, Link etc)
+    """
     form = forms.UploadImageForm(request.POST, request.FILES,)
 
     if form.is_valid():
@@ -90,6 +89,9 @@ def post_image(request, posts=None):
     return render(request, 'to_post.html', {'form': form, 'posts': posts})
 
 def post_text(request, posts=None):
+    """
+    Post like Text (rather than Image, Podcast, Link etc)
+    """
     form = forms.TextContentForm(request.POST,)
 
     if form.is_valid():
@@ -98,10 +100,10 @@ def post_text(request, posts=None):
         # if exists oid make update. instance with id arg
         oid = form.cleaned_data['oid']
         try:
-            # Get the object otherwise create an instance because
-            # you use models.MODEL(id='id') will updated BUT (It BAD)
-            # you isn't handling an previous existent object and
-            # you can't overwriting save method in models with success
+            # Get the object otherwise create one.
+            # you can to use models.MODEL(id='id') will updated BUT (It BAD)
+            # BECAUSE you isn't handling an previous existent object and
+            # you can't overwriting for example save method in models in it way
             # This the best way is get object like instance of existent document:
             post = models.TextPost.objects(id=oid).first() # (It GOOD)
         except:
@@ -128,7 +130,8 @@ def post_text(request, posts=None):
 
 # AJAX GET and POSTS
 def ajax_get_post(request, objid):
-
+    """
+    Return JOSN post by _id
+    """
     post = models.Post.objects(id=objid).first()
-
     return HttpResponse(post.to_json(), mimetype="text/javascript")
