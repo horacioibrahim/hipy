@@ -43,7 +43,9 @@ def post_view(request, slug_title):
 
 #@login_required
 def post_add(request):
-
+    """
+    The hub of posts types. "Flat is better than nested."
+    """
     posts = models.Post.objects().order_by('-update_at').limit(20)
 
     if request.method == 'POST':
