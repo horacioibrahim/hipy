@@ -1,5 +1,5 @@
 .settings
-.settings_dev.py
+settings_dev.py
 .pydevproject
 .project
 *.bak
