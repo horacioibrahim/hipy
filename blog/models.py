@@ -3,12 +3,11 @@
 import datetime
 import os
 from mongoengine import *
-from main.settings import DBNAME
 from django.conf import settings
 
 import slugify
 
-connect(DBNAME)
+connect(settings.DBNAME)
 
 def upload_image_handler(f):
     # Save to path MEDIA_ROOT
