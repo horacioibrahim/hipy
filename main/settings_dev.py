@@ -25,5 +25,3 @@ TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = []
 
-#
-
