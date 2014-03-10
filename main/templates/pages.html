@@ -1,0 +1,45 @@
+<!doctype html>
+<html class="no-js" lang="en">
+  <head>
+    <title>{{ category.name }}({{ count }}) hipy.co | horacioibrahim </title>
+    {% include 'includes/content_head_default.html' %}
+  </head>
+  <body id="pages" class="post-view">
+    <div class="category-selected"><a href="/"><i class="fa fa-home"></i></a>&nbsp;/&nbsp;<a href="{% url 'category_posts' post.categories.0.name %}">{{ post.categories.0.name }}</a></div>
+    <!-- content: Pages [begin] -->
+    <div class="content-pages">
+      <div class="row">
+        <div class="small-9 small-centered columns">
+          <h3>{{ post.title }}<br />
+            <small class="subheader">{{ post.subtitle }}</small>
+          </h3>
+          <div class="row">
+            <div class="small-12 columns">
+              <div class="splash-pages">
+                  {% if post.cover %}
+                    <img src="" />
+                  {% endif %}
+              </div><p>{{ post.created_at|date:"d/M"|lower }} | Atualizado há: {{ post.update_at|timesince|lower }}</p>
+                {% autoescape off %}
+                  {{ post.content }}
+                {% endautoescape %}
+            </div>
+          </div>
+        </div>
+        <div class="small-3 columns">
+          <br />
+            <!-- Assuntos relacionados -->
+        </div>
+      </div>
+    </div>
+    <!-- content: Pages [end] -->
+
+    <!-- content: footer [begin] -->
+    <br /><br />
+
+    <!-- content: projects [end] -->
+
+
+    {% include 'includes/assets_pos_loaded.html' %}
+  </body>
+</html>

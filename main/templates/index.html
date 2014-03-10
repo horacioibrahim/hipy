@@ -1,0 +1,182 @@
+{% load staticfiles %}
+<!doctype html>
+<html class="no-js" lang="en">
+  <head>
+    <title>hipy.co | horacioibrahim </title>
+    {% include 'includes/content_head_default.html' %}
+  </head>
+  <body>
+    <!-- <div class="fixed a-wrapper-to-fixe-topbar"> -->
+    <nav class="top-bar" data-topbar>
+      <ul class="title-area">
+        <li class="name">
+          <h1><a href="#">Papy</a></h1>
+        </li>
+        <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
+      </ul>
+      <section class="top-bar-section">
+        <ul class="right">
+          {% for category in categories %}
+          <li class=""><a class="scrollTo" href="{{ category.anchor }}">{{ category.name }}</a></li>
+         {% endfor %}
+          <li class="has-form">
+            <form>
+            <div class="row collapse">
+              <div class="large-12 small-12 columns">
+                <input type="text" placeholder="pesquise <enter>">
+              </div>
+              <input type="sumbmit" class="hide" />
+            </div>
+          </form>
+          </li>          
+        </ul>
+      </section>
+    </nav>
+    <!-- </div> to fixed topbar -->
+    <!-- content: press [begin] -->
+    <div class="content-press">
+      <div class="row">
+        <div class="small-11 small-centered columns">
+          <h2 class="title text-center">Um bootstrapper que transpira inovação</h2>
+          <h4 class="text-center">compartilhando conhecimento para fazer mais com menos ;/</h4>
+        </div>
+      </div> 
+      <div class="row">
+        <div class="small-9 small-centered columns">
+          <br /><br />
+          <form>
+            <div class="row">
+              <div class="small-8 columns">
+                <input class="large" type="text" placeholder="voce@exemplo.com" />
+              </div>
+              <div class="small-4 columns">
+                <button class="button large radius expand">Seguir</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <!-- content: press [end] -->
+    <!-- content: projects [begin] -->
+    <div id="projects" class="content-project">
+      <!-- line 1 -->
+      <div class="row">
+        <div class="small-10 small-centered columns">
+          <h2 class="title text-center">Projetos: Falhas e Sucessos<br />
+            <small>coding, modelo de negócios, protótipos, raising capital e bootstrapping </small></h2>
+        </div>
+      </div>
+      <br /><br />
+      <div class="row logos">
+        <div class="small-12 large-4 columns text-center">
+          <div class="a-logo logos-icons-bhono bhono"></div>
+          <p class="text-center">
+            Comunicação corporativa 10x mais ágil que e-mail e infinitamente mais pessoas engajadas para produzir inovavação.
+          </p>
+        </div>
+        <div class="small-12 large-4 columns text-center">
+          <div class="a-logo logos-icons-opsit opsit"></div>
+          <p class="text-center">
+            Alertas para os motoristas como bloqueios, reboques, recall's, oferta de compra, feedbacks e cantadas.
+          </p>          
+        </div>
+        <div class="small-12 large-4 columns text-center">
+          <div class="a-logo logos-icons-bambae bambae"></div>
+          <p class="text-center">
+            O pregão eletrônico feito para pessoas realizarem a melhor compra e para os fornecedores as melhores vendas.
+          </p>          
+        </div>
+      </div> 
+      <br /><br />
+      <!-- line 2 -->
+      <div class="row logos">
+        <div class="small-12 large-4 columns text-center">
+          <div class="a-logo logos-icons-keepmarking keepmarking"></div>
+          <p class="text-center">
+            Marque, compartilhe e descubra. Um serviço que leva facilidades dos e-books para os fãs de livros físicos.
+          </p>          
+        </div>
+        <div class="small-12 large-4 columns text-center">
+          <div class="a-logo logos-icons-vucovuco vucovuco"></div>
+          <p class="text-center">
+            Serviço para levar a cultura, as roupas e comidas típicas dos mercados municipais para todos os brasileiros.
+          </p>          
+        </div>
+        <div class="small-12 large-4 columns text-center">
+          <div class="a-logo logos-icons-cadaster cadaster"></div>
+          <p class="text-center">
+            Tecnologia para cadastro de cartões de crédito que dá 4x mais produtividade na digitalização dos dados.
+          </p>          
+        </div>
+      </div>          
+    </div>
+    <!-- content: projects [end] -->
+
+    <!-- content: get_main_topics() -->
+     <!-- content and hr -->
+    <!-- content: get_main_topics() [end] -->
+
+    <!-- content: footer [begin] -->
+    <div class="footer footer-head">
+      <div class="row">
+        <div class="small-7 columns">
+          <h4>Mantenha-se atualizado sobre as novidades do AWS Amazon</h4>
+          <p class="margintopminus10px">Receba mensalmente os destaques do meu <strong>AWS Stuff Reviews</strong>. Leia a última edição &gt;&gt;</p>
+        </div>
+        <div class="small-5 columns">
+          <div class="row collapse paddingtop-20px">
+            <div class="small-9 columns">
+              <input type="text" placeholder="voce@example.com">
+            </div>
+            <div class="small-3 columns">
+              <a href="#" class="button postfix">Assinar</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer footer-resume">
+      <div class="row">
+        <div class="medium-4 columns">
+          <div class="box-items">
+            <h4 class="text-center">Horacio Ibrahim</h4>
+            <p class="text-center">Sou desenvolvedor python com mais de 8 anos de experiência em infraestrutura de TIC: Unix/Linux, OpenSource, Cloud Computing, Desenvolvimento de Negócios e Bootstrapping. Curto boas amizades e amo passar as horas com minha família.</p>            
+          </div>
+        </div>
+        <div class="medium-4 columns">
+          <div class="box-border-left"> 
+            <h5 class="text-center">Repositórios</h5>
+            <ul class="text-center">
+              <li><i class="fa fa-github"></i>&nbsp;Github</li>
+              <li><i class="fa fa-bitbucket"></i>&nbsp;Bitbucket</li>
+            </ul>
+          </div>
+        </div>
+        <div class="medium-4 columns">
+          <div class="box-border-left">
+            <h5 class="text-center">Social</h5>
+            <ul class="text-center">
+              <li><i class="fa fa-facebook-square"></i>&nbsp;Facebook <small>(não procure coisas boas aqui ;)</small></li>
+              <li><i class="fa fa-twitter"></i>&nbsp;Twitter <small>(mantendo uma timeline legal)</small></li>
+              <li><span class="bhono-icon-white bhono-icon-font-color">B</span>&nbsp;Bhono <small>(assuntos técnicos)</small></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer footer-links">
+      <div class="row">
+        <div class="large-12 columns">
+          <h1>Papy</h1><br />
+          
+        </div>
+      </div>
+    </div> 
+    <!-- content: projects [end] -->
+
+
+    
+  {% include 'includes/assets_pos_loaded.html' %}
+  </body>
+</html>
