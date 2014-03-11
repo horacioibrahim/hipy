@@ -1,9 +1,11 @@
 #coding: utf-8
 
 from django.core import serializers
-from django.shortcuts import render_to_response, render
+from django.core.urlresolvers import reverse
+from django.shortcuts import render_to_response, render, redirect
 from django.http import HttpResponse
 from django.contrib import messages
+from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from mongoengine.django.shortcuts import get_document_or_404
 
@@ -14,6 +16,34 @@ from blog import forms
 def index(request):
     categories = models.Category.objects(is_main=True)[0:5]
     return render_to_response('index.html', {'categories': categories})
+
+def my_login(request):
+
+    if request.user.is_authenticated():
+        return redirect(reverse("post_add"))
+
+    if request.method == "POST":
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(username=username, password=password)
+
+        if user is not None:
+            if user.is_active:
+                login(request, user)
+                return redirect(reverse("post_add"))
+            else:
+                pass # account disabled
+        else:
+            return 'invalid login'
+
+    else:
+        pass
+
+    return render(request, 'login.html')
+
+def my_logout(request):
+    logout(request)
+    return redirect(reverse('homepage'))
 
 def category_posts(request, category_anchor):
     '''
@@ -41,7 +71,7 @@ def post_view(request, slug_title):
 
     return render_to_response('pages.html', {'post': post})
 
-#@login_required
+@login_required
 def post_add(request):
     """
     The hub of posts types. "Flat is better than nested."

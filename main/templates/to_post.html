@@ -79,7 +79,7 @@
                         </div>
                         <div class="large-3 columns">
                               <label>Publish?</label>
-                              <input id="published" type="checkbox" name="published" value="1" checked><label for="published">Yes, publish now.</label>
+                              <input id="published" type="checkbox" name="published" value="1" checked><label for="published">Yes, now.</label>
                         </div>
                         <div class="large-5 columns">
                               <label>Choose Your Type Post</label>
@@ -92,9 +92,12 @@
                       </div>
                       <div class="row">
                           <div class="small-8 columns">
-                                <button class="button expand">Postar</button>
+                                <button id="btn_post_update" class="button expand">Postar</button>
                           </div>
                           <div class="small-4 columns">
+                              <noscript>
+                                <span class="label alert">Browser não suporta javascript. <br />Se usar o Reset pode dá merda!</span>
+                              </noscript>
                               <input type="reset" class="button secondary expand" value="Reset">
                           </div>
                       </div>

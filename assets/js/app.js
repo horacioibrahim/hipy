@@ -11,6 +11,7 @@ $('.objAjaxGetValues').click(function(e){
     var objid = $(this).data('oid');
     var url = $(this).attr('href');
     var fields = {}
+    var btn_post = $('#post-document #btn_post_update');
 
     // constructor - pre settings fields values
     fields.oid = $("input[name=oid]");
@@ -57,5 +58,18 @@ $('.objAjaxGetValues').click(function(e){
             filter_priority = '[value="' + json.priority_show + '"]';
             fields.priority_show.find(filter_priority).prop('checked', true);
 
+            // change name of button: legibility import
+            var update_label = 'Update (id: ...' + json._id.$oid.substr(-6,6) + ')'
+            btn_post.text(update_label);
+
         });
-})
+});
+
+$('#post-document input[type=reset]').click(function(){
+        var btn_post = $('#post-document #btn_post_update');
+        oid = $("input[name=oid]");
+        oid.val('');
+        // change name of button: legibility import. It's now important is to post!
+        btn_post.text('Post');
+    }
+)

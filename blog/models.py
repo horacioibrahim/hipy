@@ -3,6 +3,7 @@
 import datetime
 import os
 from mongoengine import *
+from mongoengine.django.auth import User
 from django.conf import settings
 
 import slugify
@@ -18,16 +19,6 @@ def upload_image_handler(f):
 
     image_url_relative = ''.join([settings.MEDIA_URL, os.path.basename(destination.name)])
     return image_url_relative
-
-
-class User(Document):
-    username = StringField(unique=True, primary_key=True)
-    email = EmailField(required=True)
-    first_name = StringField(max_length=50)
-    last_name = StringField(max_length=50)
-    is_author = BooleanField(default=False)
-    created_at = DateTimeField(default=datetime.datetime.now())
-
 
 class Category(Document):
     name = StringField(max_length=80, required=True, primary_key=True)

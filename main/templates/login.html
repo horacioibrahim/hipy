@@ -1,0 +1,44 @@
+<!doctype html>
+<html class="no-js" lang="en">
+  <head>
+    <title>LOGIN::Post in hipy.co by horacioibrahim </title>
+    {% include 'includes/content_head_default.html' %}
+  </head>
+  <body id="pages" class="login">
+    <div class="container">
+
+        <div class="small-6 small-centered columns">
+            <div class="row">
+                <div class="small-10 small-centered columns">
+                    <h1>login in <strong>hipy</strong><br /><small>is hippie, is freedom, is my</small></h1>
+                    <div id="form-post" class="panel ">
+                    <form action="/login/" method="post" id="login">
+                        {% csrf_token %}
+                      <div class="row">
+                        <div class="large-12 columns">
+                          <label>Username
+                            <input type="text" placeholder="username" name="username" />
+                          </label>
+                          <label>Password
+                            <input type="password" placeholder="password" name="password" />
+                          </label>
+                        </div>
+                      </div>
+                        <button class="button " >Login</button>
+                        <span>Forget password? Go mongo shell!</span>
+                    </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- content: Pages [begin] -->
+
+    <div class="content-pages">
+    </div>
+
+
+  {% include 'includes/assets_pos_loaded.html' %}
+  </body>
+</html>
