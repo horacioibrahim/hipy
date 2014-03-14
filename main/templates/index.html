@@ -6,13 +6,13 @@
     {% include 'includes/content_head_default.html' %}
   </head>
   <body>
-    <!-- <div class="fixed a-wrapper-to-fixe-topbar"> -->
-    <nav class="top-bar" data-topbar>
+     <!-- off for small clients. This is beta -->
+
+    <nav class="top-bar hide-for-small" data-topbar>
       <ul class="title-area">
         <li class="name">
           <h1><a href="#" title="hipy is hippie, is freedom, is my"><strong>hipy</a></strong></h1>
         </li>
-        <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
       </ul>
       <section class="top-bar-section">
         <ul class="right">
@@ -28,38 +28,51 @@
               <input type="sumbmit" class="hide" />
             </div>
           </form>
-          </li>          
+          </li>
         </ul>
       </section>
     </nav>
     <!-- </div> to fixed topbar -->
     <!-- content: press [begin] -->
-    <div class="content-press">
-      <div class="row">
-        <div class="small-11 small-centered columns">
-          <h2 class="title text-center">Um bootstrapper que transpira inovação</h2>
-          <h4 class="text-center">compartilhando conhecimento para fazer mais com menos ;/</h4>
-        </div>
-      </div> 
-      <div class="row">
-        <div class="small-9 small-centered columns">
-          <br /><br />
-          <form>
-            <div class="row">
-              <div class="small-8 columns">
-                <input class="large" type="text" placeholder="voce@exemplo.com" />
-              </div>
-              <div class="small-4 columns">
-                <button class="button large radius expand">Seguir</button>
-              </div>
-            </div>
-          </form>
-        </div>
+    <div class="off-canvas-wrap show-for-small">
+      <div class="inner-wrap">
+        <nav class="tab-bar">
+
+          <section class="left-small">
+            <a class="left-off-canvas-toggle menu-icon" ><span></span></a>
+          </section>
+
+          <section class="middle tab-bar-section">
+            <h1 class="title">hipy.co</h1>
+          </section>
+
+        </nav>
+
+        <aside class="left-off-canvas-menu">
+          <ul class="off-canvas-list">
+            <li><label>Categorias</label></li>
+            {% for category in categories %}
+                <li class=""><a class="scrollTo" href="{{ category.anchor }}">{{ category.name }}</a></li>
+            {% endfor %}
+          </ul>
+        </aside>
+
+        <section class="main-section">
+          <!-- content goes here -->
+                {% include 'includes/home_wrapper_for_small.html' %}
+        </section>
+
+      <a class="exit-off-canvas"></a>
+
       </div>
     </div>
+     <div class="hide-for-small">
+        {% include 'includes/home_wrapper_for_small.html' %}
+     </div>
     <!-- content: press [end] -->
     <!-- content: projects [begin] -->
     <div id="projects" class="content-project">
+
       <!-- line 1 -->
       <div class="row">
         <div class="small-10 small-centered columns">
