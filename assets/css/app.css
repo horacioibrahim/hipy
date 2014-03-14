@@ -5543,6 +5543,10 @@ p {
   padding-bottom: 45px;
   background: #bdc3c7;
   color: #ffffff; }
+  .footer-resume a, .footer-resume a:active, .footer-resume a:focus, .footer-resume a:visited {
+    color: #FFFFFF; }
+  .footer-resume a:hover {
+    color: #F1F1F1; }
   .footer-resume .box-items, .footer-resume .box-border-left {
     padding: 30px 8px 20px 8px;
     min-height: 172px; }
