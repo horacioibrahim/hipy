@@ -48,15 +48,14 @@
 
         </nav>
 
-        <!-- changed aside to div for compatible with old devices -->
-        <div class="left-off-canvas-menu">
+        <aside class="left-off-canvas-menu">
           <ul class="off-canvas-list">
             <li><label>Categorias</label></li>
             {% for category in categories %}
                 <li class=""><a class="scrollTo" href="{{ category.anchor }}">{{ category.name }}</a></li>
             {% endfor %}
           </ul>
-        </div>
+        </aside>
 
         <section class="main-section">
           <!-- content goes here -->
