@@ -15,7 +15,8 @@ from blog import forms
 
 def index(request):
     categories = models.Category.objects(is_main=True)[0:5]
-    return render_to_response('index.html', {'categories': categories})
+    posts = models.Post.objects(published=True).order_by('-created_at').limit(6)
+    return render_to_response('index.html', {'categories': categories, 'posts':posts})
 
 def my_login(request):
 

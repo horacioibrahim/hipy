@@ -7,7 +7,7 @@
   <body id="pages" class="post-view">
     <div class="category-selected"><a href="/"><i class="fa fa-home"></i></a>&nbsp;/&nbsp;<a href="{% url 'category_posts' post.categories.0.anchor %}">{{ post.categories.0.name }}</a></div>
     <!-- content: Pages [begin] -->
-    <div class="content-pages">
+    <div id="article" class="content-pages">
       <div class="row">
         <div class="small-9 small-centered columns">
           <h3>{{ post.title }}<br />

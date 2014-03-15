@@ -70,10 +70,40 @@
         {% include 'includes/home_wrapper_for_small.html' %}
      </div>
     <!-- content: press [end] -->
+
+    <!-- latest posts start -->
+    <div id="latest-posts" class="content-latest-post">
+      <div class="row">
+        <div class="small-10 small-centered columns">
+          <h2 class="title text-center">Últimas novidades do hipy<br />
+            <small>vamos conversar bons papos sobre startups, lifehacker, python...</small></h2>
+        </div>
+      </div>
+        <div class="row articles">
+            <div class="small-12 medium-12 large-12 columns">
+        <!-- grid -->
+            <br />
+            <ul class="large-block-grid-3 medium-block-grid-2 small-block-grid-1">
+                {% for post in posts %}
+                    <li>
+                        <h5><a href="{% url 'post_view' post.slug %}">{{ post.title }}</a></h5>
+                        {% autoescape off %}
+                        {{ post.content|truncatechars:100 }}
+                        {{ post.link_url }}
+                        {{ post.image_path }}
+                        {% endautoescape %}
+                        <span class="subheader"><br />{{ post.update_at|date:"d/M/Y"|lower }}</span>
+                    </li>
+                {% endfor %}
+            </ul>
+            </div>
+        </div>
+    </div>
+    <!-- latest posts end -->
+
     <!-- content: projects [begin] -->
     <div id="projects" class="content-project">
-
-      <!-- line 1 -->
+      <!-- title projects section  -->
       <div class="row">
         <div class="small-10 small-centered columns">
           <h2 class="title text-center">Projetos: Falhas e Sucessos<br />
@@ -81,48 +111,51 @@
         </div>
       </div>
       <br /><br />
-      <div class="row logos">
-        <div class="small-12 large-4 columns text-center">
-          <div class="a-logo logos-icons-bhono bhono"></div>
-          <p class="text-center">
-            Comunicação corporativa 10x mais ágil que e-mail e infinitamente mais pessoas engajadas para produzir inovavação.
-          </p>
-        </div>
-        <div class="small-12 large-4 columns text-center">
-          <div class="a-logo logos-icons-opsit opsit"></div>
-          <p class="text-center">
-            Alertas para os motoristas como bloqueios, reboques, recall's, oferta de compra, feedbacks e cantadas.
-          </p>          
-        </div>
-        <div class="small-12 large-4 columns text-center">
-          <div class="a-logo logos-icons-bambae bambae"></div>
-          <p class="text-center">
-            O pregão eletrônico feito para pessoas realizarem a melhor compra e para os fornecedores as melhores vendas.
-          </p>          
-        </div>
-      </div> 
-      <br /><br />
-      <!-- line 2 -->
-      <div class="row logos">
-        <div class="small-12 large-4 columns text-center">
-          <div class="a-logo logos-icons-keepmarking keepmarking"></div>
-          <p class="text-center">
-            Marque, compartilhe e descubra. Um serviço que leva facilidades dos e-books para os fãs de livros físicos.
-          </p>          
-        </div>
-        <div class="small-12 large-4 columns text-center">
-          <div class="a-logo logos-icons-vucovuco vucovuco"></div>
-          <p class="text-center">
-            Serviço para levar a cultura, as roupas e comidas típicas dos mercados municipais para todos os brasileiros.
-          </p>          
-        </div>
-        <div class="small-12 large-4 columns text-center">
-          <div class="a-logo logos-icons-cadaster cadaster"></div>
-          <p class="text-center">
-            Tecnologia para cadastro de cartões de crédito que dá 4x mais produtividade na digitalização dos dados.
-          </p>          
-        </div>
-      </div>          
+      <div class="row">
+        <!-- gid -->
+
+        <ul class="large-block-grid-3 medium-block-grid-2 small-block-grid-1">
+            <li class="text-center">
+              <div class="a-logo logos-icons-bhono bhono"></div>
+              <p class="text-center">
+                Comunicação corporativa 10x mais ágil que e-mail e infinitamente mais pessoas engajadas para produzir inovavação.
+              </p>
+            </li>
+            <li class="text-center">
+              <div class="a-logo logos-icons-opsit opsit"></div>
+              <p class="text-center">
+                Alertas para os motoristas como bloqueios, reboques, recall's, oferta de compra, feedbacks e cantadas.
+              </p>
+            </li>
+            <li class="text-center">
+              <div class="a-logo logos-icons-bambae bambae"></div>
+              <p class="text-center">
+                O pregão eletrônico feito para pessoas realizarem a melhor compra e para os fornecedores as melhores vendas.
+              </p>
+            </li>
+            <li class="text-center">
+              <div class="a-logo logos-icons-keepmarking keepmarking"></div>
+              <p class="text-center">
+                Marque, compartilhe e descubra. Um serviço que leva facilidades dos e-books para os fãs de livros físicos.
+              </p>
+            </li>
+            <li class="text-center">
+              <div class="a-logo logos-icons-vucovuco vucovuco"></div>
+              <p class="text-center">
+                Serviço para levar a cultura, as roupas e comidas típicas dos mercados municipais para todos os brasileiros.
+              </p>
+            </li>
+            <li class="text-center">
+              <div class="a-logo logos-icons-cadaster cadaster"></div>
+              <p class="text-center">
+                Tecnologia para cadastro de cartões de crédito que dá 4x mais produtividade na digitalização dos dados.
+              </p>
+            </li>
+        </ul>
+
+        <!-- grid -->
+      </div>
+
     </div>
     <!-- content: projects [end] -->
 

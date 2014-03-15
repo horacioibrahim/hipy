@@ -5366,14 +5366,14 @@ p {
   border: 0;
   background-color: rgba(255, 255, 255, 0.3); }
 
-.contents-default, .content-project {
+.contents-default, .content-project, .content-latest-post {
   padding-top: 65px;
   padding-bottom: 65px; }
 
-.cotents-default-titles h1, .posts-by-categories .content-pages h1, .cotents-default-titles h2, .posts-by-categories .content-pages h2, .cotents-default-titles h3, .posts-by-categories .content-pages h3, .cotents-default-titles h4, .posts-by-categories .content-pages h4, .cotents-default-titles h5, .posts-by-categories .content-pages h5, .cotents-default-titles h6, .posts-by-categories .content-pages h6 {
+.contents-default-titles h1, .content-latest-post h1, .posts-by-categories .content-pages h1, .contents-default-titles h2, .content-latest-post h2, .posts-by-categories .content-pages h2, .contents-default-titles h3, .content-latest-post h3, .posts-by-categories .content-pages h3, .contents-default-titles h4, .content-latest-post h4, .posts-by-categories .content-pages h4, .contents-default-titles h5, .content-latest-post h5, .posts-by-categories .content-pages h5, .contents-default-titles h6, .content-latest-post h6, .posts-by-categories .content-pages h6 {
   color: #262626;
   font-weight: 900; }
-  .cotents-default-titles h1 small, .posts-by-categories .content-pages h1 small, .cotents-default-titles h2 small, .posts-by-categories .content-pages h2 small, .cotents-default-titles h3 small, .posts-by-categories .content-pages h3 small, .cotents-default-titles h4 small, .posts-by-categories .content-pages h4 small, .cotents-default-titles h5 small, .posts-by-categories .content-pages h5 small, .cotents-default-titles h6 small, .posts-by-categories .content-pages h6 small {
+  .contents-default-titles h1 small, .content-latest-post h1 small, .posts-by-categories .content-pages h1 small, .contents-default-titles h2 small, .content-latest-post h2 small, .posts-by-categories .content-pages h2 small, .contents-default-titles h3 small, .content-latest-post h3 small, .posts-by-categories .content-pages h3 small, .contents-default-titles h4 small, .content-latest-post h4 small, .posts-by-categories .content-pages h4 small, .contents-default-titles h5 small, .content-latest-post h5 small, .posts-by-categories .content-pages h5 small, .contents-default-titles h6 small, .content-latest-post h6 small, .posts-by-categories .content-pages h6 small {
     font-weight: 300; }
 
 .content-press {
@@ -5411,6 +5411,35 @@ p {
   .content-project .a-logo {
     margin-top: 20px;
     margin-bottom: 28px; }
+
+.content-latest-post {
+  background: #F2F2F2; }
+
+/**************************
+* Section logos
+**************************/
+.logos {
+  display: block;
+  padding: 0;
+  margin: 0 -0.625rem;
+  *zoom: 1; }
+  .logos:before, .logos:after {
+    content: " ";
+    display: table; }
+  .logos:after {
+    clear: both; }
+  .logos > li {
+    display: inline;
+    height: auto;
+    float: left;
+    padding: 0 0.625rem 1.25rem; }
+  .logos > li {
+    width: 33.33333%;
+    padding: 0 0.625rem 1.25rem; }
+    .logos > li:nth-of-type(n) {
+      clear: none; }
+    .logos > li:nth-of-type(3n+1) {
+      clear: both; }
 
 [class^="logos-icons-"], [class*=" logos-icons-"] {
   display: inline-block;
