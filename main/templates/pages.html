@@ -5,7 +5,7 @@
     {% include 'includes/content_head_default.html' %}
   </head>
   <body id="pages" class="post-view">
-    <div class="category-selected"><a href="/"><i class="fa fa-home"></i></a>&nbsp;/&nbsp;<a href="{% url 'category_posts' post.categories.0.name %}">{{ post.categories.0.name }}</a></div>
+    <div class="category-selected"><a href="/"><i class="fa fa-home"></i></a>&nbsp;/&nbsp;<a href="{% url 'category_posts' post.categories.0.anchor %}">{{ post.categories.0.name }}</a></div>
     <!-- content: Pages [begin] -->
     <div class="content-pages">
       <div class="row">
