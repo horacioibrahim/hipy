@@ -92,7 +92,7 @@
                         {{ post.link_url }}
                         {{ post.image_path }}
                         {% endautoescape %}
-                        <span class="subheader"><br />{{ post.update_at|date:"d/M/Y"|lower }}</span>
+                        <span class="subheader"><br />{{ post.created_at|date:"d/M/Y"|lower }}</span>
                     </li>
                 {% endfor %}
             </ul>
