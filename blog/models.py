@@ -55,7 +55,7 @@ class Post(Document):
     title = StringField(max_length=120, required=True)
     subtitle = StringField(max_length=120, default=' ')
     created_at = DateTimeField()
-    update_at = DateTimeField(default=datetime.datetime.now()) # TODO: um compound index categories + update_at (descending)
+    update_at = DateTimeField(default=datetime.datetime.utcnow()) # TODO: um compound index categories + update_at (descending)
     author = ReferenceField(User, reverse_delete_rule=CASCADE)
     tags = ListField(StringField(max_length=50))
     categories = ListField(ReferenceField(Category)) # main category is first or index 0
@@ -71,7 +71,7 @@ class Post(Document):
         self.update_at = None
 
         if not self.created_at:
-            self.created_at = datetime.datetime.now()
+            self.created_at = datetime.datetime.utcnow()
 
         # a post make isn't someone with too frequently
         # because to check if exits slug is not problem

@@ -1,6 +1,7 @@
 #coding: utf-8
 
-from django.core import serializers
+import datetime
+
 from django.core.urlresolvers import reverse
 from django.shortcuts import render_to_response, render, redirect
 from django.http import HttpResponse
@@ -59,7 +60,9 @@ def category_posts(request, category_anchor):
 
     # TODO: categories in Post need be index (scan all docs in posts with categories = X)
     # TODO: poderia ser um bom indice {published:1, categories: 1}. Better more selectivity {categories:1, published:1}
-    posts = models.Post.objects(categories=anchor_exists, published=True).order_by('-created_at')
+    tomorrow = datetime.datetime.utcnow()
+    tomorrow = tomorrow + datetime.timedelta(hours=24)
+    posts = models.Post.objects(categories=anchor_exists, published=True, created_at__lt=tomorrow).order_by('-created_at')
     return render_to_response('posts_by_category.html', {'posts': posts, 'category': anchor_exists})
 
 def post_view(request, slug_title):
