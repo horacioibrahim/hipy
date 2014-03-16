@@ -146,11 +146,11 @@ def post_text(request, posts=None):
         post.title = form.cleaned_data['title']
         post.subtitle = form.cleaned_data['subtitle']
         category = form.cleaned_data['categories']
-        post.categories.extend(models.Category.objects(pk=category)) # category
+        post.categories = models.Category.objects(pk=category) # category
         tags = form.cleaned_data['tags']
         tags = tags.split(',')
         post.tags = tags # array
-        post.priority_show = 1
+        post.priority_show = form.cleaned_data['priority_show']
         post.published = True if form.cleaned_data['published'] == 1 else False
         # TextPost fields
         post.content = form.cleaned_data['content']
