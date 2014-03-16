@@ -15,8 +15,10 @@ from blog import forms
 
 
 def index(request):
+    tomorrow = datetime.date.today()
+    tomorrow = tomorrow + datetime.timedelta(days=1)
     categories = models.Category.objects(is_main=True)[0:5]
-    posts = models.Post.objects(published=True).order_by('-created_at').limit(6)
+    posts = models.Post.objects(published=True, created_at__lt=tomorrow).order_by('-created_at').limit(6)
     return render_to_response('index.html', {'categories': categories, 'posts':posts})
 
 def my_login(request):
