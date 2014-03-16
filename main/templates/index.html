@@ -86,7 +86,8 @@
             <ul class="large-block-grid-3 medium-block-grid-2 small-block-grid-1">
                 {% for post in posts %}
                     <li>
-                        <h5><a href="{% url 'post_view' post.slug %}">{{ post.title }}</a></h5>
+                        <h5><a href="{% url 'post_view' post.slug %}">{{ post.title }}</a>
+                        <small> <a class="label secondary radius" href="{% url 'category_posts' post.categories.0.slug %}">{{ post.categories.0.name }}</a></small></h5>
                         {% autoescape off %}
                         {{ post.content|truncatechars:100 }}
                         {{ post.link_url }}
