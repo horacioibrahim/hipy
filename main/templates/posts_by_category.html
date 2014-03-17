@@ -20,7 +20,7 @@
         <div class="content-post">
           <!-- Check the content: if image, link or text (truncate) -->
             {% autoescape off %}
-            {{ post.content|truncatechars:120 }}
+            {{ post.content|truncatewords:25 }}
             {{ post.link_url }}
             {{ post.image_path }}
             {% endautoescape %}
