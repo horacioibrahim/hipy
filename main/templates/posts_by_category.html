@@ -20,13 +20,13 @@
         <div class="content-post">
           <!-- Check the content: if image, link or text (truncate) -->
             {% autoescape off %}
-            {{ post.content|truncatewords:25 }}
+            {{ post.content|truncatechars:120 }}
             {{ post.link_url }}
             {{ post.image_path }}
             {% endautoescape %}
             {% if post.tags %}
             <ul class="inline-list tags">
-                <li>{{ post.update_at|date:"d/M"|lower }}</li>
+                <li>{{ post.created_at|date:"d/M"|lower }}</li>
                 <li class="date"></li>
                 <li>tags:</li>
                 {% for tag in post.tags %}
