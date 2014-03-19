@@ -71,7 +71,7 @@ class Post(Document):
         self.update_at = None
 
         if not self.created_at:
-            self.created_at = datetime.datetime.utcnow()
+            self.created_at = datetime.datetime.utcnow() # Force use UTC to compare with ISODate
 
         # a post make isn't someone with too frequently
         # because to check if exits slug is not problem

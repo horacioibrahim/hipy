@@ -22,7 +22,7 @@
                   {% if post.cover %}
                     <img src="" />
                   {% endif %}
-              </div><p>{{ post.created_at|date:"d/M/Y"|lower }} | Atualizado há: {{ post.update_at|timesince|lower }}</p>
+              </div><p>{{ post.created_at|date:"d/M/Y"|lower }} {% if post.update_at > post.created_at %}| Atualizado há: {{ post.update_at|timesince|lower }} {% endif %}</p>
                 {% autoescape off %}
                   {{ post.content }}
                 {% endautoescape %}
