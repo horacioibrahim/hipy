@@ -15,7 +15,7 @@ from blog import forms
 
 
 def index(request):
-    tomorrow = datetime.date.today()
+    tomorrow = datetime.datetime.utcnow()
     tomorrow = tomorrow + datetime.timedelta(days=1)
     categories = models.Category.objects(is_main=True)[0:5]
     posts = models.Post.objects(published=True, created_at__lt=tomorrow).order_by('-created_at').limit(6)
@@ -62,7 +62,7 @@ def category_posts(request, category_anchor):
 
     # TODO: categories in Post need be index (scan all docs in posts with categories = X)
     # TODO: poderia ser um bom indice {published:1, categories: 1}. Better more selectivity {categories:1, published:1}
-    today = datetime.date.today()
+    today = datetime.datetime.utcnow()
     tomorrow = today + datetime.timedelta(days=1)
     posts = models.Post.objects(categories=anchor_exists, published=True, created_at__lt=tomorrow).order_by('-created_at')
     return render_to_response('posts_by_category.html', {'posts': posts, 'category': anchor_exists})
