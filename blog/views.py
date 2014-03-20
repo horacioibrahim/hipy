@@ -66,12 +66,11 @@ def category_posts(request, category_anchor):
     return render_to_response('posts_by_category.html', {'posts': posts, 'category': anchor_exists})
 
 def post_view(request, slug_title):
-
-    post = models.Post.objects(slug=slug_title).first()
-
-    if not post:
-        post = None
-        pass # Todo: return erro 404
+    """
+    Return a post page (tpl: pages.html)
+    """
+    slug_title = slug_title.lower()
+    post = get_document_or_404(models.Post, slug=slug_title)
 
     return render_to_response('pages.html', {'post': post})
 
