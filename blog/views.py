@@ -79,6 +79,7 @@ def post_add(request):
     """
     The hub of posts types. "Flat is better than nested."
     """
+    form = None
     posts = models.Post.objects().order_by('-update_at').limit(20)
 
     if request.method == 'POST':
@@ -156,6 +157,36 @@ def post_text(request, posts=None):
         post.published = True if form.cleaned_data['published'] == 1 else False
         # TextPost fields
         post.content = form.cleaned_data['content']
+
+        # Optional: schedule a post
+        try:
+            reschedule = request.POST['reschedule']
+        except:
+            reschedule = None
+
+        reschedule_check = len(reschedule)
+
+        if reschedule_check > 1 :
+            res_date = reschedule.split("/")
+
+            if len(res_date) == 3:
+                # parse to integer the split array (res_date) with [dd, mm, yy]
+                day, month, year = int(res_date[0]), int(res_date[1]), int(res_date[2])
+                res_date = datetime.datetime(year, month, day, 12) # 12h because timezone
+                post.created_at = res_date
+            else:
+                messages.warning(request, u'Wrong with date in reschedule field. Use d,m,y')
+
+        # Optional remake slug
+        try:
+            remake_slug = request.POST["remake_slug"]
+        except:
+            remake_slug = None
+
+        if remake_slug is not None:
+            post.slug = None
+
+
         post.save()
 
     else:

@@ -5538,6 +5538,12 @@ p {
 .post-view .highlight {
   background: #fffb95; }
 
+/**************************************
+* Section Posts Add and Edit
+**************************************/
+.dashboard textarea.content_area:focus {
+  height: 200px; }
+
 /******************************************
 * Section footer used in home
 ******************************************/

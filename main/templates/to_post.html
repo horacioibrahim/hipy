@@ -37,6 +37,12 @@
                           <label>Title
                             <input type="text" placeholder="Title" name="title" />
                           </label>
+                            <label>
+                                <span class="subheader">slug: </span><small id="slug"></small></span>
+                                <input id="remake_slug" type="checkbox" name="remake_slug" value="1">
+                                <small class="help-text">Try again make slug</small>
+                            </label>
+
                           <label>Subtitle (optional)
                             <input type="text" placeholder="Subtitle" name="subtitle" />
                           </label>
@@ -67,7 +73,7 @@
                       <div class="row">
                         <div class="large-12 columns">
                           <label>Content (html tags permitted)
-                            <textarea placeholder="Content" name="content"></textarea>
+                            <textarea class="content_area" placeholder="Content" name="content"></textarea>
                           </label>
                         </div>
                       </div>
@@ -89,6 +95,14 @@
                                   <input type="radio" name="priority_show" value="3" id="three"><label for="three">High</label>
                               </div>
                         </div>
+                      </div>
+                      <div class="row">
+                            <div class="small-4 columns">
+                                <a id="btn_reschedule"><small>Reschedule?</small></a>
+                                <label id="reschedule" class="hide">Schedule
+                                    <input type="text" placeholder="e.g: d/m/yyyy" name="reschedule" value="" />
+                                </label>
+                            </div>
                       </div>
                       <div class="row">
                           <div class="small-8 columns">
