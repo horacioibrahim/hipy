@@ -6,6 +6,8 @@ $('#toggle-post').click( function () {
    $('#form-post').toggle(300);
 });
 
+// TODO: objAjaxPostValues
+
 $('.objAjaxGetValues').click(function(e){
     e.preventDefault();
     var objid = $(this).data('oid');
@@ -23,6 +25,7 @@ $('.objAjaxGetValues').click(function(e){
     fields.tags = $("input[name=tags]");
     fields.published = $("input[name=published]");
     fields.priority_show = $('#priority_show'); // wrap container for radio buttons
+    fields.slug = $('#slug');
 
     $.getJSON(url,
         function(json){
@@ -46,6 +49,8 @@ $('.objAjaxGetValues').click(function(e){
 
             fields.content.val(json.content);
             fields.tags.val(json.tags);
+            fields.slug.text(json.slug);
+
 
             if (json.published) {
                 fields.published.prop('checked', true);
@@ -73,3 +78,12 @@ $('#post-document input[type=reset]').click(function(){
         btn_post.text('Post');
     }
 )
+
+$('#btn_reschedule').click(function(){
+    $('#reschedule').toggle(300);
+});
+
+$('.content_area').focus(function(){
+    this.attr("height", "200px");
+})
+

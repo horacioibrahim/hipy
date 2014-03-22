@@ -73,7 +73,13 @@ WSGI_APPLICATION = 'main.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.dummy',
+        #'ENGINE': 'django.db.backends.dummy',
+        'ENGINE': 'django.db.backends.mysql',
+        'HOST': 'localhost',
+        'USER': 'root',
+        'PASSWORD': '', 
+        'PORT': '3306',
+        'NAME': 'enron',
     }
 }
 

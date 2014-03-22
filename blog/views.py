@@ -202,3 +202,12 @@ def ajax_get_post(request, objid):
     """
     post = models.Post.objects(id=objid).first()
     return HttpResponse(post.to_json(), mimetype="text/javascript")
+
+def ajax_search(request, term):
+    """
+    Receives a list or one term for search
+    """
+    pass
+
+
+
