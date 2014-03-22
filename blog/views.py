@@ -151,6 +151,7 @@ def post_text(request, posts=None):
         category = form.cleaned_data['categories']
         post.categories = models.Category.objects(pk=category) # category
         tags = form.cleaned_data['tags']
+        tags = tags.replace(" ", "")
         tags = tags.split(',')
         post.tags = tags # array
         post.priority_show = form.cleaned_data['priority_show']
