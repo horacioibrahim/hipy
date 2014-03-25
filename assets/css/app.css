@@ -5537,6 +5537,10 @@ p {
 **************************************/
 .post-view .highlight {
   background: #fffb95; }
+.post-view code {
+  font-family: Consolas, "Liberation Mono", Courier, monospace;
+  font-size: 10px;
+  line-height: 1.4; }
 
 /**************************************
 * Section Posts Add and Edit
