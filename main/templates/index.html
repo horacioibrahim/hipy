@@ -20,14 +20,14 @@
           <li class=""><a class="scrollTo" href="{{ category.anchor }}">{{ category.name }}</a></li>
          {% endfor %}
           <li class="has-form">
-            <form>
-            <div class="row collapse">
-              <div class="large-12 small-12 columns">
-                <input type="text" placeholder="pesquise <enter>">
-              </div>
-              <input type="sumbmit" class="hide" />
-            </div>
-          </form>
+              <form action="." method="post" >
+                {% csrf_token %}
+                <div class="row collapse">
+                  <div class="large-12 small-12 columns">
+                    <input type="text" name="terms" placeholder="pesquise <enter>">
+                  </div>
+                  </div>
+              </form>
           </li>
         </ul>
       </section>

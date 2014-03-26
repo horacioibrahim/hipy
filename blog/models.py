@@ -2,30 +2,32 @@
 
 import datetime
 import os
+
 from mongoengine import *
 from mongoengine.django.auth import User
 from django.conf import settings
 
-import slugify
+from blog import slugify
+from blog.utils import upload_image_handler
 
+# MongoEngine Connect
 connect(settings.DBNAME)
 
-def upload_image_handler(f):
-    # Save to path MEDIA_ROOT
-    image_to_save = os.path.join(settings.MEDIA_ROOT, f.name)
-    with open(image_to_save, 'wb+') as destination:
-        for chunk in f.chunks():
-            destination.write(chunk)
-
-    image_url_relative = ''.join([settings.MEDIA_URL, os.path.basename(destination.name)])
-    return image_url_relative
 
 class Category(Document):
+    """
+    Category must be referenced. It has few values reflect my subjects
+    that write in blogs. We'll use it to create the menu.
+    """
     name = StringField(max_length=80, required=True, primary_key=True)
     slug = StringField(max_length=120)
     icon = ImageField(size=(64,64, True))
     is_main = BooleanField(default=False)
     anchor = StringField() # useful to id anchor html
+
+    class Meta:
+        verbose_name = 'category'
+        verbose_name_plural = 'categories'
 
     def save(self, *args, **kwargs):
         if self.anchor:
@@ -35,9 +37,6 @@ class Category(Document):
 
         super(Category, self).save(*args, **kwargs)
 
-    class Meta:
-        verbose_name = 'category'
-        verbose_name_plural = 'categories'
 
 class Comments(EmbeddedDocument):
     content = StringField()
@@ -55,12 +54,15 @@ class Post(Document):
     title = StringField(max_length=120, required=True)
     subtitle = StringField(max_length=120, default=' ')
     created_at = DateTimeField()
-    update_at = DateTimeField(default=datetime.datetime.utcnow()) # TODO: um compound index categories + update_at (descending)
+    # TODO: um compound index categories + update_at (descending)
+    update_at = DateTimeField(default=datetime.datetime.utcnow())
     author = ReferenceField(User, reverse_delete_rule=CASCADE)
     tags = ListField(StringField(max_length=50))
     categories = ListField(ReferenceField(Category)) # main category is first or index 0
     comments = ListField(EmbeddedDocumentField(Comments))
-    priority_show = IntField(default=1, min_value=1, max_value=3, choices=CHOICES_PRIORITY, help_text=u'Insert 1, 2, or 3 to define priority: !, !!, !!!')
+    priority_show = IntField(default=1,
+                    min_value=1, max_value=3, choices=CHOICES_PRIORITY,
+                    help_text=u'Insert 1, 2, or 3 to define priority: !, !!, !!!')
     published = BooleanField(default=False)
     slug = StringField(required=True) # TODO: Index here
 
@@ -71,10 +73,8 @@ class Post(Document):
         self.update_at = None
 
         if not self.created_at:
-            self.created_at = datetime.datetime.utcnow() # Force use UTC to compare with ISODate
+            self.created_at = datetime.datetime.utcnow()
 
-        # a post make isn't someone with too frequently
-        # because to check if exits slug is not problem
         if not self.slug:
             slug = slugify.slugify(self.title)
             p = Post.objects(slug=slug)
@@ -83,7 +83,7 @@ class Post(Document):
                 self.slug = slug
             else:
                 number = 1
-
+                temp_slug = None
                 while p:
                     temp_slug = '_'.join([slug, str(number)])
                     p = Post.objects(slug=temp_slug)
@@ -100,7 +100,6 @@ class TextPost(Post):
     images files will to right place.
     """
     # TODO: Do create a thumbnail of images thumbnail_size=(300,150, True)
-    # largura boa no cover pode ser 660 por 330 (full)
     cover = StringField(required=False)  # This is a relative path to MEDIA_URL/cover
     content = StringField() # Body post with html tags
 
@@ -118,18 +117,10 @@ class ImagePost(Post):
     """
     image_url_relative = StringField()
 
-    # image = BinaryField() # I trust that better is archive in file system
-    # BinaryField e GridFS é para arquivos que não serão acessados
-    # constantemente pelo mesmo usuário os quais podem ficar em cache. Mas para
-    # vídeos, áudio e download do tipo um ebook, etc. pode ser excelente.
-    # APP: no meu caso as pessoas poderão voltar ao post várias vezes e a
-    # imagem não estará em cache um outro problema para o blog é que as imagens
-    # serão com mais de 32KB e no IE8 isso é um limitador ver mais:
-    # The "data" URI scheme RFC2397
-
-    # Overwrite save() this model to put image on MEDIA_ROOT
-    # directory or anything info (ex.: filename, contentType, etc.)
     def create(self, file):
+        """
+        Put image file in a path, rather in database
+        """
         self.image_url_relative = upload_image_handler(file)
         self.save()
 

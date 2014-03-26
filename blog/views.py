@@ -1,7 +1,9 @@
 #coding: utf-8
 
 import datetime
+import pymongo
 
+from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.shortcuts import render_to_response, render, redirect
 from django.http import HttpResponse
@@ -10,18 +12,35 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from mongoengine.django.shortcuts import get_document_or_404
 
-from blog import models
-from blog import forms
+from blog import models, forms, postDAO
+
+
+# Setup to connect server
+db_name = '%s' % (settings.DBNAME)
+connection_string = "mongodb://localhost"
+connection = pymongo.MongoClient(connection_string)
+database = connection.db_name
+collection_post = postDAO.PostDAO(database)
 
 
 def index(request):
     today = datetime.datetime.now()
     categories = models.Category.objects(is_main=True)[0:5]
-    posts = models.Post.objects(published=True, created_at__lte=today).order_by('-created_at').limit(6)
-    return render_to_response('index.html', {'categories': categories, 'posts':posts})
+    posts = models.Post.objects(published=True,
+                                created_at__lte=today)\
+                            .order_by('-created_at').limit(6) # TODO index sort
+
+    if request.method == 'POST':
+        terms = request.POST['terms']
+        terms = terms.split(" ")
+        results_all = collection_post.search_text(terms=terms)
+        return render(request, 'search.html', {'results_all': results_all})
+
+    return render(request, 'index.html', {'categories': categories,
+                                          'posts': posts})
+
 
 def my_login(request):
-
     if request.user.is_authenticated():
         return redirect(reverse("post_add"))
 
@@ -44,26 +63,34 @@ def my_login(request):
 
     return render(request, 'login.html')
 
+
 def my_logout(request):
     logout(request)
     return redirect(reverse('homepage'))
 
+
 def category_posts(request, category_anchor):
-    '''
-    The bellow anchor of Category can contain #anchor or page (domain/page).
+    """
+    The below anchor of Category can contain #anchor or page (domain/page).
     You could make an query with OR, but the numbers of categories is limited.
     Because __contains is solve for me.
-    '''
-    # Don't have interest to use Index to anchor field because Category collection is very small
-    # the performance result is no significant
 
-    anchor_exists = get_document_or_404(models.Category, anchor__contains=category_anchor.lower())
+    NOTE(DATABASE): We don't interested to use Index to anchor field
+    because Category collection is very small the performance result is no
+    significant
+    """
 
-    # TODO: categories in Post need be index (scan all docs in posts with categories = X)
-    # TODO: poderia ser um bom indice {published:1, categories: 1}. Better more selectivity {categories:1, published:1}
+    anchor_exists = get_document_or_404(models.Category,
+                                        anchor__contains=category_anchor.lower())
+
     today = datetime.datetime.now()
-    posts = models.Post.objects(categories=anchor_exists, published=True, created_at__lte=today).order_by('-created_at')
-    return render_to_response('posts_by_category.html', {'posts': posts, 'category': anchor_exists})
+    # TODO index sort (order_by)
+    posts = models.Post.objects(categories=anchor_exists, published=True,
+                                created_at__lte=today).order_by('-created_at')
+
+    return render_to_response('posts_by_category.html',
+                              {'posts': posts, 'category': anchor_exists})
+
 
 def post_view(request, slug_title):
     """
@@ -73,6 +100,7 @@ def post_view(request, slug_title):
     post = get_document_or_404(models.Post, slug=slug_title)
 
     return render_to_response('pages.html', {'post': post})
+
 
 @login_required
 def post_add(request):
@@ -108,11 +136,12 @@ def post_add(request):
 
     return render(request, 'to_post.html', {'form': form, 'posts': posts})
 
+
 def post_image(request, posts=None):
     """
     Post like Image (rather than Text, Podcast, Link etc)
     """
-    form = forms.UploadImageForm(request.POST, request.FILES,)
+    form = forms.UploadImageForm(request.POST, request.FILES, )
 
     if form.is_valid():
         # Save image in MEDIA_ROOT and PATH in model
@@ -124,11 +153,12 @@ def post_image(request, posts=None):
 
     return render(request, 'to_post.html', {'form': form, 'posts': posts})
 
+
 def post_text(request, posts=None):
     """
     Post like Text (rather than Image, Podcast, Link etc)
     """
-    form = forms.TextContentForm(request.POST,)
+    form = forms.TextContentForm(request.POST, )
 
     if form.is_valid():
         # Save image in MEDIA_ROOT and PATH in model
@@ -167,16 +197,19 @@ def post_text(request, posts=None):
 
         reschedule_check = len(reschedule)
 
-        if reschedule_check > 1 :
+        if reschedule_check > 1:
             res_date = reschedule.split("/")
 
             if len(res_date) == 3:
                 # parse to integer the split array (res_date) with [dd, mm, yy]
-                day, month, year = int(res_date[0]), int(res_date[1]), int(res_date[2])
-                res_date = datetime.datetime(year, month, day, 12) # 12h because timezone
+                day, month, year = int(res_date[0]), int(res_date[1]), int(
+                    res_date[2])
+                res_date = datetime.datetime(year, month, day,
+                                             12) # 12h because timezone
                 post.created_at = res_date
             else:
-                messages.warning(request, u'Wrong with date in reschedule field. Use d,m,y')
+                messages.warning(request,
+                                 u'Wrong with date in reschedule field. Use d,m,y')
 
         # Optional remake slug
         try:
@@ -186,7 +219,6 @@ def post_text(request, posts=None):
 
         if remake_slug is not None:
             post.slug = None
-
 
         post.save()
 
@@ -202,6 +234,7 @@ def ajax_get_post(request, objid):
     """
     post = models.Post.objects(id=objid).first()
     return HttpResponse(post.to_json(), mimetype="text/javascript")
+
 
 def ajax_search(request, term):
     """
