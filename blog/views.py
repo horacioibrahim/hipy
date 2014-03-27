@@ -1,5 +1,6 @@
 #coding: utf-8
 
+import sys
 import datetime
 import pymongo
 
@@ -35,9 +36,13 @@ def index(request):
         try:
             terms = request.POST['terms']
             terms = terms.split(" ")
-            results_all = collection_post.search_text(terms=terms)
         except:
             terms = None
+
+        try:
+            results_all = collection_post.search_text(terms=terms)
+        except:
+            raise TypeError(u'Problem with collections')
 
         if terms:
             ts = results_all['stats']['timeMicros'] / 1000.0
