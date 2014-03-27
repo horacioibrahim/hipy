@@ -59,6 +59,7 @@ def index(request):
 
 
 def my_login(request):
+
     if request.user.is_authenticated():
         return redirect(reverse("post_add"))
 
@@ -67,6 +68,7 @@ def my_login(request):
         password = request.POST['password']
         user = authenticate(username=username, password=password)
 
+
         if user is not None:
             if user.is_active:
                 login(request, user)
@@ -74,7 +76,7 @@ def my_login(request):
             else:
                 pass # account disabled
         else:
-            return 'invalid login'
+            return HttpResponse('Invalid login (username or password)')
 
     else:
         pass
