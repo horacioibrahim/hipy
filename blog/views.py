@@ -15,11 +15,12 @@ from mongoengine.django.shortcuts import get_document_or_404
 from blog import models, forms, postDAO
 
 
-# Setup to connect server
+# Setup to connect server.
+# workaround MongoEngine and use pymongo (directly)
 db_name = '%s' % (settings.DBNAME)
 connection_string = "mongodb://localhost"
 connection = pymongo.MongoClient(connection_string)
-database = connection.db_name
+database = connection[db_name]
 collection_post = postDAO.PostDAO(database)
 
 
@@ -31,10 +32,22 @@ def index(request):
                             .order_by('-created_at').limit(6) # TODO index sort
 
     if request.method == 'POST':
-        terms = request.POST['terms']
-        terms = terms.split(" ")
-        results_all = collection_post.search_text(terms=terms)
-        return render(request, 'search.html', {'results_all': results_all})
+        try:
+            terms = request.POST['terms']
+            terms = terms.split(" ")
+            results_all = collection_post.search_text(terms=terms)
+        except:
+            terms = None
+
+        if terms:
+            ts = results_all['stats']['timeMicros'] / 1000.0
+            results_all['stats']['timeMicros'] = round(ts, 2)
+            return render(request, 'search.html',
+                      {'results_all': results_all,
+                      'posts': results_all['results'],
+                      'stats': results_all['stats']
+                      }
+            )
 
     return render(request, 'index.html', {'categories': categories,
                                           'posts': posts})

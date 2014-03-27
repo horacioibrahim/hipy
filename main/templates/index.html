@@ -20,7 +20,7 @@
           <li class=""><a class="scrollTo" href="{{ category.anchor }}">{{ category.name }}</a></li>
          {% endfor %}
           <li class="has-form">
-              <form action="." method="post" >
+              <form id="form-search" action="." method="post" >
                 {% csrf_token %}
                 <div class="row collapse">
                   <div class="large-12 small-12 columns">
@@ -68,6 +68,8 @@
     </div>
      <div class="hide-for-small">
         {% include 'includes/home_wrapper_for_small.html' %}
+        <div id="ajaxLoadSearch" class="content-pages">
+        </div>
      </div>
     <!-- content: press [end] -->
 

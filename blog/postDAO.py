@@ -22,7 +22,21 @@ class PostDAO:
         args:
             terms -> an array list
 
-        ** Default mongoDB limit is 100 documents **
+        ** Default mongoDB LIMIT is 100 documents **
+
+        IMPORTANT: Be sure your defined text index correctly:
+        db.post.ensureIndex({
+                                title: "text",
+                                content: "text",
+                                tags: "text"
+                            },
+                            {
+                                weights: {
+                                            title: 5,
+                                            content: 6,
+                                            tags:2
+                                        }
+                            })
 
         >>> test_collection = self.db.test_collection
         >>> test_collection.insert({"language": "english",\
@@ -69,7 +83,8 @@ class PostDAO:
                 has_text_index = False
 
         if has_text_index is False:
-            raise TypeError(u'%s collection hasn\'t textIndex configured' % collection_name)
+            raise TypeError(u'%s collection hasn\'t textIndex configured'
+                            % collection_name)
 
         # prepare terms as string. This is possible +word and -word shortcuts
         normalized_terms = " ".join(terms)
