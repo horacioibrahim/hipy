@@ -36,6 +36,7 @@ def index(request):
     if request.method == 'POST':
         try:
             terms = request.POST['terms']
+            orig_terms = terms
             terms = terms.split(" ")
         except:
             terms = None
@@ -52,7 +53,7 @@ def index(request):
                       {'results_all': results_all,
                       'posts': results_all['results'],
                       'stats': results_all['stats'],
-                      'terms': terms,
+                      'terms': orig_terms,
                       }
             )
 
