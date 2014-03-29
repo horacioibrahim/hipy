@@ -49,7 +49,7 @@ def index(request):
             ts = results_all['stats']['timeMicros'] / 100000.0
             results_all['stats']['timeMicros'] = round(ts, 2)
             match = results_all['queryDebugString']
-            match = re_sub(r'\|{1,}',',', match)
+            match = re_sub(r'\|{1,}',' ', match)
             return render(request, 'search.html',
                       {'results_all': results_all,
                       'posts': results_all['results'],
