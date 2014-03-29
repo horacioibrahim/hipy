@@ -46,7 +46,7 @@ def index(request):
 
         if terms:
             terms = ", ".join(terms)
-            ts = results_all['stats']['timeMicros'] / 1000.0
+            ts = results_all['stats']['timeMicros'] / 100000.0
             results_all['stats']['timeMicros'] = round(ts, 2)
             return render(request, 'search.html',
                       {'results_all': results_all,
