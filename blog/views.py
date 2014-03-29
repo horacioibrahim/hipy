@@ -3,6 +3,7 @@
 import sys
 import datetime
 import pymongo
+from re import sub as re_sub
 
 from django.conf import settings
 from django.core.urlresolvers import reverse
@@ -45,14 +46,15 @@ def index(request):
             raise TypeError(u'Problem with collections')
 
         if terms:
-            terms = ", ".join(terms)
             ts = results_all['stats']['timeMicros'] / 100000.0
             results_all['stats']['timeMicros'] = round(ts, 2)
+            match = results_all['queryDebugString']
+            match = re_sub(r'\|{1,}',',', match)
             return render(request, 'search.html',
                       {'results_all': results_all,
                       'posts': results_all['results'],
                       'stats': results_all['stats'],
-                      'terms': terms,
+                      'terms': match,
                       }
             )
 
