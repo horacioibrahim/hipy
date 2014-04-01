@@ -3,3 +3,4 @@ PIL==1.1.7
 mongoengine==0.8.6
 pymongo==2.6.3
 wsgiref==0.1.2
+Pygments

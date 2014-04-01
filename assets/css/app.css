@@ -5535,7 +5535,7 @@ p {
 /**************************************
 * Section Posts (post-view)
 **************************************/
-.post-view .highlight {
+.post-view p > span.highlight {
   background: #fffb95; }
 .post-view code {
   font-family: Consolas, "Liberation Mono", Courier, monospace;
@@ -5545,9 +5545,6 @@ p {
 /**************************************
 * Section Posts Add and Edit
 **************************************/
-.dashboard textarea.content_area:focus {
-  height: 200px; }
-
 /******************************************
 * Section footer used in home
 ******************************************/
@@ -5602,3 +5599,225 @@ p {
   color: #666666; }
   .footer-links h1, .footer-links h2, .footer-links h3, .footer-links h4, .footer-links h5, .footer-links h6, .footer-links p {
     color: #666666; }
+
+/*************************** 
+* Section syntax: highlight 
+***************************/
+div.code {
+  /* Comment */
+  /* Error */
+  /* Keyword */
+  /* Operator */
+  /* Comment.Multiline */
+  /* Comment.Preproc */
+  /* Comment.Single */
+  /* Comment.Special */
+  /* Generic.Deleted */
+  /* Generic.Emph */
+  /* Generic.Error */
+  /* Generic.Heading */
+  /* Generic.Inserted */
+  /* Generic.Output */
+  /* Generic.Prompt */
+  /* Generic.Strong */
+  /* Generic.Subheading */
+  /* Generic.Traceback */
+  /* Keyword.Constant */
+  /* Keyword.Declaration */
+  /* Keyword.Namespace */
+  /* Keyword.Pseudo */
+  /* Keyword.Reserved */
+  /* Keyword.Type */
+  /* Literal.Number */
+  /* Literal.String */
+  /* Name.Attribute */
+  /* Name.Builtin */
+  /* Name.Class */
+  /* Name.Constant */
+  /* Name.Decorator */
+  /* Name.Entity */
+  /* Name.Exception */
+  /* Name.Function */
+  /* Name.Label */
+  /* Name.Namespace */
+  /* Name.Tag */
+  /* Name.Variable */
+  /* Operator.Word */
+  /* Text.Whitespace */
+  /* Literal.Number.Float */
+  /* Literal.Number.Hex */
+  /* Literal.Number.Integer */
+  /* Literal.Number.Oct */
+  /* Literal.String.Backtick */
+  /* Literal.String.Char */
+  /* Literal.String.Doc */
+  /* Literal.String.Double */
+  /* Literal.String.Escape */
+  /* Literal.String.Heredoc */
+  /* Literal.String.Interpol */
+  /* Literal.String.Other */
+  /* Literal.String.Regex */
+  /* Literal.String.Single */
+  /* Literal.String.Symbol */
+  /* Name.Builtin.Pseudo */
+  /* Name.Variable.Class */
+  /* Name.Variable.Global */
+  /* Name.Variable.Instance */
+  /* Literal.Number.Integer.Long */ }
+  div.code .highlight .hll {
+    background-color: #ffffcc; }
+  div.code .highlight {
+    background: #f9f9f9;
+    padding: 7px; }
+  div.code .highlight .c {
+    color: #888888; }
+  div.code .highlight .err {
+    color: #FF0000;
+    background-color: #ffaaaa; }
+  div.code .highlight .k {
+    color: #008800;
+    font-weight: bold; }
+  div.code .highlight .o {
+    color: #333333; }
+  div.code .highlight .cm {
+    color: #888888; }
+  div.code .highlight .cp {
+    color: #557799; }
+  div.code .highlight .c1 {
+    color: #888888; }
+  div.code .highlight .cs {
+    color: #cc0000;
+    font-weight: bold; }
+  div.code .highlight .gd {
+    color: #a00000; }
+  div.code .highlight .ge {
+    font-style: italic; }
+  div.code .highlight .gr {
+    color: red; }
+  div.code .highlight .gh {
+    color: #000080;
+    font-weight: bold; }
+  div.code .highlight .gi {
+    color: #00a000; }
+  div.code .highlight .go {
+    color: #888888; }
+  div.code .highlight .gp {
+    color: #c65d09;
+    font-weight: bold; }
+  div.code .highlight .gs {
+    font-weight: bold; }
+  div.code .highlight .gu {
+    color: #800080;
+    font-weight: bold; }
+  div.code .highlight .gt {
+    color: #0044dd; }
+  div.code .highlight .kc {
+    color: #008800;
+    font-weight: bold; }
+  div.code .highlight .kd {
+    color: #008800;
+    font-weight: bold; }
+  div.code .highlight .kn {
+    color: #008800;
+    font-weight: bold; }
+  div.code .highlight .kp {
+    color: #003388;
+    font-weight: bold; }
+  div.code .highlight .kr {
+    color: #008800;
+    font-weight: bold; }
+  div.code .highlight .kt {
+    color: #333399;
+    font-weight: bold; }
+  div.code .highlight .m {
+    color: #6600EE;
+    font-weight: bold; }
+  div.code .highlight .s {
+    background-color: #fff0f0; }
+  div.code .highlight .na {
+    color: #0000cc; }
+  div.code .highlight .nb {
+    color: #007020; }
+  div.code .highlight .nc {
+    color: #BB0066;
+    font-weight: bold; }
+  div.code .highlight .no {
+    color: #003366;
+    font-weight: bold; }
+  div.code .highlight .nd {
+    color: #555555;
+    font-weight: bold; }
+  div.code .highlight .ni {
+    color: #880000;
+    font-weight: bold; }
+  div.code .highlight .ne {
+    color: #FF0000;
+    font-weight: bold; }
+  div.code .highlight .nf {
+    color: #0066BB;
+    font-weight: bold; }
+  div.code .highlight .nl {
+    color: #997700;
+    font-weight: bold; }
+  div.code .highlight .nn {
+    color: #0e84b5;
+    font-weight: bold; }
+  div.code .highlight .nt {
+    color: #007700; }
+  div.code .highlight .nv {
+    color: #996633; }
+  div.code .highlight .ow {
+    color: #000000;
+    font-weight: bold; }
+  div.code .highlight .w {
+    color: #bbbbbb; }
+  div.code .highlight .mf {
+    color: #6600EE;
+    font-weight: bold; }
+  div.code .highlight .mh {
+    color: #005588;
+    font-weight: bold; }
+  div.code .highlight .mi {
+    color: #0000DD;
+    font-weight: bold; }
+  div.code .highlight .mo {
+    color: #4400EE;
+    font-weight: bold; }
+  div.code .highlight .sb {
+    background-color: #fff0f0; }
+  div.code .highlight .sc {
+    color: #0044dd; }
+  div.code .highlight .sd {
+    color: #dd4422; }
+  div.code .highlight .s2 {
+    background-color: #fff0f0; }
+  div.code .highlight .se {
+    color: #666666;
+    font-weight: bold;
+    background-color: #fff0f0; }
+  div.code .highlight .sh {
+    background-color: #fff0f0; }
+  div.code .highlight .si {
+    background-color: #eeeeee; }
+  div.code .highlight .sx {
+    color: #DD2200;
+    background-color: #fff0f0; }
+  div.code .highlight .sr {
+    color: #000000;
+    background-color: #fff0ff; }
+  div.code .highlight .s1 {
+    background-color: #fff0f0; }
+  div.code .highlight .ss {
+    color: #aa6600; }
+  div.code .highlight .bp {
+    color: #007020; }
+  div.code .highlight .vc {
+    color: #336699; }
+  div.code .highlight .vg {
+    color: #dd7700;
+    font-weight: bold; }
+  div.code .highlight .vi {
+    color: #3333bb; }
+  div.code .highlight .il {
+    color: #0000DD;
+    font-weight: bold; }

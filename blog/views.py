@@ -3,7 +3,6 @@
 import sys
 import datetime
 import pymongo
-from re import sub as re_sub
 
 from django.conf import settings
 from django.core.urlresolvers import reverse
@@ -15,7 +14,7 @@ from django.contrib.auth.decorators import login_required
 from mongoengine.django.shortcuts import get_document_or_404
 
 from blog import models, forms, postDAO
-
+from blog.utils import do_syntax_html
 
 # Setup to connect server.
 # workaround MongoEngine and use pymongo (directly)
@@ -34,6 +33,7 @@ def index(request):
                             .order_by('-created_at').limit(6) # TODO index sort
 
     if request.method == 'POST':
+        orig_terms = None
         try:
             terms = request.POST['terms']
             orig_terms = terms
@@ -49,17 +49,15 @@ def index(request):
         if terms:
             ts = results_all['stats']['timeMicros'] / 100000.0
             results_all['stats']['timeMicros'] = round(ts, 2)
-            return render(request, 'search.html',
-                      {'results_all': results_all,
+            return render(request, 'search.html', {'results_all': results_all,
                       'posts': results_all['results'],
                       'stats': results_all['stats'],
                       'terms': orig_terms,
                       }
             )
 
-    return render(request, 'index.html', {'categories': categories,
-                                          'posts': posts})
-
+    return render(request, 'index.html',
+                  {'categories': categories, 'posts': posts})
 
 def my_login(request):
 
@@ -210,7 +208,8 @@ def post_text(request, posts=None):
         post.priority_show = form.cleaned_data['priority_show']
         post.published = True if form.cleaned_data['published'] == 1 else False
         # TextPost fields
-        post.content = form.cleaned_data['content']
+        content = form.cleaned_data['content']
+        post.content = do_syntax_html(content)
 
         # Optional: schedule a post
         try:

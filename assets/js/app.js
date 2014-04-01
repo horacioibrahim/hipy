@@ -84,6 +84,7 @@ $('#btn_reschedule').click(function(){
 });
 
 $('.content_area').focus(function(){
-    this.attr("height", "200px");
+    $(this).css("height", "200px");
 })
+
 
