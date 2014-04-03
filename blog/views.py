@@ -192,7 +192,7 @@ def post_text(request, posts=None):
             # BECAUSE you isn't handling an previous existent object and
             # you can't overwriting for example save method in models in it way
             # This the best way is get object like instance of existent document:
-            post = models.TextPost.objects(id=oid).first() # (It GOOD)
+            post = models.TextPost.objects.get(id=oid) # (It GOOD)
         except:
             post = models.TextPost()
 
@@ -254,8 +254,13 @@ def ajax_get_post(request, objid):
     """
     Return JOSN post by _id
     """
-    post = models.Post.objects(id=objid).first()
-    return HttpResponse(post.to_json(), mimetype="text/javascript")
+    try:
+        post = models.Post.objects.get(id=objid)
+        output = post.to_json()
+    except:
+        output = []
+
+    return HttpResponse(output, mimetype="text/javascript")
 
 
 def ajax_search(request, term):
