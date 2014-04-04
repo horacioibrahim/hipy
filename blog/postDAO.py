@@ -89,6 +89,8 @@ class PostDAO:
         # prepare terms as string. This is possible +word and -word shortcuts
         normalized_terms = " ".join(terms)
 
-        res = self.db.command('text', collection_name, search=normalized_terms)
+        res = self.db.command('text', collection_name,
+                              search=normalized_terms,
+                              filter={'published':True})
 
         return res
