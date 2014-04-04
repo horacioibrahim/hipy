@@ -122,6 +122,16 @@ def post_view(request, slug_title):
 
     return render_to_response('pages.html', {'post': post})
 
+@login_required()
+def post_delete(request, oid):
+    """
+    Delete documents
+    """
+    if request.user.is_superuser:
+        post = get_document_or_404(models.Post, id=oid)
+        post.delete()
+
+    return redirect(reverse('post_add'))
 
 @login_required
 def post_add(request):

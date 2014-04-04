@@ -141,7 +141,7 @@
                                 <p class="subheader">{% if post.content %}{{ post.content|safe|truncatewords:10 }}{% endif %}
                                 </p>
                             </div>
-                            <div class="status text-center">3</div>
+                            <div class="status text-center"><a href="{% url 'post_delete' post.id %}" class="label tiny alert round">x<a></div>
                             <div class="status text-center">4</div>
                             <div class="status text-center">{{ post.update_at|date:"d/M"|lower }}</div>
                         </div>
