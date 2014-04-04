@@ -4,7 +4,7 @@ import datetime
 import os
 
 from mongoengine import *
-from mongoengine.django.auth import User
+from mongoengine.django.auth import User as mongoUser
 from django.conf import settings
 
 from blog import slugify
@@ -36,6 +36,44 @@ class Category(Document):
             self.anchor = self.name.lower()
 
         super(Category, self).save(*args, **kwargs)
+
+
+class User(mongoUser):
+    """
+    Extends class User mongoengine.django.auth.User
+    """
+    categories = ListField(ReferenceField(Category)) # user following
+
+    def put_category(self, name):
+        """
+        Add category if not exist
+        """
+        try:
+            category = Category.objects.get(pk=name)
+        except DoesNotExist, e:
+            return 0 # explicit silently
+
+        self.update(add_to_set__categories=category)
+
+        return 1
+
+    def del_category(self, name):
+        """
+        Remove category document of user. Returns 0 not matching or
+        1 successful.
+        """
+
+        try:
+            category = Category.objects.get(pk=name)
+            self.categories.remove(category)
+        except:
+            return 0
+
+        return 1
+
+    @property
+    def has_category(self, name):
+        pass
 
 
 class Comments(EmbeddedDocument):

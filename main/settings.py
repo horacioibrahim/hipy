@@ -42,7 +42,7 @@ INSTALLED_APPS = (
 )
 
 AUTH_USER_MODEL = 'mongo_auth.MongoUser'
-MONGOENGINE_USER_DOCUMENT = 'mongoengine.django.auth.User'
+MONGOENGINE_USER_DOCUMENT = 'blog.models.User' #'mongoengine.django.auth.User'
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -73,13 +73,7 @@ WSGI_APPLICATION = 'main.wsgi.application'
 
 DATABASES = {
     'default': {
-        #'ENGINE': 'django.db.backends.dummy',
-        'ENGINE': 'django.db.backends.mysql',
-        'HOST': 'localhost',
-        'USER': 'root',
-        'PASSWORD': '', 
-        'PORT': '3306',
-        'NAME': 'enron',
+        'ENGINE': 'django.db.backends.dummy',
     }
 }
 
@@ -94,7 +88,7 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = False
 
 LOGIN_URL = '/login/'
 
