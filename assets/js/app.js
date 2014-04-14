@@ -1,4 +1,5 @@
 $(document).foundation();
+var $csrfmiddlewaretoken = $("#wrapper_csrf").find('input[name=csrfmiddlewaretoken]').val();
 
 
 // page::dashboard::post
@@ -87,4 +88,57 @@ $('.content_area').focus(function(){
     $(this).css("height", "200px");
 })
 
+/**************************************
+* "naive solution"
+* Workaround foundation form "crazy" handles.
+* To check changes in #followed_by -> $followed_by
+***************************************/
+var $followed_by = '';
+$(document).on('change', '#followed_by', function(){
+    $followed_by = $(this).val();
+});
 
+$('.btn-categories').on('click', function(e){
+    e.preventDefault();
+    var url = '/get/categories/';
+    var email = $followed_by;
+
+    if (email && email.indexOf('@') > 0)
+        $.getJSON(url, function(data) {
+            // Vex handles...
+            vex.dialog.open({
+                message: data.options_vex.message,
+                input: data.options_vex.html,
+                buttons: [
+                    $.extend({}, vex.dialog.buttons.YES, {
+                        text: data.options_vex.btn_text.YES
+                    }),
+                ],
+                callback: function(values) {
+                    if (values === false) {
+                        return console.log('Cancelled');
+                    }
+                    console.log('o: ' + values.categories);
+                    post_dict = {'categories': values.categories, 'email':email, 'csrfmiddlewaretoken':$csrfmiddlewaretoken}
+                    $.post('/follower/', post_dict, function(data){ console.log("retorno: " + data)});
+                    // return console.log('Categories', values); // debug
+
+                }
+            });
+
+         });
+})
+
+$(document).on('click', '.btn-subjects-flag',  function(e) {
+    e.preventDefault();
+    category_slug = $(this).data("category");
+    checkbox = $('#' + category_slug);
+
+    if (checkbox.attr('checked'))
+        checkbox.attr('checked', false);
+    else
+        checkbox.attr('checked', true);
+
+    $(this).toggleClass('selected');
+
+});

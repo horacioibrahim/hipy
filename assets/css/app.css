@@ -5398,6 +5398,8 @@ p {
     box-shadow: 0 3px 1px #16a085;
     background: #40d47e;
     text-size: 1.5em; }
+  .content-press a.button {
+    padding-top: 20px; }
 
 .content-project {
   background: #FFF; }
@@ -5545,6 +5547,77 @@ p {
 /**************************************
 * Section Posts Add and Edit
 **************************************/
+/**************************************
+* Section Modal Custom 
+**************************************/
+#filter-sort.sub-nav dd.default a {
+  -webkit-border-radius: 1000px;
+  border-radius: 1000px;
+  font-weight: normal;
+  background: #e1e1e1;
+  padding: .1875em .5625em;
+  color: #8d8d8d;
+  text-shadow: 0 1px 0 #fff;
+  opacity: .85; }
+
+#filter-sort.sub-nav dd.default a.selected {
+  opacity: 0.7;
+  background: #008CDD;
+  text-shadow: none;
+  color: #fff; }
+
+/* Custom Checkbox and Radio Inputs */
+form.custom .hidden-field {
+  margin-left: -99999px;
+  position: absolute;
+  visibility: hidden; }
+
+form.custom .custom {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  position: relative;
+  top: -1px;
+  /* fix centering issue */
+  vertical-align: middle;
+  border: solid 1px #cccccc;
+  background: white; }
+
+form.custom .custom.checkbox {
+  -webkit-border-radius: 0px;
+  border-radius: 0px;
+  padding: -1px; }
+
+form.custom .custom.radio {
+  -webkit-border-radius: 1000px;
+  border-radius: 1000px;
+  padding: 3px; }
+
+form.custom .custom.checkbox:before {
+  content: "";
+  display: block;
+  font-size: 16px;
+  color: white; }
+
+form.custom .custom.radio.checked:before {
+  content: "";
+  display: block;
+  width: 8px;
+  height: 8px;
+  -webkit-border-radius: 1000px;
+  border-radius: 1000px;
+  background: #222222;
+  position: relative; }
+
+form.custom .custom.checkbox.checked:before {
+  content: "\00d7";
+  color: #222222;
+  position: absolute;
+  top: -50%;
+  left: 50%;
+  margin-top: 4px;
+  margin-left: -5px; }
+
 /******************************************
 * Section footer used in home
 ******************************************/

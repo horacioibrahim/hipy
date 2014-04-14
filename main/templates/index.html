@@ -11,7 +11,7 @@
     <nav class="top-bar hide-for-small" data-topbar>
       <ul class="title-area">
         <li class="name">
-          <h1><a href="#" title="hipy is hippie, is freedom, is my"><strong>hipy</a></strong></h1>
+          <h1><a href="#" title="hipy is hippie, is freedom, is mine"><strong>hipy</a></strong></h1>
         </li>
       </ul>
       <section class="top-bar-section">
@@ -228,7 +228,7 @@
       <div class="row">
         <div class="large-12 columns">
           <h3><strong>hipy.co</strong></h3>
-          <span class="">is hippie, is freedom, is my
+          <span class="">is hippie, is freedom, is mine
           </span>
         </div>
       </div>
@@ -236,7 +236,21 @@
     <!-- content: projects [end] -->
 
 
+     <!-- modal to select categories -->
+     <div id="categories" class="reveal-modal medium" data-reveal>
+
+     </div>
+
+     <div id="eita" class="reveal-modal">
+
+     </div>
     
   {% include 'includes/assets_pos_loaded.html' %}
+
+  <script>
+    $(document).foundation();
+    $(document).foundation('reveal').init();
+  </script>
+
   </body>
 </html>

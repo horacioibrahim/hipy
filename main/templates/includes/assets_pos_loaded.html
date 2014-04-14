@@ -1,8 +1,11 @@
 {% load staticfiles %}
-<script src="{% static "js/jquery.min.js" %}"></script>
-<script src="{% static "js/foundation/foundation.min.js" %}"></script>
-<script src="{% static "js/app.js" %}"></script>
-<script src="{% static "js/foundation/foundation.offcanvas.js" %}"></script>
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="{% static 'js/foundation/foundation.min.js' %}"></script>
+<script src="{% static 'js/app.js' %}"></script>
+<script src="{% static 'js/foundation/foundation.offcanvas.js' %}"></script>
+<script src="{% static 'js/vex/vex.combined.min.js' %}"></script>
+<script>vex.defaultOptions.className = 'vex-theme-plain';</script>
+
 <script>
   $(function() {
     //source:http://css-tricks.com/snippets/jquery/smooth-scrolling/

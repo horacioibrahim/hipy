@@ -3,6 +3,8 @@
 import sys
 import datetime
 import pymongo
+import doctest
+from json import loads, dumps
 
 from django.conf import settings
 from django.core.urlresolvers import reverse
@@ -11,6 +13,7 @@ from django.http import HttpResponse
 from django.contrib import messages
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
+from django.template import loader, Context
 from mongoengine.django.shortcuts import get_document_or_404
 
 from blog import models, forms, postDAO
@@ -18,7 +21,7 @@ from blog.utils import do_syntax_html
 
 # Setup to connect server.
 # workaround MongoEngine and use pymongo (directly)
-db_name = '%s' % (settings.DBNAME)
+db_name = '%s' % (settings.MONGO_DATABASE_NAME)
 connection_string = "mongodb://localhost"
 connection = pymongo.MongoClient(connection_string)
 database = connection[db_name]
@@ -29,8 +32,8 @@ def index(request):
     today = datetime.datetime.now()
     categories = models.Category.objects(is_main=True)[0:5]
     posts = models.Post.objects(published=True,
-                                created_at__lte=today)\
-                            .order_by('-created_at').limit(6) # TODO index sort
+                                created_at__lte=today) \
+        .order_by('-created_at').limit(6) # TODO index sort
 
     if request.method == 'POST':
         orig_terms = None
@@ -50,17 +53,19 @@ def index(request):
             ts = results_all['stats']['timeMicros'] / 100000.0
             results_all['stats']['timeMicros'] = round(ts, 2)
             return render(request, 'search.html', {'results_all': results_all,
-                      'posts': results_all['results'],
-                      'stats': results_all['stats'],
-                      'terms': orig_terms,
-                      }
+                                                   'posts': results_all[
+                                                       'results'],
+                                                   'stats': results_all[
+                                                       'stats'],
+                                                   'terms': orig_terms,
+            }
             )
 
     return render(request, 'index.html',
                   {'categories': categories, 'posts': posts})
 
-def my_login(request):
 
+def my_login(request):
     if request.user.is_authenticated():
         return redirect(reverse("post_add"))
 
@@ -68,7 +73,6 @@ def my_login(request):
         username = request.POST['username']
         password = request.POST['password']
         user = authenticate(username=username, password=password)
-
 
         if user is not None:
             if user.is_active:
@@ -88,6 +92,30 @@ def my_login(request):
 def my_logout(request):
     logout(request)
     return redirect(reverse('homepage'))
+
+def follower(request):
+    """ Receive categories by POST/client and put categories in followers of
+    User subclass of mongo User
+    """
+    response = False
+    if request.method == "POST":
+        categories = request.POST.getlist('categories', None)
+        if not categories:
+            categories = request.POST.getlist('categories[]', None) # mysterious[]<-
+        email = request.POST['email']
+        u = models.User()
+
+        try:
+            new_u = u.create_user(username=email, email=email, password=None)
+            new_u.put_category(categories)
+            response = True
+        except Exception, err:
+            response = False # Error: user already exists or %s' % err
+
+    else:
+        return redirect(reverse('homepage'))
+
+    return HttpResponse(response, content_type=("text", "javascript"))
 
 
 def category_posts(request, category_anchor):
@@ -122,6 +150,7 @@ def post_view(request, slug_title):
 
     return render_to_response('pages.html', {'post': post})
 
+
 @login_required()
 def post_delete(request, oid):
     """
@@ -132,6 +161,7 @@ def post_delete(request, oid):
         post.delete()
 
     return redirect(reverse('post_add'))
+
 
 @login_required
 def post_add(request):
@@ -270,7 +300,7 @@ def ajax_get_post(request, objid):
     except:
         output = []
 
-    return HttpResponse(output, mimetype="text/javascript")
+    return HttpResponse(output, content_type=("text", "javascript"))
 
 
 def ajax_search(request, term):
@@ -280,4 +310,39 @@ def ajax_search(request, term):
     pass
 
 
+def get_categories(request):
+    """
+    Get all categories for user follow it
+    """
+    # The vex is a plugin to modal dialog. It has many requirements
+    # as messages, inputs or buttons attributes. The vex's better
+    # is capable of doing faster and easier handles dialog modal rather
+    # foundation (zurb).
+    # DISCLOSURE: The callback function receive name attribute of inputs
+    # if form tags is not exists.
+    #
+    # e.g:
+    # Example 1 - Empty data:
+    # <form><input name="name" value="1"></form>
+    # callback: function(data) { print data.name } // output Object {}
+    #
+    # Example 2 - Useful data (without tag <form>):
+    # <input name="name" value="1">
+    # callback: function(data) { print data.name } // output Object {name: 1}
+    #
+    # See more Vex: http://github.hubspot.com/vex/api/basic/
 
+    categories = models.Category.objects(is_main=True)
+    t = loader.get_template("modal_categories.html")
+    c = Context({'categories': categories})
+
+    # Options for Vex.js
+    output = {}
+    message = u'Marque uma ou mais categorias de interesse:'
+    btn_text = {'YES': u'Seguir'}
+    options_vex = dict(message=message, btn_text=btn_text, html=t.render(c))
+
+    # Add options of Vex in "queryset" (it's now list)
+    output['options_vex'] = options_vex
+
+    return HttpResponse(dumps(output), content_type=("text", "javascript"))

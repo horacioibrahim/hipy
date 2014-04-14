@@ -30,6 +30,8 @@ TEMPLATE_DIRS = (
 
 # Application definition
 
+TEST_RUNNER = 'main.custom_runner.TestRunner'
+
 INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.auth',

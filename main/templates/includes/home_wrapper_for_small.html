@@ -8,16 +8,21 @@
       <div class="row">
         <div class="small-9 small-centered columns">
           <br /><br />
-          <form>
             <div class="row hide-for-small">
-              <div class="small-8 columns">
-                <input class="large" type="text" placeholder="voce@exemplo.com" />
-              </div>
-              <div class="small-4 columns">
-                <button class="button large radius expand">Seguir</button>
-              </div>
+              <form>
+                  <div id="wrapper_csrf">
+                      {% csrf_token %}
+                  </div>
+                  <div class="small-8 columns">
+                    <input id="followed_by" name="followed_by" class="large" type="text" placeholder="voce@exemplo.com" value="" />
+                  </div>
+                  <div class="small-4 columns">
+                    <button class="btn-categories button large radius expand">
+                        Seguir
+                    </button>
+                  </div>
+             </form>
             </div>
-          </form>
         </div>
       </div>
 </div>

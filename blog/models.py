@@ -5,13 +5,14 @@ import os
 
 from mongoengine import *
 from mongoengine.django.auth import User as mongoUser
+from bson import ObjectId
 from django.conf import settings
 
 from blog import slugify
 from blog.utils import upload_image_handler
 
 # MongoEngine Connect
-connect(settings.DBNAME)
+connect(settings.MONGO_DATABASE_NAME)
 
 
 class Category(Document):
@@ -42,18 +43,23 @@ class User(mongoUser):
     """
     Extends class User mongoengine.django.auth.User
     """
-    categories = ListField(ReferenceField(Category)) # user following
+    categories = ListField(StringField()) # user following
+
+    def clean_username(self):
+        username = self.username
+        pass
 
     def put_category(self, name):
         """
-        Add category if not exist
+        Add category if not exist with update
+        IMPORTANT: It isn't need call save()
         """
         try:
-            category = Category.objects.get(pk=name)
-        except DoesNotExist, e:
-            return 0 # explicit silently
-
-        self.update(add_to_set__categories=category)
+            # This is Manual Reference
+            # See more: http://docs.mongodb.org/manual/reference/database-references/#document-references
+            self.update(add_to_set__categories=name)
+        except:
+            raise TypeError(u'User not exists or %s')
 
         return 1
 
@@ -64,8 +70,7 @@ class User(mongoUser):
         """
 
         try:
-            category = Category.objects.get(pk=name)
-            self.categories.remove(category)
+            self.categories.remove(name)
         except:
             return 0
 
@@ -74,6 +79,20 @@ class User(mongoUser):
     @property
     def has_category(self, name):
         pass
+
+    def save(self, *args, **kwargs):
+        """ Wrapper to guarantee username must less than 30 chars.
+        It's a Django's definitions.
+        """
+        if self.username is None or '@' in self.username:
+            if self.id:
+                self.username = self.id[5:9] + self.id[-4:]
+            else:
+                obj = str(ObjectId())
+                self.username = obj[5:9] + obj[-4:]
+
+        super(User, self).save(*args, **kwargs)
+
 
 
 class Comments(EmbeddedDocument):
