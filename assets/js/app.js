@@ -98,10 +98,24 @@ $(document).on('change', '#followed_by', function(){
     $followed_by = $(this).val();
 });
 
+function vex_ok_generic(msg) {
+    // wrap to call vex easier
+    vex.dialog.confirm({
+        message:  msg,
+        buttons: [
+            $.extend({}, vex.dialog.buttons.YES, {
+                text: 'Ok'
+            }),
+        ]
+    });
+}
+
 $('.btn-categories').on('click', function(e){
     e.preventDefault();
+    form = $(this).closest('form');
     var url = '/get/categories/';
     var email = $followed_by;
+    window.my_category_message = '';
 
     if (email && email.indexOf('@') > 0)
         $.getJSON(url, function(data) {
@@ -114,20 +128,34 @@ $('.btn-categories').on('click', function(e){
                         text: data.options_vex.btn_text.YES
                     }),
                 ],
-                callback: function(values) {
+                callback: function (values) {
                     if (values === false) {
                         return console.log('Cancelled');
                     }
-                    console.log('o: ' + values.categories);
                     post_dict = {'categories': values.categories, 'email':email, 'csrfmiddlewaretoken':$csrfmiddlewaretoken}
-                    $.post('/follower/', post_dict, function(data){ console.log("retorno: " + data)});
+                    $.post('/follower/', post_dict, function(data) {
+                        form.find('#followed_by').val("");
+
+                        if (data == 'false') {
+                             vex_ok_generic('Email já cadastrado. Procure pela mensagem de confirmação (hipy.co) ' +
+                                'em sua caixa de entrada e em casos especiais na caixa spam.');
+                        } else {
+                             vex_ok_generic('Obrigado pelo interesse! ' +
+                                    'Você receberá ' +
+                                    'um link para confirmação deste registro.');
+                        }
+
+                    })
+                      .fail(function() {
+                          vex_ok_generic('Uma falha não esperada ocorreu. Tente Novamente.');
+                      });
+
+                    }
                     // return console.log('Categories', values); // debug
+            })
+         })
 
-                }
-            });
-
-         });
-})
+});
 
 $(document).on('click', '.btn-subjects-flag',  function(e) {
     e.preventDefault();

@@ -4,9 +4,12 @@ import datetime
 import os
 
 from mongoengine import *
+from mongoengine.fields import EmailField
 from mongoengine.django.auth import User as mongoUser
 from bson import ObjectId
 from django.conf import settings
+from django.contrib.auth.tokens import default_token_generator
+from django.utils.translation import ugettext_lazy as _
 
 from blog import slugify
 from blog.utils import upload_image_handler
@@ -44,10 +47,35 @@ class User(mongoUser):
     Extends class User mongoengine.django.auth.User
     """
     categories = ListField(StringField()) # user following
+    token = StringField()
+    email = EmailField(verbose_name=_('e-mail address'), unique=True)
+
+    # TODO: Processo de confirmacao do email/token para liberar
+    # o usuario como ativo
+
+    def make_token(self):
+        self.token = default_token_generator.make_token(self)
+        self.save()
+        return self.token
+
+    @property
+    def check_token(self):
+        return default_token_generator.check_token(self, self.token)
 
     def clean_username(self):
-        username = self.username
-        pass
+        """
+        Defines an username based in preexistent id or a random ObjectId
+        """
+        username = None
+
+        if self.id:
+            username = str(self.id)[5:9] + str(self.id)[-4:]
+        else:
+            self.is_active = False
+            obj = str(ObjectId())
+            username = obj[5:9] + obj[-4:]
+
+        return username
 
     def put_category(self, name):
         """
@@ -81,18 +109,12 @@ class User(mongoUser):
         pass
 
     def save(self, *args, **kwargs):
-        """ Wrapper to guarantee username must less than 30 chars.
-        It's a Django's definitions.
-        """
-        if self.username is None or '@' in self.username:
-            if self.id:
-                self.username = self.id[5:9] + self.id[-4:]
-            else:
-                obj = str(ObjectId())
-                self.username = obj[5:9] + obj[-4:]
+        # check username is email or nonexistent
+        if self.username is None or '@' in self.username or \
+            len(self.username) > 30:
+            self.username = self.clean_username()
 
         super(User, self).save(*args, **kwargs)
-
 
 
 class Comments(EmbeddedDocument):

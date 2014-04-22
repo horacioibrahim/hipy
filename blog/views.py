@@ -5,6 +5,7 @@ import datetime
 import pymongo
 import doctest
 from json import loads, dumps
+from random import randint
 
 from django.conf import settings
 from django.core.urlresolvers import reverse
@@ -15,9 +16,11 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from django.template import loader, Context
 from mongoengine.django.shortcuts import get_document_or_404
+from mongoengine.document import NotUniqueError
 
 from blog import models, forms, postDAO
 from blog.utils import do_syntax_html
+from main.utils import send_simple_email
 
 # Setup to connect server.
 # workaround MongoEngine and use pymongo (directly)
@@ -94,8 +97,9 @@ def my_logout(request):
     return redirect(reverse('homepage'))
 
 def follower(request):
-    """ Receive categories by POST/client and put categories in followers of
-    User subclass of mongo User
+    """ Method to save followers of blog. It receives selected categories by POST
+    and put categories in user profile (a mongoengine User subclass).
+    Return True in case success rather False.
     """
     response = False
     if request.method == "POST":
@@ -109,13 +113,32 @@ def follower(request):
             new_u = u.create_user(username=email, email=email, password=None)
             new_u.put_category(categories)
             response = True
-        except Exception, err:
-            response = False # Error: user already exists or %s' % err
+        except NotUniqueError:
+            response = False
+        except:
+            raise
+
+        if response:
+            body = '''
+            Olá,
+            Recebi seu interesse no projeto hipy. Agora, somente preciso que
+            você confirme o seu email pelo link abaixo:
+            Link: %s
+
+            Deixo um sincero abraço e desejo-lhe liberdade de conhecimento!
+
+            ass: Horacio Ibrahim
+            '''
+            token = new_u.make_token()
+            link = reverse('check_token', args=(token,))
+            body_linked = body % ("".join([settings.BASE_URL, link]))
+            send_simple_email('Confirmação de Cadastro - hipy',
+                              body_linked, [new_u.email])
 
     else:
         return redirect(reverse('homepage'))
 
-    return HttpResponse(response, content_type=("text", "javascript"))
+    return HttpResponse(dumps(response), content_type=("text", "javascript"))
 
 
 def category_posts(request, category_anchor):
@@ -288,6 +311,51 @@ def post_text(request, posts=None):
         raise TypeError(form.errors)
 
     return render(request, 'to_post.html', {'form': form, 'posts': posts})
+
+def check_token(request, token):
+    """Confirm user by token sent by email"""
+    categories = models.Category.objects()
+    user_by_token = get_document_or_404(models.User, token=token)
+    if user_by_token.is_active:
+        user_categories = user_by_token.categories
+        if len(user_categories) > 0:
+            end = len(user_categories) - 1
+            aleatory = randint(0, end)
+            return redirect(reverse('category_posts', args=(user_by_token.categories[aleatory],)))
+        else:
+            end = len(categories) - 1
+            aleatory = randint(0, end)
+            return redirect(reverse('category_posts', args=(categories[aleatory].slug,)))
+
+    user_by_token.is_active = True
+
+    try:
+        user_by_token.save()
+        confirmed_db = True
+    except:
+        raise
+
+    if confirmed_db:
+        body = '''
+        Obrigado pela confirmação!
+
+        Minha missão nesse projeto é influenciar positivamente a vida das pessoas
+        que se relacionam comigo direta ou indiretamente nos tornando, reciprocamente,
+        ainda melhores.
+
+        # Saiba mais sobre o projeto hipy.
+        http://hipy.co/post/as-metas-e-objetivos-do-hipy/
+
+        Deixo um sincero abraço e desejo-lhe liberdade de conhecimento!
+
+        Horacio Ibrahim
+        hipy.co
+        '''
+        send_simple_email('Obrigado pela confirmação - hipy', body,
+                          [user_by_token.email])
+
+    return render(request, 'check_token.html',
+                  {'email': user_by_token.email, 'categories':categories})
 
 # AJAX GET and POSTS
 def ajax_get_post(request, objid):
