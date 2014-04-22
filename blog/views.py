@@ -321,7 +321,7 @@ def check_token(request, token):
         if len(user_categories) > 0:
             end = len(user_categories) - 1
             aleatory = randint(0, end)
-            return redirect(reverse('category_posts', args=(user_by_token.categories[aleatory],)))
+            return redirect(reverse('category_posts', args=(user_by_token.categories[aleatory].lower(),)))
         else:
             end = len(categories) - 1
             aleatory = randint(0, end)
