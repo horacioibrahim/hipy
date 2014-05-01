@@ -20,7 +20,7 @@ from mongoengine.document import NotUniqueError
 
 from . import models, forms, postDAO
 from .utils import do_syntax_html
-from main.tasks import send_simple_email
+from tasks.tasks import task_send_simple_email
 
 
 # Setup to connect server.
@@ -133,8 +133,7 @@ def follower(request):
             token = new_u.make_token()
             link = reverse('check_token', args=(token,))
             body_linked = body % ("".join([settings.BASE_URL, link]))
-
-            send_simple_email.delay('Confirmação de Cadastro - hipy',
+            task_id = task_send_simple_email.delay('Confirmação de Cadastro - hipy',
                               body_linked, [new_u.email,], headers=None)
 
     else:
