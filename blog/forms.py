@@ -1,7 +1,8 @@
 # coding=utf-8
 
 from django import forms
-from models import Post
+
+from .models import Post
 
 class PostForm(forms.Form):
     oid = forms.CharField(required=False)

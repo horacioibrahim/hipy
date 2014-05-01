@@ -1,8 +1,9 @@
 #coding: utf-8
 
 import unittest
-from unicodedata import normalize 
 import re
+from unicodedata import normalize
+
 from django.utils.encoding import force_unicode
     
 def slugify(s, unique_in=None):

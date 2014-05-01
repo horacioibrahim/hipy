@@ -18,9 +18,10 @@ from django.template import loader, Context
 from mongoengine.django.shortcuts import get_document_or_404
 from mongoengine.document import NotUniqueError
 
-from blog import models, forms, postDAO
-from blog.utils import do_syntax_html
-from main.utils import send_simple_email
+from . import models, forms, postDAO
+from .utils import do_syntax_html
+from main.tasks import send_simple_email
+
 
 # Setup to connect server.
 # workaround MongoEngine and use pymongo (directly)
@@ -132,8 +133,9 @@ def follower(request):
             token = new_u.make_token()
             link = reverse('check_token', args=(token,))
             body_linked = body % ("".join([settings.BASE_URL, link]))
-            send_simple_email('Confirmação de Cadastro - hipy',
-                              body_linked, [new_u.email])
+
+            send_simple_email.delay('Confirmação de Cadastro - hipy',
+                              body_linked, [new_u.email,], headers=None)
 
     else:
         return redirect(reverse('homepage'))

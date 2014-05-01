@@ -1,7 +1,8 @@
 __author__ = 'horacioibrahim'
 
 import pymongo
-from blog.utils import is_json
+
+from .utils import is_json
 
 class PostDAO:
     """

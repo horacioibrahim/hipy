@@ -112,16 +112,6 @@ class BlogTest(SimpleTestCase):
         response = self.c.get(reverse('check_token', args=(token,)))
         self.assertEqual(302, response.status_code)
 
-    @skip # to avoid this options for all tests
-    def test_send_mail(self):
-        message = EmailMessage('Test Message', 'Body test message',
-                               settings.DEFAULT_FROM_EMAIL,
-                               [settings.AWS_SES_RETURN_PATH],
-                               headers = {'Reply-To': settings.AWS_SES_RETURN_PATH})
-        sender = SESBackend()
-        result = sender.send_messages([message])
-        self.assertEqual(1, result)
-
     def test_make_token(self):
         token = self.user.make_token()
         self.assertEqual(token, default_token_generator.make_token(self.user))

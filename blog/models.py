@@ -11,8 +11,8 @@ from django.conf import settings
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.translation import ugettext_lazy as _
 
-from blog import slugify
-from blog.utils import upload_image_handler
+from . import slugify
+from .utils import upload_image_handler
 
 # MongoEngine Connect
 connect(settings.MONGO_DATABASE_NAME)

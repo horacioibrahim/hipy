@@ -1,6 +1,5 @@
 from django.test.runner import DiscoverRunner
 from django.conf import settings
-
 from pymongo import MongoClient
 
 # Check if database will use already defined test_database in settings_test.py
