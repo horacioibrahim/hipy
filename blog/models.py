@@ -49,9 +49,14 @@ class User(mongoUser):
     categories = ListField(StringField()) # user following
     token = StringField()
     email = EmailField(verbose_name=_('e-mail address'), unique=True)
+    avatar = StringField()
+    signature = StringField()
 
-    # TODO: Processo de confirmacao do email/token para liberar
-    # o usuario como ativo
+    def put_avatar(self, file):
+        """
+        Put image file in a path, rather in database
+        """
+        self.avatar = upload_image_handler(file)
 
     def make_token(self):
         self.token = default_token_generator.make_token(self)
@@ -79,7 +84,7 @@ class User(mongoUser):
 
     def put_category(self, name):
         """
-        Add category if not exist with update
+        Add category with update if it not exist
         IMPORTANT: It isn't need call save()
         """
         try:

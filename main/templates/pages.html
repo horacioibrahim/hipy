@@ -28,6 +28,24 @@
                 {% endautoescape %}
             </div>
           </div>
+          {% if post.author %}
+          <div class="row">
+              <div class="small-12 columns">
+                  <div class="signature" style="background: #f9f9f9; margin-top: 20px;">
+                    <hr />
+                    <div class="small-2 columns">
+                        <img src="{% if post.author.avatar %}{{ post.author.avatar }}{% else %}/media/no_avatar.jpg{% endif %}" >
+                    </div>
+                    <div class="small-10 columns">
+                        <h5><strong>{{ post.author.first_name }}&nbsp;{{ post.author.last_name }}</strong></h5>
+                        <p>
+                        {{ post.author.signature }}
+                        </p>
+                    </div>
+                </div>
+              </div>
+          </div>
+          {% endif  %}
         </div>
         <div class="small-3 columns">
           <br />
