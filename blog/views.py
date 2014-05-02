@@ -352,7 +352,7 @@ def check_token(request, token):
         Horacio Ibrahim
         hipy.co
         '''
-        send_simple_email('Obrigado pela confirmação - hipy', body,
+        task_id = task_send_simple_email.delay('Obrigado pela confirmação - hipy', body,
                           [user_by_token.email])
 
     return render(request, 'check_token.html',
