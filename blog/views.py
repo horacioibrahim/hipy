@@ -193,7 +193,7 @@ def post_add(request):
     The hub of posts types. "Flat is better than nested."
     """
     form = None
-    posts = models.Post.objects().order_by('-update_at').limit(20)
+    posts = models.Post.objects().order_by('-update_at') # unlimited for instance
 
     if request.method == 'POST':
         # check what type of post: Text, Image, Podcast, Url
