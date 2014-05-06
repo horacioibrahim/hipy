@@ -5383,7 +5383,6 @@ p {
 .content-press {
   height: 470px;
   background: transparent url(../img/press.png) center no-repeat;
-  background-attachment: fixed;
   margin-top: -70px; }
   .content-press h1, .content-press h2, .content-press h3, .content-press h4, .content-press h5, .content-press h6 {
     color: #fff;
