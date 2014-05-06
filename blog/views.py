@@ -252,10 +252,10 @@ def post_text(request, posts=None):
         oid = form.cleaned_data['oid']
         try:
             # Get the object otherwise create one.
-            # you can to use models.MODEL(id='id') will updated BUT (It BAD)
-            # BECAUSE you isn't handling an previous existent object and
-            # you can't overwriting for example save method in models in it way
-            # This the best way is get object like instance of existent document:
+            # you can to use models.MODEL(id='id') will updated BUT (It's BAD)
+            # But you can not handling an previous existent object
+            # like overwriting save method in models.
+            # The best way is get object like instance of existent document:
             post = models.TextPost.objects.get(id=oid) # (It GOOD)
         except:
             post = models.TextPost()
@@ -309,7 +309,7 @@ def post_text(request, posts=None):
         post.save()
 
     else:
-        raise TypeError(form.errors)
+        raise TypeError(form.errors) # Debug
 
     return render(request, 'to_post.html', {'form': form, 'posts': posts})
 
