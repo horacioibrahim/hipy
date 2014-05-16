@@ -1,0 +1,9 @@
+Olá,
+Recebi seu interesse no projeto hipy. Agora, somente preciso que
+você confirme o seu email pelo link abaixo:
+Link: %s
+
+Deixo um sincero abraço e desejo-lhe liberdade de conhecimento!
+
+Horacio Ibrahim
+hipy.co

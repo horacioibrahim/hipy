@@ -41,6 +41,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'mongoengine.django.mongo_auth',
     'blog',
+    'disqus',
 )
 
 AUTH_USER_MODEL = 'mongo_auth.MongoUser'
