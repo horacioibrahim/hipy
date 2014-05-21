@@ -218,8 +218,10 @@ def post_add(request):
     else:
         #TODO: remove forms here.
         form = forms.UploadImageForm()
+        categories = models.Category.objects()
 
-    return render(request, 'to_post.html', {'form': form, 'posts': posts})
+    return render(request, 'to_post.html', {'form': form, 'posts': posts,
+                                            'categories':categories})
 
 
 def post_image(request, posts=None):
