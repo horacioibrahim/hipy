@@ -5,6 +5,7 @@
   <head>
     <title>{{ category.name }}({{ count }}) hipy.co | horacioibrahim </title>
     {% include 'includes/content_head_default.html' %}
+    <meta property="og:title" content="{{ post.title }}" />
     <meta property="og:type" content="article" />
     <meta property="og:article:author" content="Horacio Ibrahim by hipy.co" />
     <meta property="og:article:section" content="{{ post.categories.0.name }}" />
