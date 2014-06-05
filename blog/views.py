@@ -174,8 +174,7 @@ def post_view(request, slug_title):
 
     return render_to_response('pages.html', {'post': post})
 
-
-@login_required()
+@login_required
 def post_delete(request, oid):
     """
     Delete documents
@@ -185,7 +184,6 @@ def post_delete(request, oid):
         post.delete()
 
     return redirect(reverse('post_add'))
-
 
 @login_required
 def post_add(request):
