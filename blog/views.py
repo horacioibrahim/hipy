@@ -3,6 +3,7 @@
 import sys
 import datetime
 import pymongo
+import re
 import doctest
 from json import loads, dumps
 from random import randint
@@ -39,31 +40,33 @@ def index(request):
                                 created_at__lte=today) \
         .order_by('-created_at').limit(6) # TODO index sort
 
-    if request.method == 'POST':
-        orig_terms = None
-        try:
-            terms = request.POST['terms']
-            orig_terms = terms
-            terms = terms.split(" ")
-        except:
-            terms = None
+    # if request.method == 'POST':
+    orig_terms = None
+    try:
+        terms = request.GET['terms']
+        orig_terms = terms
+        terms = re.findall(r"[\w]+", terms)
+    except:
+        terms = None
+
+    if terms:
 
         try:
             results_all = collection_post.search_text(terms=terms)
         except:
             raise TypeError(u'Problem with collections')
 
-        if terms:
-            ts = results_all['stats']['timeMicros'] / 100000.0
-            results_all['stats']['timeMicros'] = round(ts, 2)
-            return render(request, 'search.html', {'results_all': results_all,
-                                                   'posts': results_all[
-                                                       'results'],
-                                                   'stats': results_all[
-                                                       'stats'],
-                                                   'terms': orig_terms,
-            }
-            )
+        ts = results_all['stats']['timeMicros'] / 100000.0
+        results_all['stats']['timeMicros'] = round(ts, 2)
+        orig_terms = " ".join(terms)
+        return render(request, 'search.html', {'results_all': results_all,
+                                               'posts': results_all[
+                                                   'results'],
+                                               'stats': results_all[
+                                                   'stats'],
+                                               'terms': orig_terms,
+        }
+        )
 
     return render(request, 'index.html',
                   {'categories': categories, 'posts': posts})
