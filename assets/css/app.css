@@ -5422,6 +5422,9 @@ p {
 .content-latest-post {
   background: #F2F2F2; }
 
+.content-jobs {
+  background: rgba(231, 233, 238, 0.4);
+}
 /**************************
 * Section logos
 **************************/
