@@ -84,7 +84,7 @@
             <div class="small-12 medium-12 large-12 columns">
         <!-- grid -->
             <br />
-            <ul class="large-block-grid-3 medium-block-grid-2 small-block-grid-1">
+            <ul id="posts-inject" class="large-block-grid-3 medium-block-grid-2 small-block-grid-1">
                 {% for post in posts %}
                     <li>
                         <h5><a href="{% url 'post_view' post.slug %}">{{ post.title }}</a>
@@ -98,7 +98,11 @@
                     </li>
                 {% endfor %}
             </ul>
+
             </div>
+            <div class="small-4 small-centered">
+              <button id="moreposts" title="More posts" class="label radius secondary"><i class="fa fa-th-list"></i>&nbsp;More Posts</button>
+          </div>
         </div>
     </div>
     <!-- latest posts end -->

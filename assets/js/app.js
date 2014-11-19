@@ -7,6 +7,17 @@ $('#toggle-post').click( function () {
    $('#form-post').toggle(300);
 });
 
+
+// get more posts
+$("#moreposts").click(function(){
+    // get data from more posts view
+    var $ul = $('#posts-inject');
+    $.get("/posts/moreposts", function(data) {
+        $ul.appendTo("#posts-inject").hide().append(data).fadeIn('slow');
+    });
+    $(this).fadeOut();
+});
+
 // TODO: objAjaxPostValues
 
 $('.objAjaxGetValues').click(function(e){

@@ -71,6 +71,13 @@ def index(request):
     return render(request, 'index.html',
                   {'categories': categories, 'posts': posts})
 
+def query_posts(request):
+    today = datetime.datetime.now()
+    posts = models.Post.objects(published=True,
+            created_at__lte=today).order_by('-created_at').skip(6).limit(20)
+
+    return render(request, 'includes/posts_inject.html', dict(posts=posts))
+
 
 def my_login(request):
     if request.user.is_authenticated():
