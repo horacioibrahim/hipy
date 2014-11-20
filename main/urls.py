@@ -10,6 +10,7 @@ urlpatterns = patterns('',
     url(r'^$', 'blog.views.index', name='homepage'),
     url(r'^login/$', 'blog.views.my_login', name='my_login'),
     url(r'^logout/$', 'blog.views.my_logout', name='my_logout'),
+    url(r'^educacao/mapa/$', 'blog.views.educacao_map', name='educacao_map'),
     url(r'^posts/moreposts/$', 'blog.views.query_posts', name='query_posts'),
     url(r'^post/(?P<slug_title>[-\w]+)/$', 'blog.views.post_view', name='post_view'),
 

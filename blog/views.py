@@ -78,6 +78,8 @@ def query_posts(request):
 
     return render(request, 'includes/posts_inject.html', dict(posts=posts))
 
+def educacao_map(request):
+    return render(request, 'education_br.html')
 
 def my_login(request):
     if request.user.is_authenticated():
