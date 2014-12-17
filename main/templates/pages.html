@@ -15,7 +15,7 @@
     <!-- content: Pages [begin] -->
     <div id="article" class="content-pages">
       <div class="row">
-        <div class="small-9 small-centered columns">
+        <div id="main-content" class="small-9 columns">
           <h3>{{ post.title }}<br />
             <small class="subheader">{{ post.subtitle }}</small>
           </h3>
@@ -61,6 +61,8 @@
         <div class="small-3 columns">
           <br />
             <!-- Assuntos relacionados -->
+            <a id="close-btn-ads" class="button tiny round secondary" style="float: right;">Ocultar Ads &#215;</a>
+            {% include 'includes/boobox.html' %}
         </div>
       </div>
     </div>
@@ -73,6 +75,7 @@
 
 
     {% include 'includes/assets_pos_loaded.html' %}
+
   <div id="fb-root"></div>
     <script>(function(d, s, id) {
       var js, fjs = d.getElementsByTagName(s)[0];

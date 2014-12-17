@@ -7,6 +7,15 @@ $('#toggle-post').click( function () {
    $('#form-post').toggle(300);
 });
 
+// hide ads
+$('#close-btn-ads').click( function () {
+   $(this).toggle(300);
+   $('#ads').toggle(300);
+   $('#main-content').addClass("small-centered");
+
+
+});
+
 
 // get more posts
 $("#moreposts").click(function(){
