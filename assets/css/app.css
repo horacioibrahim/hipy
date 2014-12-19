@@ -44,6 +44,11 @@ body {
   position: relative;
   cursor: default; }
 
+.adsbygoogle {
+  right: 0px;
+  position: absolute;
+}
+
 a:hover {
   cursor: pointer; }
 

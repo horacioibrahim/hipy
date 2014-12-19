@@ -13,7 +13,6 @@ $('#close-btn-ads').click( function () {
    $('#ads').toggle(300);
    $('#main-content').addClass("small-centered");
 
-
 });
 
 
