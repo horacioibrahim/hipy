@@ -24,6 +24,9 @@ urlpatterns = patterns('',
     url(r'^oid/(\w+)/$', 'blog.views.ajax_get_post', name='ajax_get_post'),
     url(r'^get/categories/$', 'blog.views.get_categories', name='get_categories'),
 
+    # Apps
+    # Feedback 360
+    url(r'^feedback360/home/$', 'feedback360.views.home', name='feedback360_home'),
     # cleanup rule
     url(r'^(?P<category_anchor>\w+)/$', 'blog.views.category_posts', name='category_posts'),
 
