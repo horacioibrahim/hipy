@@ -2,10 +2,18 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Facebook Login JavaScript Example</title>
-<meta charset="UTF-8">
+<title>Feedback 360º - Você faz parte disso!</title>
+{% load staticfiles %}
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="google-site-verification" content="mpQT2e2CzE40Mag3lvahke8vfeN3h02M3UjZJrvSiHE" />
+<link rel="stylesheet" href="{% static 'css/app.css' %}" />
+<link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}"/>
+<link rel="stylesheet" href="{% static 'feedback360/base.css' %}" />
+<script src="{% static 'js/modernizr.js' %}"></script>
+
 </head>
-<body>
+<body id="feedback">
 <script>
   // This is called with the results from from FB.getLoginStatus().
   function statusChangeCallback(response) {
@@ -86,18 +94,335 @@
     });
   }
 </script>
-
-<!--
-  Below we include the Login Button social plugin. This button uses
-  the JavaScript SDK to present a graphical Login button that triggers
-  the FB.login() function when clicked.
--->
-
+<!-- 
 <fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
 </fb:login-button>
 
 <div id="status">
+</div> -->
+<div class="main-content">
+  <div class="menu-content left">
+      <div class="logo">
+          <img src="{% static 'feedback360/img/feedback_180x52.png' %}"/>
+      </div>
+      <ul class="menu-list">
+        <li>
+          <div class="menu-icon left"><i class="fa fa-thumbs-up"></i>&nbsp;</div>
+          <div class="menu-label"><a class="scrollTo" href="#morethanone">Mais que +1</a></div>
+        </li>
+        <li>
+          <div class="menu-icon left"><i class="fa fa-unlock-alt"></i>&nbsp;</div>
+          <div class="menu-label"><a class="scrollTo" href="#howitworks">Como funciona</a></div>
+        </li> 
+        <li>
+          <div class="menu-icon left"><i class="fa fa-envelope"></i>&nbsp;</div>
+          <div class="menu-label"><a class="scrollTo" href="#invited">Os convidados</a></div>
+        </li> 
+        <li>
+          <div class="menu-icon left"><i class="fa fa-gear"></i>&nbsp;</div>
+          <div class="menu-label"><a class="scrollTo" href="#deploy">Dados técnicos</a></div>
+        </li>      
+        <li>
+          <div class="menu-icon left"><i class="fa fa-heart"></i>&nbsp;</div>
+          <div class="menu-label"><a class="scrollTo" href="#thanks">Agradecimentos</a></div>
+        </li>                             
+      </ul>
+      <div class="main-action">
+        <button id="start" class="btn-categories-noaction button large round">Começar!</button>
+      </div>
+      <div class="complement" style="margin-top:100">
+        <p>Dica: Essa página não é responsiva. Será melhor visualizada no seu
+        Mac ou PC. Poderá funcionar bem em um tablet.</p>
+      </div>
+  </div>
+  <div class="general-content">
+
+    <div id="morethanone" class="big-section"> 
+      <article class="post">
+        <h1>Seu <i>feedback</i> vale + do que 1 like</h1>
+        <div class="banner">
+          <small class="img-credits">Fonte: http://www.k12hrsolutions.com/</small>
+        </div>
+        <div class="container-body">
+          <p>Se você chegou até aqui é bem provável que tenha recebido um convite meu porque 
+          sua opinião é importante para o "nosso" desenvolvimento. "Nosso" porque quanto mais
+          nossa rede de amigos se desenvolve mais evoluímos juntos!</p>
+          <p>Feedback é um neologismo que pode significar uma informação ou resposta que damos para alguém para 
+          que essa pessoa melhore, seja ela uma crítica negativa ou positiva. O que importa
+          é que haja sinceridade.</p>
+          <p>Um Feedback 360º ou Avaliação 360º nada mais é do que destacar pontos fortes e fracos do avaliado, neste caso eu. Um questionário de preenchimento rápido é apresentado para você responder. Nele estão
+          contidas questões objetivas e direcionadas para que eu possa identificar comportamentos e competências que precisam ser melhoradas em mim.</p>
+
+          <!-- buscando conhecer se estou do ponto de vista dos meus pares andando na direção correta e onde posso corrigir. evitando verdeiras que 
+          um grupo de pessoas escolhidas, pela sua <strong>integridade, confiabilidade e valor</strong>
+          dão a quem solicitou que neste caso sou eu.-->
+          <p>Provavelmente eu e você nos relacionamos em algum momento especial e acredito que 
+          é possível encontrar uma crítica, seja ela construtiva ou não, em um desses encontros. Veja <strong>Como Funciona</strong>
+          um Feedback 360º.</p>
+        </div>
+      </article>
+    </div>
+    <div class="line-sep">&nbsp;</div>
+    <div id="howitworks" class="big-section">
+     <article class="post">
+        <h1>Como funciona a Avaliação 360º</h1>  
+        <div class="container-body">
+          <dl class="tabs vertical" data-tab="" role="tablist"> 
+            <dd class="active"><a href="#panel1"><i class="fa fa-question"></i>&nbsp;Questões</a></dd> 
+            <dd><a href="#panel2"><i class="fa fa-envelope"></i>&nbsp;Convidados</a></dd> 
+            <dd><a href="#panel3"><i class="fa fa-check"></i>&nbsp;Respostas</a></dd> 
+            <dd><a href="#panel4"><i class="fa fa-unlock-alt"></i>&nbsp;Sigilo</a></dd>
+          </dl> 
+          <div class="tabs-content vertical" data-options="scroll_to_content: false"> 
+            <div class="content active" id="panel1"> 
+              <h4>Elaboração do questionário</h4>
+              <br>
+              <p>A Avaliação 360º é feita por um questionário estruturado que busca
+              identificar os pontos fortes e fracos relacionados a um objetivo seja
+              corporativo ou pessoal, por exemplo, comportamentos e competências que 
+              considero essenciais com a minha missão.
+              </p> 
+              <p>A composição das questões podem ser objetivas do tipo sim ou não. Ou
+              podem ser abertas, neste caso, nunca se identifique. Ex.: "eu acho
+              você o máximo. Ass.: Mainha".</p>
+            </div> 
+            <div class="content" id="panel2"> 
+              <h4>Identificação dos convidados</h4>
+              <p>Essa questão é bem peculiar porque os convidados precisam ser proximos o suficiente
+              para uma boa avaliação.</p> 
+              <p>Sabemos que na construção de uma boa rede de relacionamentos há conexões que são
+              esporádicas, mas de fato importantes. Por isso, criei níveis de proximidade. Essa é
+              a única diferença de uma Avaliação 360º comum. Esses níveis mostrarão quão próximo considero
+              que determinado convidado está de mim.</p>
+            </div> 
+            <div class="content" id="panel3"> 
+              <h4>Respondendo a pesquisa</h4>
+              <p>Ao clicar em <strong>Começar!</strong> um questionário será liberado com aproximadamente
+              5 perguntas. Responda com sinceridade e tente ser impessoal com vistas a uma maior objetividade e imparcialidade. Ao <strong>Enviar</strong> as respostas registro que a pesquisa foi 
+              respondida e não há possibilidade de edição. Assim se você voltar para responder novamente receberá a mensagem de agradecimento.</p> 
+              <p>Caso clique em <strong>Agora não</strong> ficarei no aguardo da sua resposta até o dia 5 janeiro de 2015. Após essa data é hora de consolidar as respostas</p>
+            </div> 
+            <div class="content" id="panel4"> 
+              <h4>Confidencialidade das respostas</h4>
+              <p>Suas respostas são confidencias e não podem ser associadas a você por nenhum meio ou 
+              recurso, ao menos que você se identifique nas respostas. NUNCA faça isso.</p> 
+              <p>Sua identificação e as respostas são separadas em coleções de dados distintos. Saiba mais 
+              acessando a seção <strong><a class="scrollTo" href="#deploy">Dados técnicos</a></strong>.</p>
+            </div> 
+          </div>        
+        </div>  
+     </article>
+    </div>
+    <div class="line-sep">&nbsp;</div>
+    <div id="invited" class="big-section">
+     <article class="post">
+        <h1>Os 50 convidados selecionados</h1>
+        <div class="banner">
+        </div>   
+        <div class="container-body">
+          <p>Todos os amigos e familiares são importantes no meu desenvolvimento pessoal e gostaria
+          de ouví-los cada vez mais. Porém em uma avaliação como essa é necessário analisar
+          todas as respostas com cuidado. Por isso, para a Avaliação 360º atual escolhi, subjetivamente, 50 pessoas.</p>
+          <p>Se você está nessa lista é porque acredito que sua opnião é importante. Fique tranquilo porque suas <strong>respostas são totalmente confidenciais, com a maior privacidade</strong>. Não existe possibilidade de conhecer quem respondeu o quê. Isso é um requisito básico desse tipo de avaliação. </p>
+          <p>Se está curioso sobre a implementação navegue até <strong>Dados Técnicos</strong> onde explico a arquitetura da solução.</p>
+        </div>  
+     </article>
+    </div>
+    <div class="line-sep">&nbsp;</div>
+    <div id="deploy" class="big-section">
+     <article class="post">
+        <h1>Dados técnicos e o sigilo</h1>
+        <div class="banner">
+        </div>   
+        <div class="container-body">
+          <p>Uma das mais importantes condições da Avaliação 360º é manter a confidencialidade das respostas
+          porque fica claro que somos mais comedidos durante uma crítica, às vezes má interpretada. O anonimato revela coisas fascinantes.</p>
+          <p>Porém, é preciso sinceridade para que a avaliação produza o efeito desejado. Pense comigo: 
+          você tem o poder de ajudar alguém, mas essa pessoa não aceita sugestões como você faria para resolver? Deixando um bilhete anônimo na mesa? Isso é uma ótima ideia e aqui é o local para isso!</p>
+          <h5>Confidencialidade</h5>
+          <p>Como aprensetei na seção <strong><a class="scrollTo" href="#howitworks"> Como funciona</a></strong> escolhi determinadas pessoas com base
+          em características como integridade, valores e comportamentos. Com essa lista de pessoas e suas contas sociais é possível conhecer quando ela está conectada aqui no Feedback 360º devido aos plugins sociais do Facebook, por exemplo. No entanto, essa condição não permite verificar o que está sendo respondido e por quem.</p>
+          <h5>Persistência dos dados</h5>
+          <p>Na ato persistir as respostas, elas são separadas do autor (o convidado), sendo uma coleção de dados
+          com somente a identificação do participante (nome de usuário, email, url_avatar) e mais um campo <i>booleano</i> chamado "enviado" que armazena se o formulário foi submetido. Não há registro de data, hora, tão pouco é feita associação entre "chaves-primárias".</p>
+          <p>Já as respostas são dispostas em outra coleção com os campos correspondentes as 4 questões e o nível de proximidade, um tanto subjetivo, que o convidado tem de mim. Determinei valores de 1 a 3 onde quanto menor mais próximo e quanto maior mais distante. </p> 
+        </div>  
+        <h5>Ferramentas utilizadas</h5>
+        <p>As ferramentas utilizadas para produzir esse conteúdo são de <a href="http://pt.wikipedia.org/wiki/C%C3%B3digo_aberto" target="_blank">código aberto</a>, assim como esse próprio blog que você está acessando. Para utilizar essa aplicação como o seu blog pessoal clone o repositório: <a href="https://bitbucket.org/horacioibrahim/hipy/wiki/Home" target="_blank">blog hipy</a>.</p>
+        <p>Nessa <i>stack</i> temos:<br>
+        <ul>
+          <li>Python 2.7.6 - <a href="https://www.python.org/" target="_blank">Site Oficial</a></li>
+          <li>Django 1.6.1 - <a href="https://www.djangoproject.com/" target="_blank">Site Oficial</a></li>
+          <li>Zurb Foundation 5 - <a href="http://foundation.zurb.com/" target="_blank">Site Oficial</a></li>
+          <li>MongoDB 2.4.8 - <a href="http://www.mongodb.org/" target="_blank">Site Oficial</a></li>
+        </ul>
+        </p>
+     </article>
+    </div>  
+    <div class="line-sep">&nbsp;</div>
+    <div id="thanks" class="big-section">
+     <article class="post">
+        <h1>Agradecimentos sinceros</h1>
+        <div class="banner">
+        </div>   
+        <div class="container-body">
+          <p>À todos os amigos e familiares agredeço sinceramente seu tempo dedicado nesse processo.
+          Espero evoluir com tudo isso e claro levar toda a felicidade dessa expansão pessoal para você também. Porque o que mais acredito é na mudança do contexto. Se está difícil podemos melhorar e em nós mesmos temos a solução. Um colaborando com o outro, assim mudando o contexto ao nosso redor, se propagando.</p>
+          <p>Em 2015, espero que seja um ano de mais colaboração, mais horas da sua inteligência específica da sua área - seja ela com códigos, com artesanato, com auto-conhecimento, etc - não importa em qual área: <strong>doe seu tempo para mais pessoas</strong>.</p>
+          <p>Conecte-se com você e se conheça mais. Desligue a TV, solte o <i>smartphone</i> e 
+          <a href="http://hipy.co/post/empreendedorismo-como-gatilho-para-o-exercicio-fisico/" target="_blank">corra</a> mais!
+          </p>
+        </div>  
+     </article>
+    </div>           
+  </div>
+  <div id="mega-container-steps" class="row general-content-shadow">
+    <div class="small-12 columns text-center">
+      <ul class="small-block-grid-3"> 
+        <li class="container-steps">
+          <div class="steps step-1 active"><span>1</span></div>
+          <h5>Registre-se com seus dados</h5>
+          <p>Use o Facebook para conectar</p>
+          <!-- facebook actions -->
+          <div class="wrapper" style="padding: 20px;">
+            <div class="fb-login-button" data-max-rows="1" data-size="large" data-show-faces="false" data-auto-logout-link="false" scope="public_profile,email" onlogin="checkLoginState();"></div>
+          </div>
+          <div id="status">
+          </div>
+          <!-- facebook actions -->      
+        </li> 
+        <li class="container-steps">
+          <div class="steps step-2"><span>2</span></div>
+          <h5>Responda as questões</h5>
+          <p>É rápido e fácil de preencher</p>        
+          
+        </li> 
+        <li class="container-steps">
+          <div class="steps step-3"><span>3</span></div>
+          <h5>Parabéns!</h5>
+          <p>Peça um Feedback 360º exclusivo</p>
+          </li> 
+      </ul>  
+    </div>
+  </div>  
 </div>
+
+
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="{% static 'js/foundation/foundation.min.js' %}"></script>
+<script src="{% static 'js/foundation/foundation.tab.js' %}"></script>
+
+<script>
+  function statusChangeCallback(response) {
+    if (response.status === 'connected') {
+      // Logged into your app and Facebook.
+      solve(response);
+    } else if (response.status === 'not_authorized') {
+      // The person is logged into Facebook, but not your app.
+      document.getElementById('status').innerHTML = 'Please log ' +
+        'into this app.';
+    } else {
+      // The person is not logged into Facebook, so we're not sure if
+      // they are logged into this app or not.
+      document.getElementById('status').innerHTML = 'Please log ' +
+        'into Facebook.';
+    }
+  }
+
+  function checkLoginState() {
+    FB.getLoginStatus(function(response) {
+      statusChangeCallback(response);
+    });
+  }
+
+  window.fbAsyncInit = function() {
+  FB.init({
+    appId      : '1523781367871342',
+    cookie     : true,  // enable cookies to allow the server to access 
+                        // the session
+    xfbml      : true,  // parse social plugins on this page
+    version    : 'v2.1' // use version 2.1
+  });
+
+  // Now that we've initialized the JavaScript SDK, we call 
+  // FB.getLoginStatus().  This function gets the state of the
+  // person visiting this page and can return one of three states to
+  // the callback you provide.  They can be:
+  //
+  // 1. Logged into your app ('connected')
+  // 2. Logged into Facebook, but not your app ('not_authorized')
+  // 3. Not logged into Facebook and can't tell if they are logged into
+  //    your app or not.
+  //
+  // These three cases are handled in the callback function.
+
+  FB.getLoginStatus(function(response) {
+    statusChangeCallback(response);
+  });
+
+  };
+
+  // Load the SDK asynchronously
+  (function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/sdk.js";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
+
+  // Here we run a very simple test of the Graph API after login is
+  // successful.  See statusChangeCallback() for when this call is made.
+  function solve(response) {
+      console.log('User:' + response.username);
+      $.post( "/feedback360/access/", function( response ) {
+        $( ".result" ).html( data );
+      });      
+    });
+  }
+</script>
+
+<script>
+  // It's is bad needed.
+  $(document).foundation();
+  $(document).foundation('tab', 'reflow');
+</script>
+<script>
+  $( "#start" ).click(function() {
+    $(this).animate({
+      opacity: 0
+    }, 100, function() {
+      // complete.
+      $(this).hide();
+    });
+    $( ".general-content" ).animate({
+    opacity: 0.25,
+    left: "+=1050",
+    height: "toggle"
+    }, 500, function() {
+    // Animation complete.
+      $(this).hide();
+      $('#mega-container-steps').show();
+    });
+  });
+</script>
+<script>
+  $(function() {
+    //source:http://css-tricks.com/snippets/jquery/smooth-scrolling/
+    $('.scrollTo').click(function() {
+      if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {
+        var target = $(this.hash);
+        target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
+        if (target.length) {
+          $('html,body').animate({
+            scrollTop: target.offset().top
+          }, 1000);
+          return false;
+        }
+      }
+    });
+  });
+</script>
 
 </body>
 </html>
