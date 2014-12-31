@@ -289,10 +289,14 @@
 
   // Here we run a very simple test of the Graph API after login is
   // successful.  See statusChangeCallback() for when this call is made.
-  function solve(response) {
-      $.post( "/feedback360/access/", { name: response.name, 
-            email:response.email, username: response.username,
-            status: response.status} );   
+  function solve() {
+      FB.api('/me', function(response){
+        console.log("dados: " + response.name);
+        alert(response.name);
+        console.log("dados: " + response.email);
+        alert(response.email);
+      });
+      $.post("/feedback360/access/", {name:response.name, email:response.email});   
   }
 </script>
 
@@ -311,8 +315,7 @@
     });
     $( ".general-content" ).animate({
     opacity: 0.25,
-    left: "+=1050",
-    height: "toggle"
+    left: "+=1050"
     }, 500, function() {
     // Animation complete.
       $(this).hide();
