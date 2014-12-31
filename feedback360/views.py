@@ -9,7 +9,7 @@ def test_fb(request):
 	return render(request, 'feedback360/test_fb.html')
 
 def access(request):
-
+	username = None
 	if request.method == "POST":
 		username = request.POST['username']
 
