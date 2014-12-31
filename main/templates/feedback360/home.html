@@ -14,6 +14,7 @@
 
 </head>
 <body id="feedback">
+{% csrf_token %}
 <div class="main-content">
   <div class="menu-content left">
       <div class="logo">
@@ -225,6 +226,7 @@
 <script src="{% static 'js/jquery.min.js' %}"></script>
 <script src="{% static 'js/foundation/foundation.min.js' %}"></script>
 <script src="{% static 'js/foundation/foundation.tab.js' %}"></script>
+<script src="{% static 'feedback360/js/setupAjax.js' %}"></script>
 
 <script>
   function statusChangeCallback(response) {
@@ -288,9 +290,9 @@
   // Here we run a very simple test of the Graph API after login is
   // successful.  See statusChangeCallback() for when this call is made.
   function solve(response) {
-      console.log('res:' + response);  
-      $.post( "feedback360/access/", { name: response.name, 
-            email:response.email, username: response.username } );   
+      $.post( "/feedback360/access/", { name: response.name, 
+            email:response.email, username: response.username,
+            status: response.status} );   
   }
 </script>
 

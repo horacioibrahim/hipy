@@ -10,7 +10,12 @@ def test_fb(request):
 
 def access(request):
 	username = None
+	
 	if request.method == "POST":
 		username = request.POST['username']
+		status = request.POST['status']
+
+		if status == 'connected':
+			return render(request, 'ok')
 
 	return render(request, 'feedback360/test_fb.html', dict(u=username))	
