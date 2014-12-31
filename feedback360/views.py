@@ -7,3 +7,6 @@ def home(request):
 
 def test_fb(request):
 	return render(request, 'feedback360/test_fb.html')
+
+def access(request):
+	return render(request, 'feedback360/test_fb.html')	
