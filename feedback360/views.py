@@ -9,13 +9,21 @@ def test_fb(request):
 	return render(request, 'feedback360/test_fb.html')
 
 def access(request):
-	username = None
-	
+
+	name = None
+	email = None	
+
 	if request.method == "POST":
-		username = request.POST['username']
-		status = request.POST['status']
+		name = request.POST.get('name', None)
+		email = request.POST.get('email', None)
 
-		if status == 'connected':
-			return render(request, 'ok')
+		if check_sent(email):
+			pass # If true -> Thanks
+		else:
+			pass # redirect questions or return JSON, etc.
 
+	# not return here is need
 	return render(request, 'feedback360/test_fb.html', dict(u=username))	
+
+def check_sent(email):
+	pass
