@@ -9,4 +9,8 @@ def test_fb(request):
 	return render(request, 'feedback360/test_fb.html')
 
 def access(request):
-	return render(request, 'feedback360/test_fb.html')	
+
+	if request.method == "POST":
+		username = request.POST['username']
+
+	return render(request, 'feedback360/test_fb.html', dict(u=username))	
