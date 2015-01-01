@@ -14,8 +14,19 @@ $real-margin-left-menu-content: 14px;
 $menu-left-font-color: #AAA;
 #feedback {
 	font-family: "open-sans","Helvetica Neue",Helvetica,Arial,sans-serif;
-	.logo {
-
+  .asks {
+    font-weight: bold !important;
+    color: #888888;
+    margin-top: 13px;
+  }
+  .asks .active {
+    margin-top: 12px;
+    box-shadow: 0px 3px 1px #16A085;
+    background: none repeat scroll 0% 0% #40D47E;
+    color: #FFFFFF;
+    font-weight: bold;
+  }
+  .logo {
 		text-align: center;
 		position: relative;
 		width: $width-left-nav;
