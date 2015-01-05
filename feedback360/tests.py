@@ -1,6 +1,5 @@
 from django.test import Client
 from mongoengine.queryset import DoesNotExist
-from mongotesting import MongoTestCase, MongoTestRunner
 
 # APP
 from . import models
