@@ -29,8 +29,7 @@ TEMPLATE_DIRS = (
 )
 
 # Application definition
-
-TEST_RUNNER = 'main.custom_runner.TestRunner'
+# TEST_RUNNER = 'main.custom_runner.TestRunner'
 
 INSTALLED_APPS = (
     'django.contrib.admin',
@@ -41,6 +40,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'mongoengine.django.mongo_auth',
     'blog',
+    'feedback360',
     'disqus',
 )
 

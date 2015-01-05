@@ -14,9 +14,6 @@ from django.utils.translation import ugettext_lazy as _
 from . import slugify
 from .utils import upload_image_handler
 
-# MongoEngine Connect
-connect(settings.MONGO_DATABASE_NAME)
-
 
 class Category(Document):
     """
