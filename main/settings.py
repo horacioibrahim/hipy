@@ -115,4 +115,36 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 
+##########################################
+# FIXME: Email settings for Amazon AWS SES
+##########################################
+AWS_SES_RETURN_PATH = 'your_mail@example.com'
+DEFAULT_FROM_EMAIL = 'Your Name <your_name@example.com>'
+EMAIL_BACKEND = 'django_ses.SESBackend'
+AWS_ACCESS_KEY_ID = 'AWS_ACCESS_KEY_ID'
+AWS_SECRET_ACCESS_KEY = 'AWS_SECRET_ACCESS_KEY'
+DKIM_DOMAIN = 'example.com'
+DKIM_SELECTOR = 'ses'
+DKIM_PRIVATE_KEY = '''
+-----BEGIN RSA PRIVATE KEY-----
+EXAMPLEMIICXQIBAAKBgQCsVGwlaCGBbGbTwx59cCIxsaSPrgeu9AZoC9AZoCvDC
+w143A/SeNmjMcf3TfaTSdNZLUX0O84dOnZdijVDc5qc7Fx1hM27iIfWM9hwFKZC6
+hJgKJIMzRQJBAM97UzjUED6a42hWUSq/GhKN2X3IzZ7FWBQbygAvnopg4wEr3DzE
+gVOMG1gzAh+m28uDm/OG8Yz3CRuL57ONLYONEEXAMPLE
+-----END RSA PRIVATE KEY-----
+'''
+
+# Celery with MongoDB as broker
+CELERY_RESULT_BACKEND = 'mongodb'
+CELERY_MONGODB_BACKEND_SETTINGS = {
+    'host': '127.0.0.1',
+    'port': 27017,
+    'database': 'celery',
+    'taskmeta_collection': 'taskmeta',
+}
+
+# DISQUS SETTINGS
+DISQUS_API_KEY = 'DISQUS_API_KEY'
+DISQUS_WEBSITE_SHORTNAME = 'Example'
+DISQUS_URL = 'http://example.com'
 
