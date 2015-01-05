@@ -31,6 +31,12 @@ TEMPLATE_DIRS = (
 # Application definition
 # TEST_RUNNER = 'main.custom_runner.TestRunner'
 
+MONGO_DATABASES = {
+    'your_DB' : 'your_alias'
+}
+MONGO_PORT = 27017
+MONGO_HOST = 'localhost'
+
 INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.auth',
