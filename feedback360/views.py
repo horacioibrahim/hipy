@@ -23,7 +23,6 @@ def access_control(request):
 
     if request.method == "POST":
         form = forms.AccessControlForm(request.POST)
-        print request.POST
 
         if form.is_valid():
             name = form.cleaned_data['social_name']
