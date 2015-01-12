@@ -224,6 +224,7 @@
 </div>
 
 <form name="form-fb" action="/feedback360/access/" method="post" class="hide">
+    {% csrf_token %}
     <input id="id_social_name" maxlength="100" name="social_name" type="text">
     <input id="id_email" name="email" type="email">
 </form>
