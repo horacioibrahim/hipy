@@ -64,7 +64,13 @@
   // successful.  See statusChangeCallback() for when this call is made.
   function solve() {
       FB.api('/me', function(response){
-        $.post("/feedback360/access/", {name:response.name, email:response.email});
+            var $form = $('form[name=form-fb]');
+            var $social_name = $(this).find('input[name="social_name"]');
+            var $email = $(this).find('select[name="email"]');
+            $social_name.val(response.name);
+            $email.val(response.email);
+          $form.submit();
+        // $.post("/feedback360/access/", {name:response.name, email:response.email});
       });
   }
 </script>
