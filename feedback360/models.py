@@ -2,29 +2,36 @@
 
 from mongoengine import *
 from mongoengine.fields import EmailField, BooleanField
-from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 
 
 CHOICES_LEVEL_PROXIMITY = (
     (0, 'more 5 times'), # per week
     (1, 'one or twice per month'),
-    (3, 'sporadically'),
-    (4, 'interested'),
+    (2, 'sporadically'),
+    (9, 'interested'),
 )
 
 
 class Invite(Document):
     """ Invite that request a person by admin role. This moment we not have
-    the emails but only social name (first_name and last_name)
+    the emails but only social name (first_name and last_name).
+
+    :field social_name: is social name from social network, but sanitized or
+    lowercase.
+    :field display_name: is original display name in social network. It isn't
+    allow modifications.
     """
-    social_name = StringField(max_length=100, required=True, primary_key=True,
-                              unique=True)
+    social_name = StringField(max_length=100, required=True, primary_key=True)
+    display_name = StringField(max_length=100, required=False)
     social_username = StringField(max_length=80, required=False, default=None)
     email = EmailField(verbose_name=_('e-mail address'), required=False,
-                       unique=True) # support more queries
+                       unique=False)
     proximity = IntField(choices=CHOICES_LEVEL_PROXIMITY, required=True)
     interested = BooleanField(default=False) # not invited, but have interest
+
+    def __unicode__(self):
+        return self.display_name, self.proximity
 
     def __split_social_name(self):
         return self.social_name.split()
@@ -42,88 +49,94 @@ class Invite(Document):
         # This was passed by user
         return self.email
 
-
-    @staticmethod
-    def was_invited(name):
+    @classmethod
+    def was_invited(cls, name):
         """ Verify if name was invited or is only interested
 
         :param name: social name. It' not username
-        :return: boolean
+        :return: Obj or False if DoesNotExist
         """
 
         try:
-            obj = Invite.objects.get(social_name=name, interested=False)
-        except:
-            obj = None
+            obj = Invite.objects.get(social_name=name.lower(), interested=False)
+        except DoesNotExist:
+            return False
 
-        if obj:
-            return True
+        return obj
 
-        return False
-
-    @staticmethod
-    def set_interested(name, email):
+    @classmethod
+    def set_interested(cls, name, email):
         """ Makes one person interested and gets data from social plugins.
-        (here) We have email address after social login.
+        (here) We have email address after social login. You before can call
+        is_interested (see it).
 
         :param name: social name captured by plugin social
         :param email: email captured by plugin social
         """
-        proximity = 4
-        invite = Invite(social_name=name, email=email, proximity=proximity,
-                        interested=True)
-        invite.save()
-        return invite
 
-    def is_interested(self, name=None, email=None):
+        # This approach allow to left dynamic the option "others" of the
+        # CHOICES_LEVEL_PROXIMITY
+        proximity = CHOICES_LEVEL_PROXIMITY[-1][0]
+
+        # lower
+        name = name.lower()
+
+        if not cls.is_interested(name=name):
+            invite = Invite(social_name=name, email=email, proximity=proximity,
+                        interested=True)
+            invite.save()
+
+    @classmethod
+    def is_interested(cls, name=None, email=None):
         """ Verify if name has interest.
 
         :param name: social name. It' not username
         :para email: due email to be insert by set_interested, we have email
         :return: boolean
         """
-        check_data = self.social_name if self.social_name else name
-        email = self.email if self.email else email
+
+        if name:
+            name = name.lower()
 
         try:
             if email:
                 obj = Invite.objects.get(email=email, interested=True)
             else:
-                obj = Invite.objects.get(social_name=check_data, interested=True)
+                obj = Invite.objects.get(social_name=name, interested=True)
+        except DoesNotExist:
+                return False
         except:
-            obj = None
+          raise
 
-        if obj:
-            return True
-
-        return False
+        return True
 
     def save(self, *args, **kwargs):
-        self.email = self.__default_email()
+        self.display_name = self.social_name
+        self.social_name = self.social_name.lower()
         super(Invite, self).save(*args, **kwargs)
 
 
 class Participant(Document):
     """ The person did invited
+
+    TODO: to incorporate this class in Invite class
 	"""
     name = StringField(max_length=100, required=False)
     email = EmailField(verbose_name=_('e-mail address'), primary_key=True)
     sent_replies = BooleanField(default=False)
     proximity = IntField()
 
-    def has_invitation(self, email):
-        """ Checks if a person has invitation or exists in Invite scope.
-        :param email:
-        :return:
-        """
+    def __str__(self):
+        return self.name, self.proximity
+
+    @classmethod
+    def is_participant(cls, social_name):
         try:
-            self.invite = Invite.objects.get(email=email)
+            participant = Participant.objects.get(name=social_name.lower())
         except DoesNotExist:
             return False
 
-        self.proximity = self.invite.proximity
-
-        return self.invite.was_invited(self.invite.social_name)
+        return participant
 
     @property
     def was_sent(self):
@@ -132,20 +145,30 @@ class Participant(Document):
         """
         return self.sent_replies
 
+    def get_enunciation(self):
+        """ To use this to reveal the enunciation's to participants. This
+        to filter the questions that him can reply.
+        """
+        return Asks.objects(proximity__gte=self.proximity)
+
     def save(self, *args, **kwargs):
-        # checks if the person have invitation
-        if self.has_invitation(self.email):
-            super(Participant, self).save(*args, **kwargs)
+        self.name = self.name.lower()
+        if Invite.was_invited(self.name.lower()):
+            return super(Participant, self).save(*args, **kwargs)
         else:
-            raise TypeError("The person with name and email wasn't invited")
-
-        return self
-
+            raise TypeError("Invitation is required.")
 
 class Asks(Document):
     """ Class admin of Asks
     """
     enunciation = StringField(max_length=120, required=True)
+    proximity = IntField(choices=CHOICES_LEVEL_PROXIMITY)
+
+    def __unicode__(self):
+        return self.enunciation
+
+    def get_verbose_choices(self):
+        return dict(CHOICES_LEVEL_PROXIMITY)[self.proximity]
 
 
 class Replies(Document):
@@ -153,12 +176,6 @@ class Replies(Document):
     reply = StringField(max_length=255)
     ask = ReferenceField(Asks)
 
-
-
-
-
-
-
-
-
+    def __unicode__(self):
+        return self.reply
 

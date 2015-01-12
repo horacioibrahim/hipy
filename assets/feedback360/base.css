@@ -177,4 +177,31 @@
       position: relative;
       margin-left: 20px; }
 
+/*
+  Internal attribute of app
+*/
+header {
+  height: 60px;
+  background-color: #1D1E19;
+  margin-bottom: 2rem; }
+  header .logo {
+    position: relative;
+    padding-left: 30px;
+    padding-top: 7px; }
+    header .logo img {
+      width: 110px; }
+
+.application .invite {
+  padding: 15px 15px 6px 15px;
+  background-color: #F1F1F1;
+  min-height: 290px; }
+  .application .invite button {
+    margin-top: 82px; }
+.application .big-plus {
+  font-size: 44px; }
+.application .asks .button {
+  margin-top: 12px;
+  font-size: 24px;
+  padding: 0px; }
+
 /*# sourceMappingURL=base.css.map */

@@ -1,0 +1,42 @@
+{% extends 'feedback360/base.html' %}
+{% load staticfiles %}
+
+{% block content %}
+    <div class="application">
+        <h1>Adicione os "stakeholders"</h1>
+        <p class="lead">
+        Remova as pessoas cadastradas. Informe somente o social_name que é o nome
+        utilizado por um usuário na rede social onde podemos fazer citações.
+        </p>
+    <!-- Form to add invite -->
+        <ul id="container-invite-form" class="small-block-grid-1 medium-block-grid-3 large-block-grid-3">
+        <li class="invite-box active">
+            <div class="invite active clearfix">
+                <form class="del-form" action=".">
+                    {{ form.as_p }}
+                    <small>Proximity is optional</small>
+                    <input type="submit" class="button alert tiny radius right" value="Remover">
+                </form>
+            </div>
+        </li>
+        <li class="invite-box">
+            <div class="invite text-center">
+                <button class="button-content-invite radius secondary">
+                    <i class="big-plus fa fa-minus-circle"></i>
+                </button>
+            </div>
+        </li>
+      </ul>
+    </div>
+     <div id="invite-form-content" class="hide">
+        <form class="del-form" action=".">
+            {{ form.as_p }}
+            <small>Proximity is optional</small>
+            <input type="submit" class="button tiny radius right alert" value="Remover">
+        </form>
+    </div>
+{% endblock %}
+
+
+
+

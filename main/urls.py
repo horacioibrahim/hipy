@@ -26,11 +26,8 @@ urlpatterns = patterns('',
 
     # Apps
     # Feedback 360
-    url(r'^feedback360/$', 'feedback360.views.home', name='feedback360_home'),
-    url(r'^feedback360/home/$', 'feedback360.views.home', name='feedback360_home'),
-    url(r'^feedback360/access/$', 'feedback360.views.access', name='access'),
-    url(r'^feedback360/remove/$', 'feedback360.views.remove', name='remove'),
-    url(r'^feedback360/test_fb/$', 'feedback360.views.test_fb', name='test_fb'),
+    url(r'^feedback360/', include('feedback360.urls')),
+
     # cleanup rule
     url(r'^(?P<category_anchor>\w+)/$', 'blog.views.category_posts', name='category_posts'),
 

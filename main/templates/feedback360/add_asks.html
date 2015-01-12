@@ -1,0 +1,41 @@
+{% extends 'feedback360/base.html' %}
+{% load staticfiles %}
+
+{% block content %}
+    <div class="application">
+        <h1>Adicionar perguntas</h1>
+        <p class="lead">
+        Adicione as perguntas aos convidados. É possível
+        filtrar as questões por proximidade. <br>
+        <span class="subheader">Exemplo: Quando proximity for 2 todos poderão
+            responder/ver a questão, quando 1 os convidados maior do que 1
+            não podem ver/responder e quando 0 somente 0. (permitido >= proximity)
+        </span>
+        </p>
+    <!-- Form to add invite -->
+        <div class="form-content">
+            <form action="/feedback360/asks/add/" method="post">
+                {% csrf_token %}
+                {{ form.as_p  }}
+                <button class="button radius right">
+                    Salvar
+                </button>
+            </form>
+        </div>
+
+        <table class="asks">
+            {% for ask in asks %}
+            <tr>
+                <td>{{ ask.enunciation }}</td>
+                <td>applied to: {{ ask.get_verbose_choices }} ({{ ask.proximity }})</td>
+                <td><a href="/feedback360/asks/del/{{ ask.pk }}" class="button tiny round secondary">
+                    <i class="fa fa-times-circle"></i></a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+
+    </div>
+{% endblock %}
+
+

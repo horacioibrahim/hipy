@@ -1,0 +1,45 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+<title>Feedback360º - {{ title }}</title>
+{% load staticfiles %}
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="google-site-verification" content="mpQT2e2CzE40Mag3lvahke8vfeN3h02M3UjZJrvSiHE" />
+<link rel="stylesheet" href="{% static 'css/app.css' %}" />
+<link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}"/>
+<link rel="stylesheet" href="{% static 'feedback360/base.css' %}" />
+<script src="{% static 'js/modernizr.js' %}"></script>
+
+</head>
+<body id="{{ id_page }}">
+<header>
+    <div class="logo">
+        <img src="{% static 'feedback360/img/feedback_180x52.png' %}"/>
+    </div>
+</header>
+<div class="main-content">
+  <div class="row">
+      <div class="small-12 large-12 columns">
+         {% block content %}
+         {% endblock %}
+      </div>
+  </div>
+</div>
+
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="{% static 'js/foundation/foundation.min.js' %}"></script>
+<script src="{% static 'js/foundation/foundation.tab.js' %}"></script>
+<script src="{% static 'feedback360/js/app_feed.js' %}"></script>
+
+{% include 'feedback360/facebook_snippet.html' %}
+
+<script>
+  // It's is bad needed.
+  $(document).foundation();
+  $(document).foundation('tab', 'reflow');
+</script>
+
+</body>
+</html>
