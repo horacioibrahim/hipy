@@ -50,6 +50,7 @@ def access_control(request):
 
                 return redirect(reverse('replies'))
             else:
+
                 # turn on an interested
                 models.Invite.set_interested(name, email)
                 # redirect thanks for interested
