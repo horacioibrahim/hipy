@@ -55,11 +55,8 @@ def access_control(request):
                 models.Invite.set_interested(name, email)
                 # redirect thanks for interested
                 return thanks_for_interest(request)
-    else:
-        redirect(reverse('feedback360_home'))
 
-    # not return here is need
-    return render(request, 'feedback360/test_fb.html', dict(u=name))
+    return redirect(reverse('feedback360_home'))
 
 def replies(request):
     form = None
