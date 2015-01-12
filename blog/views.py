@@ -26,7 +26,13 @@ from tasks.tasks import task_send_simple_email
 
 # Setup to connect server.
 # workaround MongoEngine and use pymongo (directly)
-db_name = '%s' % (settings.MONGO_DATABASE_NAME)
+db_name = None
+def set_db_name():
+    global db_name
+    for db_name_value, db_alias in settings.MONGO_DATABASES.items():
+        db_name = db_name_value
+        break # once time
+set_db_name()
 connection_string = "mongodb://localhost"
 connection = pymongo.MongoClient(connection_string)
 database = connection[db_name]
@@ -115,6 +121,7 @@ def follower(request):
     Return True in case success rather False.
     """
     response = False
+    new_u = None
     if request.method == "POST":
         categories = request.POST.getlist('categories', None)
         if not categories:
@@ -203,6 +210,7 @@ def post_add(request):
     The hub of posts types. "Flat is better than nested."
     """
     form = None
+    categories = None
     posts = models.Post.objects().order_by('-update_at') # unlimited for instance
 
     if request.method == 'POST':
@@ -242,9 +250,9 @@ def post_image(request, posts=None):
 
     if form.is_valid():
         # Save image in MEDIA_ROOT and PATH in model
-        post_image = models.ImagePost()
-        post_image.title = form.cleaned_data['title']
-        post_image.create(request.FILES['image'])
+        post_img = models.ImagePost()
+        post_img.title = form.cleaned_data['title']
+        post_img.create(request.FILES['image'])
     else:
         raise TypeError(form.errors)
 

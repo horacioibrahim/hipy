@@ -49,11 +49,12 @@ class User(mongoUser):
     avatar = StringField()
     signature = StringField()
 
-    def put_avatar(self, file):
+
+    def put_avatar(self, file_img):
         """
         Put image file in a path, rather in database
         """
-        self.avatar = upload_image_handler(file)
+        self.avatar = upload_image_handler(file_img)
 
     def make_token(self):
         self.token = default_token_generator.make_token(self)
@@ -68,7 +69,6 @@ class User(mongoUser):
         """
         Defines an username based in preexistent id or a random ObjectId
         """
-        username = None
 
         if self.id:
             username = str(self.id)[5:9] + str(self.id)[-4:]
@@ -184,10 +184,10 @@ class TextPost(Post):
     cover = StringField(required=False)  # This is a relative path to MEDIA_URL/cover
     content = StringField() # Body post with html tags
 
-    def create(self, file=None):
+    def create(self, file_img=None):
         # is possible to make a post without cover/image
         if file is not None:
-            self.cover = upload_image_handler(file)
+            self.cover = upload_image_handler(file_img)
         self.save()
 
 
@@ -198,11 +198,11 @@ class ImagePost(Post):
     """
     image_url_relative = StringField()
 
-    def create(self, file):
+    def create(self, file_img):
         """
         Put image file in a path, rather in database
         """
-        self.image_url_relative = upload_image_handler(file)
+        self.image_url_relative = upload_image_handler(file_img)
         self.save()
 
 
