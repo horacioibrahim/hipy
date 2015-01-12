@@ -17,6 +17,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
+DEBUG_PROPAGATE_EXCEPTIONS = True
 
 TEMPLATE_DEBUG = False
 
@@ -29,7 +30,7 @@ TEMPLATE_DIRS = (
 )
 
 # Application definition
-# TEST_RUNNER = 'main.custom_runner.TestRunner'
+TEST_RUNNER = 'main.custom_runner.MongoTestRunner'
 
 MONGO_DATABASES = {
     'your_DB' : 'your_alias'
