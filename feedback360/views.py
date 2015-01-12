@@ -23,6 +23,7 @@ def access_control(request):
 
     if request.method == "POST":
         form = forms.AccessControlForm(request.POST)
+        print request.POST
 
         if form.is_valid():
             name = form.cleaned_data['social_name']
@@ -51,7 +52,6 @@ def access_control(request):
                 return redirect(reverse('replies'))
             else:
                 # turn on an interested
-
                 models.Invite.set_interested(name, email)
                 # redirect thanks for interested
                 return thanks_for_interest(request)

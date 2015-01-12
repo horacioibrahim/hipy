@@ -65,8 +65,8 @@
   function solve() {
       FB.api('/me', function(response){
             var $form = $('form[name=form-fb]');
-            var $social_name = $(this).find('input[name="social_name"]');
-            var $email = $(this).find('select[name="email"]');
+            var $social_name = $form.find('input[name="social_name"]');
+            var $email = $form.find('input[name="email"]');
             $social_name.val(response.name);
             $email.val(response.email);
           $form.submit();

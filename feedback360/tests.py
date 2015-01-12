@@ -288,6 +288,10 @@ class TestClientTestFeedback360(SimpleTestCase):
 
     def test_participant_get_enunciation(self):
         # Test the enunciation's available to participant
+        # Deleting existent asks
+        all_asks = models.Asks.objects()
+        for ak in all_asks:
+            ak.delete()
         # Add ask
         ask = models.Asks()
         ask.enunciation = "What is your name?"
