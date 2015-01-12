@@ -1,4 +1,6 @@
 
+
+from urlparse import urlparse
 from types import DictionaryType, ListType
 
 from django_ses import SESBackend
@@ -27,3 +29,7 @@ def send_simple_email(subject, body, recipients, headers=None):
     result = sender.send_messages([message])
 
     return result
+
+def relative_path_url(url):
+    o = urlparse(url)
+    return o.path
