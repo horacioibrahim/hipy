@@ -59,6 +59,12 @@ function deactivateAsks() {
   $('.asks').removeClass('active');
 }
 
+// close parent
+$('.application').on('click', '.close', function(event) {
+   event.preventDefault();
+   $(this).parent().fadeOut("slow");
+});
+
 // create new snippet form (copy/paste the form in grid)
 $('.application').on('click', '.button-content-invite', function() {
     var $formContent = $('#invite-form-content').html();
@@ -81,6 +87,19 @@ $('.application').on('click', '.button-content-invite', function() {
     // "creates" form copy/paste content
     $parent.html('');
     $parent.html($formContent);
+});
+
+// catch submit form replies
+$('#form-replies button').click(function(event) {
+    event.preventDefault();
+
+    if (confirm('Ao confirmar, as respostas serão submetidas e não podem ser ' +
+        'alteradas. Deseja enviar as respostas agora? ')) {
+        $(this).parent().submit();
+    } else {
+        // do nothing!
+    }
+
 });
 
 // catch submit() 'form snippet' add

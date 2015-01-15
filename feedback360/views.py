@@ -2,12 +2,15 @@
 
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse
+from django.utils.translation import ugettext_lazy as _
 from mongoengine import DoesNotExist, NotUniqueError
 
 #app
 from . import models, forms
+from main.utils import FacebookAPIRequests
 
 def home(request):
     return render(request, 'feedback360/home.html')
@@ -25,8 +28,11 @@ def access_control(request):
         form = forms.AccessControlForm(request.POST)
 
         if form.is_valid():
-            name = form.cleaned_data['social_name']
-            email = form.cleaned_data['email']
+            access_token = form.cleaned_data['access_token']
+            fb = FacebookAPIRequests()
+            user_profile = fb.get_user_public_info(access_token)
+            name = user_profile['name']
+            email = user_profile['email']
             invitation = models.Invite.was_invited(name)
 
             if invitation:
@@ -48,7 +54,8 @@ def access_control(request):
                     participant.proximity = invitation.proximity
                     participant.save()
 
-                return redirect(reverse('replies'))
+                return replies(request, name)
+
             else:
 
                 # turn on an interested
@@ -58,23 +65,59 @@ def access_control(request):
 
     return redirect(reverse('feedback360_home'))
 
-def replies(request):
+def replies(request, social_name=None):
     form = None
+    empty = None
     Participant = models.Participant
 
-    if Participant.is_participant('test'):
-        pass
+    if not social_name:
+        social_name = request.POST['social_name']
 
-    if request.method == "POST":
-        form = forms.RepliesForm(request.POST)
-        if form.is_valid():
-            form.save()
+    participant = Participant.is_participant(social_name)
+    asks_permitted = participant.get_enunciation()
+    asks_ids_permitted = [str(ask.pk) for ask in asks_permitted]
 
-    else:
-        form = forms.RepliesForm()
+    if not participant:
+        return redirect(reverse('feedback360_home'))
+
+    if request.path_info == reverse('replies'):
+        if request.method == "POST":
+            replies_fields =  dict(request.POST.iterlists())
+            replies_sent = replies_fields['reply']
+
+            if filter(None, replies_sent):
+                asks_pk = replies_fields.get('ask_pk', None)
+                proximity_list = replies_fields.get('proximity', None)
+                replies_for_bulk = []
+
+                for index, r in enumerate(replies_sent):
+                    if r:
+                        # Checks if ask is permitted
+                        if asks_pk[index] in asks_ids_permitted:
+                            doc = models.Replies(**{'ask': asks_pk[index],
+                                'proximity': proximity_list[index],
+                                'reply': replies_sent[index]})
+                            replies_for_bulk.append(doc)
+                        else:
+                            raise TypeError("This question is not "
+                                            "applicable for you.")
+
+                resp = models.Replies.objects.insert(replies_for_bulk)
+                participant.sent_replies = True
+                participant.save()
+                return thanks_for_replies(request)
+
+            else:
+                empty = _(u'Responda ao menos uma pergunta para enviar ou '
+                          'clique em responder mais tarde.')
+                messages.error(request, empty)
+
+        else:
+            form = forms.RepliesForm()
 
 
-    return render(request, 'feedback360/replies.html', dict(form=form))
+    return render(request, 'feedback360/replies.html',
+                  dict(form=form, participant=participant, empty=empty))
 
 def thanks_for_interest(request):
     return render(request, 'feedback360/thanks_for_interest.html')

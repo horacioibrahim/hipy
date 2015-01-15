@@ -63,6 +63,10 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'django.contrib.messages.context_processors.messages',
+)
+
 SESSION_ENGINE = 'mongoengine.django.sessions'
 
 # SESSION_SERIALIZER (1.5.3+) is required in Django 1.6 as the default serializer is based around JSON and

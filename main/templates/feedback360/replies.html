@@ -3,7 +3,39 @@
 
 {% block content %}
 <!-- Form to add invite -->
-    {{ form.as_p }}
+    <h1>Respostas</h1>
+    <p class="lead">
+    Você e dezenas de pessoas contribuem, agora, para o nosso desenvolvimento
+    e de outras centenas de pessoas pela colaboração simplesmente doando seu tempo!
+    </p>
+    {% if messages %}
+    <div data-alert class="alert-box alert radius">
+        {% for message in messages %}
+           {{ message }}<br>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="panel callout radius">
+        <p>Suas respostas não são associadas a você. Por isso, esse formulário
+        somente pode ser respondido uma vez. Tudo ou nada!
+        (<a href="https://github.com/horacioibrahim/hipy/blob/master/feedback360/models.py#L174-L181" target="_blank">código-fonte
+         </a>)
+        </p>
+    </div>
+    {% endif %}
+    <form id="form-replies" action="/feedback360/replies/" method="post">
+    {% csrf_token %}
+    {% for ask in participant.get_enunciation %}
+        <label for="id_reply">{{ ask }}</label>
+        <textarea cols="40" id="id_reply" name="reply" rows="10"></textarea>
+        <input type="hidden" name="ask_pk" value="{{ ask.pk }}" />
+        <input type="hidden" name="social_name" value="{{ participant.name }}" />
+        <input type="hidden" name="proximity" value="{{ participant.proximity }}" />
+    {% endfor %}
+    <a href="/" class="button secondary radius">Responder mais tarde...</a>
+    <button class="button radius">Enviar</button>
+    </form>
+
 {% endblock %}
 
 

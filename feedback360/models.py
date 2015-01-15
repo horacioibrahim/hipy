@@ -54,7 +54,7 @@ class Invite(Document):
         """ Verify if name was invited or is only interested
 
         :param name: social name. It' not username
-        :return: Obj or False if DoesNotExist
+        :return: Obj or False if DoesNotExist (or not matching w/ criteria).
         """
 
         try:
@@ -111,7 +111,8 @@ class Invite(Document):
         return True
 
     def save(self, *args, **kwargs):
-        self.display_name = self.social_name
+        if not self.display_name:
+            self.display_name = self.social_name
         self.social_name = self.social_name.lower()
         super(Invite, self).save(*args, **kwargs)
 
@@ -121,13 +122,14 @@ class Participant(Document):
 
     TODO: to incorporate this class in Invite class
 	"""
-    name = StringField(max_length=100, required=False)
+    name = StringField(max_length=100, required=True)
     email = EmailField(verbose_name=_('e-mail address'), primary_key=True)
     sent_replies = BooleanField(default=False)
     proximity = IntField()
 
-    def __str__(self):
-        return self.name, self.proximity
+    def __unicode__(self):
+        return "{name}:{proximity}".format(name=self.name,
+                                           proximity=self.proximity)
 
     @classmethod
     def is_participant(cls, social_name):
@@ -161,8 +163,8 @@ class Participant(Document):
 class Asks(Document):
     """ Class admin of Asks
     """
-    enunciation = StringField(max_length=120, required=True)
-    proximity = IntField(choices=CHOICES_LEVEL_PROXIMITY)
+    enunciation = StringField(max_length=255, required=True)
+    proximity = IntField(choices=CHOICES_LEVEL_PROXIMITY, default=2)
 
     def __unicode__(self):
         return self.enunciation
@@ -175,6 +177,8 @@ class Replies(Document):
     proximity = IntField(choices=CHOICES_LEVEL_PROXIMITY)
     reply = StringField(max_length=255)
     ask = ReferenceField(Asks)
+    token_approved = StringField(max_length=255) # TODO to approve
+    is_approved = BooleanField(default=False)
 
     def __unicode__(self):
         return self.reply

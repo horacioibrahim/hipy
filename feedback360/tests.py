@@ -1,12 +1,16 @@
 # -*- coding: utf-8 -*-
+
+import os
 from django.test import Client, RequestFactory, SimpleTestCase
+from django.contrib.messages.storage.fallback import FallbackStorage
 from django.contrib.auth.models import AnonymousUser
 from mongoengine.queryset import DoesNotExist
+from bson import ObjectId
 
 # APP
 from blog import models as blog_models
 from . import models, views, forms
-from main.utils import relative_path_url
+from main.utils import relative_path_url, FacebookAPIRequests
 
 
 PROXIMITY =  models.CHOICES_LEVEL_PROXIMITY[-1][0] # more dynamic
@@ -85,6 +89,11 @@ class TestClientTestFeedback360(SimpleTestCase):
     def setUp(self):
         self.factory = RequestFactory()
         self.c = Client()
+        self.token = os.environ.get('TEMPTOKEN')
+        fb = FacebookAPIRequests()
+        user_public_info = fb.get_user_public_info(self.token)
+        self.name = user_public_info['name']
+        self.email = user_public_info['email']
 
         # get or create superuser
         try:
@@ -119,7 +128,7 @@ class TestClientTestFeedback360(SimpleTestCase):
     def test_access_control(self):
         # test if open thanks template...
         response = self.c.post("/feedback360/access/",
-                    data={'social_name':'Gilson Filho', 'email':'gbo@gm.com'})
+                    data={'access_token': self.token})
 
         template_name = response.templates[0].name
         self.assertEqual(response.status_code, 200)
@@ -127,45 +136,40 @@ class TestClientTestFeedback360(SimpleTestCase):
 
     def test_access_control_invited(self):
         # test if access control to invited
-        social_name = 'Gilson Filho'
-        email = 'gbo@gm.com'
+        social_name = self.name
+        email = self.email
         proximity = 2
-        # change invite ... created in backward test_
+        # change invite ... created in previous test_
         invite = models.Invite.objects.get(social_name=social_name.lower())
         invite.interested = False
         invite.save() # invitation created
         #
         response = self.c.post("/feedback360/access/",
-                    data={'social_name': social_name, 'email': email})
-
-        #template_name = response.templates[0].name # redirect effects
-        relative_path = relative_path_url(response.url)
-        participant = models.Participant.objects.get(email=email)
-        self.assertEqual(response.status_code, 302)
-        self.assertEqual('/feedback360/replies/', relative_path)
-        #self.assertEqual(template_name, 'feedback360/replies.html')
-        self.assertIsInstance(participant, models.Participant)
+                                data={'access_token': self.token})
+        template_name = response.templates[0].name
+        self.assertEqual(template_name, 'feedback360/replies.html')
+        self.assertEqual(200, response.status_code)
 
     def test_access_control_invited_participant_replies_False(self):
-        social_name = 'Gilson Filho'
-        email = 'gbo@gm.com'
+        social_name = self.name
+        email = self.email
         response = self.c.post("/feedback360/access/",
-                    data={'social_name': social_name, 'email': email})
+                    data={'access_token': self.token})
 
-        relative_path = relative_path_url(response.url)
         participant = models.Participant.objects.get(email=email)
-        self.assertEqual('/feedback360/replies/', relative_path)
         self.assertIsInstance(participant, models.Participant)
-        self.assertEqual(response.status_code, 302)
+        template_name = response.templates[0].name
+        self.assertEqual(template_name, 'feedback360/replies.html')
+        self.assertEqual(200, response.status_code)
 
     def test_access_control_invited_participant_replies_True(self):
-        social_name = 'Gilson Filho'
-        email = 'gbo@gm.com'
+        social_name = self.name
+        email = self.email
         participant = models.Participant.objects.get(email=email)
         participant.sent_replies = True
         participant.save()
         response = self.c.post("/feedback360/access/",
-                    data={'social_name': social_name, 'email': email})
+                                data={'access_token': self.token})
 
         relative_path = relative_path_url(response.url)
         participant = models.Participant.objects.get(email=email)
@@ -318,6 +322,156 @@ class TestClientTestFeedback360(SimpleTestCase):
         participant.proximity = 0
         self.assertEqual(2, len(participant.get_enunciation()))
 
+class TestReplies(SimpleTestCase):
+
+    def setUp(self):
+        self.c = Client()
+        invites = (('Steve Jobs', 0, 'st@jobs.co'),
+                   ('Ayrton Senna', 0, 'as@as.co'),
+                   ('Flavio Augusto', 1, 'fa@fa.co'),
+                   ('Ana Thomaz', 1, 'at@at.co'),
+                    ('Murilo Gun', 2, 'mg@mg.co'),
+                    ('Steve Woz', 2, 'sw@sw.co'))
+        asks = (
+                ('Why to build projects?', 2),
+                ('How him sees the world?', 0),
+                ('Are you worked with him?', 1),
+        )
+        self.invites = invites
+        # creates invites for each proximity
+        for social_name, proximity, email in invites:
+            invite = models.Invite(social_name=social_name,
+                                                proximity=proximity)
+            invite.save()
+            # creates participant
+            p = models.Participant(name=social_name,
+                                   proximity=proximity, email=email)
+            p.save()
+
+        # creates asks with filters for each proximity
+        self.asks_ids = []
+        for enunciation, proximity in asks:
+            ask = models.Asks(enunciation=enunciation, proximity=proximity)
+            ask.save()
+            self.asks_ids.append(ask.pk)
+
+    def tearDown(self):
+        invites = models.Invite.objects()
+        participants = models.Participant.objects()
+        asks = models.Asks.objects()
+        for iv in invites:
+            iv.delete()
+        for ask in asks:
+            ask.delete()
+        for participant in participants:
+            participant.delete()
+
+    def test_replies_empty(self):
+        # test post without replies
+        response = self.c.post('/feedback360/replies/', data={'reply': '',
+                            'ask_pk': '', 'proximity': '',
+                            'social_name': 'Steve Jobs'})
+
+        error_message = response.context['messages']
+        self.assertEqual(response.status_code, 200)
+        self.assertIsInstance(error_message, FallbackStorage) # TODO: if error
+
+    def test_replies_once(self):
+        # test post with once reply
+        social_name = self.invites[0][0]
+        proximity = self.invites[0][1]
+        # SETUP to local
+        # clean replies
+        replies = models.Replies.objects()
+        for reply in replies:
+            reply.delete()
+        # POST
+        response = self.c.post('/feedback360/replies/',
+                            data={'reply': 'Yeah, good and useful projects.',
+                            'ask_pk': self.asks_ids[0], 'proximity': proximity,
+                            'social_name': social_name})
+        replies = models.Replies.objects()
+        participant = models.Participant.is_participant(social_name)
+        self.assertEqual(200, response.status_code)
+        self.assertEqual(1, len(replies))
+        self.assertEqual(self.asks_ids[0], ObjectId(replies[0].ask.id))
+        self.assertEqual(proximity, replies[0].proximity)
+        self.assertTrue(participant.sent_replies)
+        self.assertEqual(response.templates[0].name,
+                                'feedback360/thanks_for_replies.html')
+
+    def test_replies_not_permitted(self):
+        # Test if ask with filtered proximity
+        # SETUP local
+        # clean replies
+        replies = models.Replies.objects()
+        for reply in replies:
+            reply.delete()
+        # get user with proximty 2
+        for name, proximity, email in self.invites:
+            if proximity == 2:
+                break
+        # POST
+        #response = self.c.post()
+        self.assertRaises(TypeError, self.c.post,'/feedback360/replies/',
+                            data={'reply': ['One reply', 'Two reply',
+                            'Three reply'],
+                            'ask_pk': [self.asks_ids[0],
+                            self.asks_ids[1], self.asks_ids[2]] ,
+                            'proximity': [proximity, proximity, proximity],
+                            'social_name': [name, name, name]})
+
+    def test_replies_permitted(self):
+        # Test replies to all asks permitted
+        # SETUP local
+        # clean replies
+        replies = models.Replies.objects()
+        for reply in replies:
+            reply.delete()
+        # get user with proximty 2
+        for name, proximity, email in self.invites:
+            if proximity == 2:
+                break
+        # get asks permitted
+        asks = models.Asks.objects(proximity=proximity)
+        ask_list_replies = []
+        proximity_list_replies = []
+        social_name_list_replies = []
+        replies_list = []
+        for counter, ask in enumerate(asks):
+            replies_list.append("My reply %s " % counter)
+            ask_list_replies.append(str(ask.pk))
+            proximity_list_replies.append(proximity)
+            social_name_list_replies.append(name)
+        # POST
+        response = self.c.post('/feedback360/replies/',
+                            data={'reply': replies_list,
+                            'ask_pk': ask_list_replies,
+                            'proximity': proximity_list_replies,
+                            'social_name': social_name_list_replies})
+        replies = models.Replies.objects()
+        self.assertEqual(200, response.status_code)
+        self.assertEqual(len(asks), len(replies))
 
 
+class TestFacebookAPIRequests(SimpleTestCase):
 
+    def setUp(self):
+        self.token = os.environ.get("TEMPTOKEN")
+        if not self.token:
+            raise TypeError("You need to configurate environ variable.")
+
+    def test_debug_token(self):
+        fb = FacebookAPIRequests()
+        res = fb.debug_token(self.token)
+        self.assertIn('app_id', res['data'])
+
+    def test_check_app_id(self):
+        fb = FacebookAPIRequests()
+        self.assertTrue(fb.check_app_id(self.token))
+
+    def test_get_user_public_info(self):
+        fb = FacebookAPIRequests()
+        res = fb.get_user_public_info(self.token)
+        self.assertIn('name', res)
+        self.assertIn('email', res)

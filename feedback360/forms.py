@@ -14,8 +14,7 @@ class InviteForm(DocumentForm):
 
 
 class AccessControlForm(forms.Form):
-    social_name = forms.CharField(max_length=100)
-    email = forms.EmailField()
+    access_token = forms.CharField()
 
 
 class InviteDelForm(forms.Form):
@@ -39,7 +38,4 @@ class RepliesForm(DocumentForm):
 
     class Meta:
         model = models.Replies
-        fields = ['reply']
-
-
-
+        fields = ['reply', 'ask', 'proximity']

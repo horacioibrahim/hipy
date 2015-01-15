@@ -8,7 +8,7 @@ urlpatterns = patterns('feedback360.views',
     url(r'^remove/$', 'remove_from_facebook', name='remove_from_facebook'),
     url(r'^invitation/add/$', 'add_invite', name='add_invite'),
     url(r'^invitation/del/$', 'del_invite', name='del_invite'),
-    url(r'^replies/$', 'replies', name='replies'), #TODO user authed
+    url(r'^replies/$', 'replies', name='replies'),
     url(r'^replies/thanks/$', 'thanks_for_replies',
                                             name='thanks_replies'),
     url(r'^asks/add/$', 'add_ask', name='add_ask'),
