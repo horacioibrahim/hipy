@@ -14,7 +14,7 @@ class InviteForm(DocumentForm):
 
 
 class AccessControlForm(forms.Form):
-    access_token = forms.CharField()
+    access_token = forms.CharField(max_length=255)
 
 
 class InviteDelForm(forms.Form):

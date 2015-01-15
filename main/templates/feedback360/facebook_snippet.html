@@ -63,10 +63,10 @@
   // Here we run a very simple test of the Graph API after login is
   // successful.  See statusChangeCallback() for when this call is made.
   function solve(response) {
-      var $access_token = response.authResponse.accessToken;
+      var $accessToken = response.authResponse.accessToken;
       var $form = $('form[name=form-fb]');
       var $access_token = $form.find('input[name="access_token"]');
-      $access_token.val($access_token);
+      $access_token.val($accessToken);
       $form.submit();
 
   }
