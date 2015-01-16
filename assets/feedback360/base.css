@@ -128,8 +128,7 @@
   #feedback .main-content .general-content-shadow {
     display: none;
     margin-top: 120px;
-    position: absolute;
-    left: 220px; }
+    position: relative; }
     #feedback .main-content .general-content-shadow .wrapper-steps {
       text-align: left; }
     #feedback .main-content .general-content-shadow .container-steps {

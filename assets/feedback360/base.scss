@@ -171,8 +171,8 @@ $menu-left-font-color: #AAA;
 		.general-content-shadow {
 			display: none;
 			margin-top: 120px;
-			position: absolute;
-			left: $width-left-nav;
+			position: relative;
+			// left: $width-left-nav;
 			.wrapper-steps {
 				text-align:left;
 			}
