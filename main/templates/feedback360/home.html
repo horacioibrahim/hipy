@@ -15,8 +15,44 @@
 </head>
 <body id="feedback">
 {% csrf_token %}
+<!-- only small menu begin: -->
+<nav class="top-bar hide-for-large" data-topbar role="navigation">
+  <ul class="title-area">
+    <li class="name">
+      <h1><a href="#"><img src="{% static 'feedback360/img/feedback_180x52.png' %}"/></a></h1>
+    </li>
+    <!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
+    <li class="toggle-topbar menu-icon">
+      <a href="#"><span>Menu</span></a></li>
+  </ul>
+  <section class="top-bar-section">
+    <!-- Right Nav Section -->
+    <ul class="right">
+      <li>
+        <a class="scrollTo" href="#morethanone"><i class="fa fa-thumbs-up"></i>&nbsp;Mais que +1</a>
+      </li>
+      <li>
+        <a class="scrollTo" href="#howitworks"><i class="fa fa-unlock-alt"></i>&nbsp;Como Funciona</a>
+      </li>
+      <li>
+        <a class="scrollTo" href="#invited"><i class="fa fa-envelope"></i>&nbsp;Convidados</a>
+      </li>
+      <li>
+        <a class="scrollTo" href="#deploy"><i class="fa fa-gear"></i>&nbsp;Técnica</a>
+      </li>
+      <li>
+        <a class="scrollTo" href="#thanks"><i class="fa fa-heart"></i>&nbsp;Thanks!</a>
+      </li>
+    </ul>
+    <!-- Left Nav Section -->
+    <!-- <ul class="left">
+      <li><a href="#">Left Nav Button</a></li>
+    </ul> -->
+  </section>
+</nav>
+<!-- only small menu end. -->
 <div class="main-content">
-  <div class="menu-content left">
+  <div class="menu-content left hide-for-small hide-for-medium">
       <div class="logo">
           <img src="{% static 'feedback360/img/feedback_180x52.png' %}"/>
       </div>
@@ -50,8 +86,7 @@
         Mac ou PC. Poderá funcionar bem em um tablet.</p>
       </div>
   </div>
-  <div class="general-content">
-
+  <div class="row general-content">
     <div id="morethanone" class="big-section">
       <article class="post">
         <h1>Seu <i>feedback</i> vale + do que 1 like</h1>
@@ -81,14 +116,66 @@
     <div id="howitworks" class="big-section">
      <article class="post">
         <h1>Como funciona a Avaliação 360º</h1>
+        <!-- show only small -->
+        <dl class="accordion show-for-small" data-accordion>
+          <dd class="accordion-navigation">
+            <a href="#panel1b"><i class="fa fa-question"></i>&nbsp;&nbsp;Questões</a>
+            <div id="panel1b" class="content">
+              <h4>Elaboração do questionário</h4>
+              <br>
+              <p>A Avaliação 360º é feita por um questionário estruturado que busca
+                identificar os pontos fortes e fracos relacionados a um objetivo seja
+                corporativo ou pessoal, por exemplo, comportamentos e competências que
+                considero essenciais com a minha missão.
+              </p>
+              <p>A composição das questões podem ser objetivas do tipo sim ou não. Ou
+                podem ser abertas, neste caso, nunca se identifique. Ex.: "eu acho
+                você o máximo. Ass.: Mainha".</p>
+            </div>
+          </dd>
+          <dd class="accordion-navigation">
+            <a href="#panel2b"><i class="fa fa-envelope"></i>&nbsp;&nbsp;Convidados</a>
+            <div id="panel2b" class="content">
+              <h4>Identificação dos convidados</h4>
+              <p>Essa questão é bem peculiar porque os convidados precisam ser proximos o suficiente
+                para uma boa avaliação.</p>
+                <p>Sabemos que na construção de uma boa rede de relacionamentos há conexões que são
+                  esporádicas, mas de fato importantes. Por isso, criei níveis de proximidade. Essa é
+                  a única diferença de uma Avaliação 360º comum. Esses níveis mostrarão quão próximo considero
+                  que determinado convidado está de mim.</p>
+            </div>
+          </dd>
+          <dd class="accordion-navigation">
+            <a href="#panel3b"><i class="fa fa-check"></i>&nbsp;&nbsp;Respostas</a>
+            <div id="panel3b" class="content">
+              <h4>Respondendo a pesquisa</h4>
+              <p>Ao clicar em <strong>Começar!</strong> um questionário será liberado com aproximadamente
+                5 perguntas. Responda com sinceridade e tente ser impessoal com vistas a uma maior objetividade e imparcialidade. Ao <strong>Enviar</strong> as respostas registro que a pesquisa foi
+                respondida e não há possibilidade de edição. Assim se você voltar para responder novamente receberá a mensagem de agradecimento.</p>
+                <p>Caso clique em <strong>Agora não</strong> ficarei no aguardo da sua resposta até o dia 5 janeiro de 2015. Após essa data é hora de consolidar as respostas</p>
+            </div>
+          </dd>
+          <dd class="accordion-navigation">
+            <a href="#panel4b"><i class="fa fa-unlock-alt"></i>&nbsp;&nbsp;Sigilo</a>
+            <div id="panel4b" class="content">
+              <h4>Confidencialidade das respostas</h4>
+              <p>Suas respostas são confidencias e não podem ser associadas a você por nenhum meio ou
+                recurso, ao menos que você se identifique nas respostas. NUNCA faça isso.</p>
+                <p>Sua identificação e as respostas são separadas em coleções de dados distintos. Saiba mais
+                  acessando a seção <strong><a class="scrollTo" href="#deploy">Dados técnicos</a></strong>.</p>
+
+            </div>
+          </dd>
+        </dl>
+        <!-- show only small -->
         <div class="container-body">
-          <dl class="tabs vertical" data-tab="" role="tablist">
+          <dl class="tabs vertical hide-for-small" data-tab="" role="tablist">
             <dd class="active"><a href="#panel1"><i class="fa fa-question"></i>&nbsp;Questões</a></dd>
             <dd><a href="#panel2"><i class="fa fa-envelope"></i>&nbsp;Convidados</a></dd>
             <dd><a href="#panel3"><i class="fa fa-check"></i>&nbsp;Respostas</a></dd>
             <dd><a href="#panel4"><i class="fa fa-unlock-alt"></i>&nbsp;Sigilo</a></dd>
           </dl>
-          <div class="tabs-content vertical" data-options="scroll_to_content: false">
+          <div class="tabs-content vertical hide-for-small" data-options="scroll_to_content: false">
             <div class="content active" id="panel1">
               <h4>Elaboração do questionário</h4>
               <br>
@@ -190,10 +277,11 @@
         </div>
      </article>
     </div>
+
   </div>
   <div id="mega-container-steps" class="row general-content-shadow">
     <div class="small-12 columns text-center">
-      <ul class="small-block-grid-3">
+      <ul class="small-block-grid-1 medium-block-grid-3 large-block-grid-3">
         <li class="container-steps">
           <div class="steps step-1 active"><span>1</span></div>
           <h5>Registre-se com seus dados</h5>
@@ -232,6 +320,9 @@
 <script src="{% static 'js/jquery.min.js' %}"></script>
 <script src="{% static 'js/foundation/foundation.min.js' %}"></script>
 <script src="{% static 'js/foundation/foundation.tab.js' %}"></script>
+<script src="{% static 'js/foundation/foundation.accordion.js' %}"></script>
+<script src="{% static 'js/foundation/foundation.dropdown.js' %}"></script>
+<script src="{% static 'js/foundation/foundation.topbar.js' %}"></script>
 <script src="{% static 'feedback360/js/app_feed.js' %}"></script>
 
 {% include 'feedback360/facebook_snippet.html' %}

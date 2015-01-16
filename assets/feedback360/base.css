@@ -38,7 +38,8 @@
     position: fixed;
     top: 0;
     left: 0;
-    height: 800px; }
+    height: 800px;
+    z-index: 100; }
     #feedback .main-content .menu-content .avatar {
       min-height: 52px; }
       #feedback .main-content .menu-content .avatar img {
@@ -203,5 +204,69 @@ header {
   margin-top: 12px;
   font-size: 24px;
   padding: 0px; }
+
+/* Miscellanies */
+.top-bar, .top-bar.expanded {
+  background: #1d1e19; }
+
+.top-bar-section ul a .fa {
+  margin-right: 11px; }
+.top-bar-section ul li:hover {
+  background: #242424; }
+
+/* Define mobile styles */
+@media only screen and (max-width: 40em) {
+  #feedback .main-content .general-content {
+    left: 0; }
+    #feedback .main-content .general-content article h1 {
+      font-size: 1.8em; }
+    #feedback .main-content .general-content article .container-body {
+      margin-top: -3.0em; }
+    #feedback .main-content .general-content #howitworks h1 {
+      margin-bottom: 60px; }
+
+  .banner {
+    -o-background-size: 590px auto !important;
+    -moz-background-size: 590px auto !important;
+    -webkit-background-size: 590px auto !important;
+    background-size: 590px auto !important; }
+
+  .img-credits {
+    display: none; } }
+/* max-width 640px, mobile-only styles, use when QAing mobile issues */
+@media only screen and (min-width: 40.063em) {
+  .img-credits {
+    display: none; }
+
+  .banner {
+    background-position: 50% 50%; } }
+/* min-width 641px, medium screens */
+@media only screen and (max-width: 800px) {
+  /* work fine with 768px */
+  #feedback .main-content .general-content #morethanone .banner, #feedback .main-content .general-content #howitworks .banner, #feedback .main-content .general-content #invited .banner, #feedback .main-content .general-content #deploy .banner, #feedback .main-content .general-content #thanks .banner {
+    width: 100%; }
+
+  .banner {
+    -o-background-size: 680px auto;
+    -moz-background-size: 680px auto;
+    -webkit-background-size: 680px auto;
+    background-size: 680px auto; } }
+@media only screen and (min-width: 769px) and (max-width: 1024px) {
+  #feedback .main-content .general-content {
+    padding-left: 85px; } }
+@media only screen and (min-width: 40.063em) and (max-width: 64em) {
+  .menu-content {
+    left: 220px; }
+
+  #feedback .main-content .general-content {
+    left: 0; }
+    #feedback .main-content .general-content article h1 {
+      font-size: 2.6em; } }
+/* min-width 641px and max-width 1024px, use when QAing tablet-only issues */
+/* min-width 1025px, large screens */
+/* min-width 1025px and max-width 1440px, use when QAing large screen-only issues */
+/* min-width 1441px, xlarge screens */
+/* min-width 1441px and max-width 1920px, use when QAing xlarge screen-only issues */
+/* min-width 1921px, xxlarge screens */
 
 /*# sourceMappingURL=base.css.map */

@@ -54,17 +54,18 @@ $menu-left-font-color: #AAA;
 			top: 0;
 			left: 0;
 			height: 800px;
+      z-index: 100;
 			.avatar {
 				min-height: 52px;
 				img {
 					width: 48px;
 				}
-			}	
+			}
 			.menu-list {
 				a, a:visited, a:hover, a:active {
 					color: $menu-left-font-color;
-				}    
-			}	
+				}
+			}
 			.main-action {
 				margin-top: 300px;
 				button {
@@ -75,7 +76,7 @@ $menu-left-font-color: #AAA;
 			}
 			.complement {
 				padding: $real-margin-left-menu-content;
-				p { 
+				p {
 					font-size: 0.8em;
 				}
 			}
@@ -112,7 +113,7 @@ $menu-left-font-color: #AAA;
 				    margin-bottom: 1em;
 				    line-height: 1.6;
 				    font-size: 16px;
-				}	
+				}
 				.tabs .fa {
 					margin-right: 8px;
 				}
@@ -128,7 +129,7 @@ $menu-left-font-color: #AAA;
 					margin-top: 354px + 10px;
 					margin-left: 350px;
 				}
-			}	
+			}
 			#invited .banner {
 				width: 860px;
 				height: 354px;
@@ -140,7 +141,7 @@ $menu-left-font-color: #AAA;
 					margin-top: 354px + 10px;
 					margin-left: 350px;
 				}
-			}					
+			}
 			#deploy .banner {
 				width: 860px;
 				height: 354px;
@@ -152,7 +153,7 @@ $menu-left-font-color: #AAA;
 					margin-top: 354px + 10px;
 					margin-left: 350px;
 				}
-			}	
+			}
 			#thanks .banner {
 				width: 860px;
 				height: 354px;
@@ -164,8 +165,8 @@ $menu-left-font-color: #AAA;
 					margin-top: 354px + 10px;
 					margin-left: 350px;
 				}
-			}					
-		}	
+			}
+		}
 		.general-content-shadow {
 			display: none;
 			margin-top: 120px;
@@ -198,12 +199,12 @@ $menu-left-font-color: #AAA;
 			}
 			.steps.active {
 				background-color: rgba(66, 137, 214	, 1) !important;
-			}			
+			}
 
 			.step-1 {
 				padding-top: 15px;
 			}
-		}				
+		}
 	ul.menu-list {
 		position: absolute;
 		margin-left:0;
@@ -274,3 +275,109 @@ header {
     }
   }
 }
+
+/* Miscellanies */
+.top-bar, .top-bar.expanded  {
+  background: rgba(29, 30, 25, 1);
+}
+
+.top-bar-section {
+  ul a .fa {
+    margin-right: 11px;
+  }
+  ul li:hover {
+    background: rgba(36, 36, 36, 1);
+  }
+}
+
+// Small screens
+@media only screen { } /* Define mobile styles */
+
+@media only screen and (max-width: 40em) {
+  #feedback .main-content .general-content {
+    left: 0;
+    article {
+      h1 {
+        font-size: 1.8em;
+      }
+      .container-body {
+        margin-top: -3.0em;
+      }
+    }
+
+    #howitworks {
+      h1 {
+        margin-bottom: 60px;
+      }
+    }
+  }
+
+  .banner {
+    -o-background-size: 590px auto !important;
+    -moz-background-size: 590px auto !important;
+    -webkit-background-size: 590px auto !important;
+    background-size: 590px auto !important;
+  }
+
+  .img-credits {
+    display: none;
+  }
+
+} /* max-width 640px, mobile-only styles, use when QAing mobile issues */
+
+// Medium screens
+@media only screen and (min-width: 40.063em) {
+    .img-credits {
+      display: none;
+    }
+      .banner {
+        background-position: 50% 50%;
+      }
+ } /* min-width 641px, medium screens */
+
+ @media only screen and (max-width: 800px) { /* work fine with 768px */
+   #feedback .main-content .general-content {
+       #morethanone, #howitworks, #invited, #deploy, #thanks {
+         .banner {
+            width: 100%;
+         }
+       }
+  }
+   .banner {
+     -o-background-size: 680px auto ;
+     -moz-background-size: 680px auto;
+     -webkit-background-size: 680px auto;
+     background-size: 680px auto;
+   }
+ }
+
+ @media only screen and (min-width: 769px) and (max-width: 1024px) {
+   #feedback .main-content .general-content {
+     padding-left: 85px;
+   }
+ }
+
+@media only screen and (min-width: 40.063em) and (max-width: 64em) {
+  .menu-content {
+    left: $width-left-nav;
+  }
+  #feedback .main-content .general-content {
+    left: 0;
+    article {
+      h1 {
+        font-size: 2.6em;
+      }
+    }
+  }
+} /* min-width 641px and max-width 1024px, use when QAing tablet-only issues */
+
+// Large screens
+@media only screen and (min-width: 64.063em) { }/* min-width 1025px, large screens */
+@media only screen and (min-width: 64.063em) and (max-width: 90em) { } /* min-width 1025px and max-width 1440px, use when QAing large screen-only issues */
+
+// XLarge screens
+@media only screen and (min-width: 90.063em) { } /* min-width 1441px, xlarge screens */
+@media only screen and (min-width: 90.063em) and (max-width: 120em) { } /* min-width 1441px and max-width 1920px, use when QAing xlarge screen-only issues */
+
+// XXLarge screens
+@media only screen and (min-width: 120.063em) { } /* min-width 1921px, xxlarge screens */
