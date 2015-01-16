@@ -77,7 +77,7 @@ $('.application').on('click', '.button-content-invite', function() {
     $parent.html($formContent);
 });
 
-
+/*
 $('.application').on('click', '.button-content-invite', function() {
     var $formContent = $('#invite-form-content').html();
     var $parent = $(this).parent();
@@ -87,7 +87,7 @@ $('.application').on('click', '.button-content-invite', function() {
     // "creates" form copy/paste content
     $parent.html('');
     $parent.html($formContent);
-});
+});*/
 
 // catch submit form replies
 $('#form-replies button').click(function(event) {

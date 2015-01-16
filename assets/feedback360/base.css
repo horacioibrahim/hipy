@@ -38,7 +38,8 @@
     position: fixed;
     top: 0;
     left: 0;
-    height: 800px;
+    min-height: 800px;
+    height: 100%;
     z-index: 100; }
     #feedback .main-content .menu-content .avatar {
       min-height: 52px; }
