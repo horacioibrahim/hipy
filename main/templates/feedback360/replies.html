@@ -23,19 +23,26 @@
         </p>
     </div>
     {% endif %}
-    <form id="form-replies" action="/feedback360/replies/" method="post">
+    <form id="form-replies" action="/feedback360/replies/" method="post" name="formReplies">
+    <p>
     {% csrf_token %}
     {% for ask in participant.get_enunciation %}
-        <label for="id_reply">{{ ask }}</label>
-        <textarea cols="40" id="id_reply" name="reply" rows="10"></textarea>
-        <input type="hidden" name="ask_pk" value="{{ ask.pk }}" />
+        <label for="id_reply"><strong>{{ ask }}</strong></label>
+        {% if ask.reply_type == 0 %}
+        <textarea cols="40" id="id_reply" name="reply_{{ ask.pk }}" rows="10"></textarea>
+        {% else %}
+          {% for reply_accepted in ask.reply_accepted %}
+              <input type="{% if ask.reply_type == 1 %}radio{% else %}checkbox{% endif %}" name="reply_{{ ask.pk }}" value="{{ reply_accepted }}" >
+              <label>{{ reply_accepted }}</label>
+          {% endfor %}
+        {% endif %}
         <input type="hidden" name="social_name" value="{{ participant.name }}" />
-        <input type="hidden" name="proximity" value="{{ participant.proximity }}" />
     {% endfor %}
+    </p>
+    <p>
     <a href="/" class="button secondary radius">Responder mais tarde...</a>
-    <button class="button radius">Enviar</button>
+    <input type="submit" class="button radius" value="Enviar">
+    </p>
     </form>
 
 {% endblock %}
-
-

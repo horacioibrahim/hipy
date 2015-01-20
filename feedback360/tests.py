@@ -4,6 +4,7 @@ import os
 from django.test import Client, RequestFactory, SimpleTestCase
 from django.contrib.messages.storage.fallback import FallbackStorage
 from django.contrib.auth.models import AnonymousUser
+from django.core.exceptions import ValidationError
 from mongoengine.queryset import DoesNotExist
 from bson import ObjectId
 
@@ -81,6 +82,48 @@ class TestFeedback360(SimpleTestCase):
         new_participant = models.Participant.objects.get(email=self.invite.email)
         self.assertTrue(new_participant.was_sent)
 
+    def test_asks_reply_accepted_reply_type_0_error(self):
+        # test if data semicolon separated is valid
+        ask = models.Asks()
+        ask.enunciation = "A simple test"
+        ask.reply_type = 0
+        ask.reply_accepted = "Yes; No; Maybe"
+        ask.save()
+        ask_obj = models.Asks.objects.get(pk=ask.pk)
+        self.assertEqual("Yes; No; Maybe", ask_obj.reply_accepted[0])
+
+    def test_asks_reply_accepted_reply_type_0(self):
+        # test if data semicolon separated is valid
+        ask = models.Asks()
+        ask.enunciation = "A simple test"
+        ask.reply_type = 0
+        # if reply_type is 0 not provides reply_accepted
+        # ask.reply_accepted = "Yes; No; Maybe"
+        ask.save()
+        self.assertEqual(len(ask.reply_accepted), 1)
+        self.assertEqual(ask.reply_accepted[0], '[]')
+
+    def test_asks_reply_accepted_reply_type_1(self):
+        # test if data semicolon separated is valid
+        ask = models.Asks()
+        ask.enunciation = "A simple test"
+        ask.reply_type = 1
+        ask.reply_accepted = "Yes; No; Maybe"
+        ask.save()
+        self.assertIsInstance(ask.reply_accepted, list)
+        self.assertEqual(len(ask.reply_accepted), 3)
+
+    def test_asks_reply_accepted_reply_type_2(self):
+        # test if data semicolon separated is valid
+        ask = models.Asks()
+        ask.enunciation = "A simple test"
+        ask.reply_type = 2
+        ask.reply_accepted = "Yes; No; Maybe"
+        ask.save()
+        self.assertIsInstance(ask.reply_accepted, list)
+        self.assertEqual(len(ask.reply_accepted), 3)
+
+
 class TestClientTestFeedback360(SimpleTestCase):
     """
         Tests that behaves like user in browser.
@@ -89,6 +132,7 @@ class TestClientTestFeedback360(SimpleTestCase):
     def setUp(self):
         self.factory = RequestFactory()
         self.c = Client()
+        # user accessToken from Login box
         self.token = os.environ.get('TEMPTOKEN')
         fb = FacebookAPIRequests()
         user_public_info = fb.get_user_public_info(self.token)
@@ -113,6 +157,11 @@ class TestClientTestFeedback360(SimpleTestCase):
             self.user = blog_models.User.create_user(username='tester',
                             password='123', email='tester@tester.co')
 
+        def clean_asks():
+            asks = models.Asks.objects()
+            for ask in asks:
+                ask.delete()
+        self.clean_asks = clean_asks
 
     def test_home(self):
         # Create an instance of a GET request
@@ -260,7 +309,9 @@ class TestClientTestFeedback360(SimpleTestCase):
 
         request = self.factory.post("/feedback360/asks/add/",
                     data={'enunciation': 'characteristics',
-                          'proximity': 2})
+                          'proximity': 2,
+                          'reply_type': 0,
+                          'reply_accepted': ''})
         request.user = self.superuser
         response = views.add_ask(request)
         asks = models.Asks.objects()
@@ -322,9 +373,78 @@ class TestClientTestFeedback360(SimpleTestCase):
         participant.proximity = 0
         self.assertEqual(2, len(participant.get_enunciation()))
 
+    def test_add_ask_with_reply_type_1(self):
+
+        self.clean_asks()
+        request = self.factory.post("/feedback360/asks/add/",
+                    data={'enunciation': 'characteristics',
+                          'proximity': 2,
+                          'reply_type': 1,
+                          'reply_accepted': 'yes; no; maybe'
+                          })
+        request.user = self.superuser
+        response = views.add_ask(request)
+        asks = models.Asks.objects()
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(1, len(asks))
+        self.assertEqual(3, len(asks[0].reply_accepted))
+
+    def test_add_ask_with_reply_type_2(self):
+        self.clean_asks()
+        request = self.factory.post("/feedback360/asks/add/",
+                    data={'enunciation': 'characteristics',
+                          'proximity': 2,
+                          'reply_type': 2,
+                          'reply_accepted': 'yes; no; maybe'
+                          })
+        request.user = self.superuser
+        response = views.add_ask(request)
+        asks = models.Asks.objects()
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(1, len(asks))
+        self.assertEqual(3, len(asks[0].reply_accepted))
+
+    def test_add_ask_with_reply_type_0(self):
+        self.clean_asks()
+        request = self.factory.post("/feedback360/asks/add/",
+                    data={'enunciation': 'characteristics',
+                          'proximity': 2,
+                          'reply_type': 0,
+                          'reply_accepted': ''
+                          })
+        request.user = self.superuser
+        response = views.add_ask(request)
+        asks = models.Asks.objects()
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(1, len(asks))
+        self.assertEqual(1, len(asks[0].reply_accepted))
+
+    def test_add_ask_with_reply_type_0_except(self):
+        self.clean_asks()
+        self.c.login(username=self.superuser.username, password="123")
+        response = self.c.post("/feedback360/asks/add/",
+                    data={'enunciation': 'characteristics',
+                          'proximity': 2,
+                          'reply_type': 0,
+                          'reply_accepted': 'yes; no; maybe'
+                          })
+        self.assertContains(response, 'Type&#39;s Ask cannot receive replies.',
+            count=None, status_code=200, msg_prefix='', html=False)
+
+
 class TestReplies(SimpleTestCase):
 
     def setUp(self):
+        def clean_asks():
+            asks = models.Asks.objects()
+            for ask in asks:
+                ask.delete()
+        self.clean_asks = clean_asks
+
+        def reply_field(askid):
+            return 'reply_%s' % askid
+
+        self.rf = reply_field
         self.c = Client()
         invites = (('Steve Jobs', 0, 'st@jobs.co'),
                    ('Ayrton Senna', 0, 'as@as.co'),
@@ -351,7 +471,8 @@ class TestReplies(SimpleTestCase):
         # creates asks with filters for each proximity
         self.asks_ids = []
         for enunciation, proximity in asks:
-            ask = models.Asks(enunciation=enunciation, proximity=proximity)
+            ask = models.Asks(enunciation=enunciation,
+                proximity=proximity, reply_accepted='')
             ask.save()
             self.asks_ids.append(ask.pk)
 
@@ -368,8 +489,9 @@ class TestReplies(SimpleTestCase):
 
     def test_replies_empty(self):
         # test post without replies
-        response = self.c.post('/feedback360/replies/', data={'reply': '',
-                            'ask_pk': '', 'proximity': '',
+        askid = self.asks_ids[0]
+        reply_field = 'reply_%s' % askid
+        response = self.c.post('/feedback360/replies/', data={reply_field: '',
                             'social_name': 'Steve Jobs'})
 
         error_message = response.context['messages']
@@ -387,9 +509,9 @@ class TestReplies(SimpleTestCase):
             reply.delete()
         # POST
         response = self.c.post('/feedback360/replies/',
-                            data={'reply': 'Yeah, good and useful projects.',
-                            'ask_pk': self.asks_ids[0], 'proximity': proximity,
-                            'social_name': social_name})
+            data={
+            'reply_%s' % self.asks_ids[0]: 'Yeah, good and useful projects.',
+            'social_name': social_name})
         replies = models.Replies.objects()
         participant = models.Participant.is_participant(social_name)
         self.assertEqual(200, response.status_code)
@@ -413,12 +535,14 @@ class TestReplies(SimpleTestCase):
                 break
         # POST
         #response = self.c.post()
+        reply_field_0 = self.rf(self.asks_ids[0])
+        reply_field_1 = self.rf(self.asks_ids[1])
+        reply_field_2 = self.rf(self.asks_ids[2])
         self.assertRaises(TypeError, self.c.post,'/feedback360/replies/',
-                            data={'reply': ['One reply', 'Two reply',
-                            'Three reply'],
-                            'ask_pk': [self.asks_ids[0],
-                            self.asks_ids[1], self.asks_ids[2]] ,
-                            'proximity': [proximity, proximity, proximity],
+                            data={
+                            reply_field_0: ['One reply'],
+                            reply_field_1: ['Two reply'],
+                            reply_field_2: ['Three reply'],
                             'social_name': [name, name, name]})
 
     def test_replies_permitted(self):
@@ -434,24 +558,65 @@ class TestReplies(SimpleTestCase):
                 break
         # get asks permitted
         asks = models.Asks.objects(proximity=proximity)
-        ask_list_replies = []
-        proximity_list_replies = []
         social_name_list_replies = []
-        replies_list = []
+        data = {}
         for counter, ask in enumerate(asks):
-            replies_list.append("My reply %s " % counter)
-            ask_list_replies.append(str(ask.pk))
-            proximity_list_replies.append(proximity)
+            reply_field = self.rf(str(ask.pk))
+            data[reply_field] = "My reply %s " % counter
             social_name_list_replies.append(name)
+
+        data['social_name'] = social_name_list_replies
+
         # POST
         response = self.c.post('/feedback360/replies/',
-                            data={'reply': replies_list,
-                            'ask_pk': ask_list_replies,
-                            'proximity': proximity_list_replies,
-                            'social_name': social_name_list_replies})
+                            data=data)
         replies = models.Replies.objects()
         self.assertEqual(200, response.status_code)
         self.assertEqual(len(asks), len(replies))
+
+    def test_replies_with_reply_type(self):
+        # Clean database target collections
+        self.clean_asks()
+        replies = models.Replies.objects()
+        for r in replies:
+            r.delete()
+
+        _asks = [
+            {
+                'enunciation': 'Essay replies',
+                'proximity': 2,
+                'reply_type': 0,
+                'reply_accepted': ''
+            },
+            {
+                'enunciation': 'Single matching replies',
+                'proximity': 2,
+                'reply_type': 1,
+                'reply_accepted': 'yes; no; maybe'
+            },
+            {
+                'enunciation': 'Multiple-choice replies',
+                'proximity': 2,
+                'reply_type': 2,
+                'reply_accepted': 'yes; no; maybe'
+            },
+        ]
+
+        data = {}
+        for _ask in _asks:
+            ask_obj = models.Asks(**_ask)
+            ask_obj.save()
+            data['reply_%s' % ask_obj.pk] = ['Reply for %s' % ask_obj.pk]
+
+        data['social_name'] = [self.invites[0][0]]
+
+        # POST
+        response = self.c.post("/feedback360/replies/",
+                            data=data)
+
+        replies_jobs = models.Replies.objects()
+        self.assertEqual(200, response.status_code)
+        self.assertEqual(3, len(replies_jobs))
 
 
 class TestFacebookAPIRequests(SimpleTestCase):

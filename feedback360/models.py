@@ -2,7 +2,9 @@
 
 from mongoengine import *
 from mongoengine.fields import EmailField, BooleanField
+from mongoengine.base import BaseList
 from django.utils.translation import ugettext_lazy as _
+from django.core.exceptions import ValidationError
 
 
 CHOICES_LEVEL_PROXIMITY = (
@@ -163,8 +165,22 @@ class Participant(Document):
 class Asks(Document):
     """ Class admin of Asks
     """
+    TYPE_REPLY = (
+        (0, 'essay'),
+        (1, 'simple matching'),
+        (2, 'multiple-choice'),
+    )
+    # the important thing is that the questions reflect your learning objectives
+    # Write instructions that are clear, explicit, and unambiguous.
+    # Avoid complex and convoluted sentence constructions, double negatives,
+    # and idiomatic language that may be difficult for students, especially
+    # international students, to understand
+    # multiple-choices - to test illogical concepts is good
+    # Test only a single idea in each item.
     enunciation = StringField(max_length=255, required=True)
     proximity = IntField(choices=CHOICES_LEVEL_PROXIMITY, default=2)
+    reply_type = IntField(choices=TYPE_REPLY, default=0)
+    reply_accepted = ListField(StringField(max_length=255, required=False))
 
     def __unicode__(self):
         return self.enunciation
@@ -172,14 +188,29 @@ class Asks(Document):
     def get_verbose_choices(self):
         return dict(CHOICES_LEVEL_PROXIMITY)[self.proximity]
 
+    def get_verbose_type_reply(self):
+        return dict(self.TYPE_REPLY)[self.reply_type]
+
+    def _sanitize_reply_accepted(self):
+        """ Checks and fix string in field for change it to list type.
+        """        
+        if self.reply_type == 1 or self.reply_type == 2:
+            if isinstance(self.reply_accepted, str):
+                self.reply_accepted = self.reply_accepted.split(';')
+                return self.reply_accepted
+
+        if self.reply_type == 0:
+            self.reply_accepted = [str(self.reply_accepted)]
+
+    def save(self, *args, **kwargs):
+        self._sanitize_reply_accepted()
+        super(Asks, self).save(*args, **kwargs)
+
 
 class Replies(Document):
     proximity = IntField(choices=CHOICES_LEVEL_PROXIMITY)
     reply = StringField(max_length=255)
     ask = ReferenceField(Asks)
-    token_approved = StringField(max_length=255) # TODO to approve
-    is_approved = BooleanField(default=False)
 
     def __unicode__(self):
         return self.reply
-

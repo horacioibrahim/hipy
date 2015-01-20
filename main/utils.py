@@ -10,6 +10,7 @@ from json import load as json_load
 from django_ses import SESBackend
 from django.core.mail import EmailMessage
 from django.conf import settings
+from django.utils.translation import ugettext as _
 
 
 def send_simple_email(subject, body, recipients, headers=None):
@@ -76,10 +77,15 @@ class FacebookAPIRequests(object):
         """
         Validates if data returned by API contains errors json.
         """
+        errors = None
         try:
             results = json_load(response)
         except:
             raise TypeError("Validation errors.")
+
+        errors = results.get('error', None)
+        if errors:
+            raise TypeError(_(errors['message']))
 
         return results
 
@@ -155,8 +161,11 @@ class FacebookAPIRequests(object):
         return False
 
     def get_user_public_info(self, input_token):
-        debug_response = self.debug_token(input_token)
-        user_id = debug_response['data']['user_id']
+        """ Gets public info from facebook API
+
+        :param input_token: accessToken provides by FB SDK (js)
+        """
+
         endpoint = "/me?"
         fields = [("access_token", input_token)]
         response = self.get(endpoint, fields)

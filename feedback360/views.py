@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.core.urlresolvers import reverse
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from django.utils.translation import ugettext_lazy as _
 from mongoengine import DoesNotExist, NotUniqueError
 
@@ -71,7 +71,9 @@ def replies(request, social_name=None):
     Participant = models.Participant
 
     if not social_name:
-        social_name = request.POST['social_name']
+        social_name = request.POST.get('social_name', None)
+        if social_name is None:
+            raise Http404(_('User or invitation does not exist.'))
 
     participant = Participant.is_participant(social_name)
     asks_permitted = participant.get_enunciation()
@@ -83,34 +85,29 @@ def replies(request, social_name=None):
     if request.path_info == reverse('replies'):
         if request.method == "POST":
             replies_fields =  dict(request.POST.iterlists())
-            replies_sent = replies_fields['reply']
+            replies_for_bulk = []
 
-            if filter(None, replies_sent):
-                asks_pk = replies_fields.get('ask_pk', None)
-                proximity_list = replies_fields.get('proximity', None)
-                replies_for_bulk = []
+            for fieldname, values in replies_fields.items():
+                # This moment the field social_name submitted in form
+                # already used to get the participant.
+                if fieldname.startswith('reply_'):
+                    askid = fieldname.split('_')[1]
 
-                for index, r in enumerate(replies_sent):
-                    if r:
-                        # Checks if ask is permitted
-                        if asks_pk[index] in asks_ids_permitted:
-                            doc = models.Replies(**{'ask': asks_pk[index],
-                                'proximity': proximity_list[index],
-                                'reply': replies_sent[index]})
-                            replies_for_bulk.append(doc)
-                        else:
-                            raise TypeError("This question is not "
+                    if askid not in asks_ids_permitted:
+                        raise TypeError("This question is not "
                                             "applicable for you.")
 
-                resp = models.Replies.objects.insert(replies_for_bulk)
-                participant.sent_replies = True
-                participant.save()
-                return thanks_for_replies(request)
+                    # Receives askid, proximity and reply for each reply
+                    # but the form submit reply_askid, social_name.
+                    doc = models.Replies(**{'ask': askid,
+                                    'proximity': participant.proximity,
+                                                        'reply': values})
+                    replies_for_bulk.append(doc)
 
-            else:
-                empty = _(u'Responda ao menos uma pergunta para enviar ou '
-                          'clique em responder mais tarde.')
-                messages.error(request, empty)
+            resp = models.Replies.objects.insert(replies_for_bulk)
+            participant.sent_replies = True
+            participant.save()
+            return thanks_for_replies(request)
 
         else:
             form = forms.RepliesForm()
@@ -207,10 +204,10 @@ def add_ask(request):
                 ask = models.Asks()
                 ask.enunciation = form.cleaned_data['enunciation']
                 ask.proximity = form.cleaned_data['proximity']
+                ask.reply_type = form.cleaned_data['reply_type']
+                ask.reply_accepted = form.cleaned_data['reply_accepted']
                 ask.save()
                 # form.save()
-            else:
-                raise TypeError('opopopopo')
     else:
         form = forms.AsksForm()
 
