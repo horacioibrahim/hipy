@@ -1,4 +1,4 @@
-#coding: utf-8
+# -*- coding: UTF-8 -*-
 
 from mongoengine import *
 from mongoengine.fields import EmailField, BooleanField
@@ -193,7 +193,7 @@ class Asks(Document):
 
     def _sanitize_reply_accepted(self):
         """ Checks and fix string in field for change it to list type.
-        """        
+        """
         if self.reply_type == 1 or self.reply_type == 2:
             if isinstance(self.reply_accepted, str):
                 self.reply_accepted = self.reply_accepted.split(';')
@@ -214,3 +214,10 @@ class Replies(Document):
 
     def __unicode__(self):
         return self.reply
+
+class MarketFit(Document):
+    name = StringField(max_length=120)
+    email = EmailField()
+    personal_use = BooleanField(default=False)
+    company_use = BooleanField(default=False)
+    company_name = StringField(max_length=120)

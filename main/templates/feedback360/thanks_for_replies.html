@@ -7,8 +7,49 @@
 Feedback 360º. Obrigado pelas suas respostas!
 </p>
 <p class="lead">Conheça mais sobre a
-  <a href="http://hipy.co/post/as-metas-e-objetivos-do-hipy/">missão</a> do projeto ou
-  siga-nos no <a href="https://twitter.com/horacioibrahim">Twitter</a> para ter novidades sobre
+  <strong>missão</strong> do projeto ou
+  siga-nos no <strong>Twitter</strong> para ter novidades sobre
   desenvolvimento pessoal, tecnologia e muito mais!
 </p>
+<hr>
+<div class="lastasks">
+  <h4>Só mais um passo e terminamos...</h4>
+  <p>As informações abaixo são para consulta de interesse.
+  Responda somente se for útil para você ou sua empresa.</p>
+  {% if form.errors %}
+  <div data-alert class="alert-box alert radius">
+    Campos requeridos:
+    {% for message in form.errors %}
+       {{ message }}<br>
+    {% endfor %}
+  </div>
+  {% endif %}
+  <form method="post" action="/feedback360/marketfit/">
+    {% csrf_token %}
+    <p>
+      <label for="id_personal_use">
+        <input id="id_personal_use" name="personal_use" type="checkbox">
+        &nbsp;Eu gostaria de ter uma avaliação 360º
+      </label>
+    </p>
+    <p>
+      <label for="id_company_use">
+        <input id="id_company_use" name="company_use" type="checkbox">
+        &nbsp;Acredito que pode ser útil para minha Empresa
+      </label>
+    </p>
+    <p>
+      <label for="id_company_name">Se respondeu a questão anterior informe o nome da sua Empresa:
+        <input id="id_company_name" name="company_name" type="text">
+      </label>
+    </p>
+    <p>
+      <label for="id_email">Informe o seu e-mail se deseja enviar os dados:
+        <input id="id_email" name="email" type="text">
+      </label>
+    </p>
+   <input type="submit" value="Enviar" class="button secondary radius calltoaction">
+  </form>
+
+</div>
 {% endblock %}

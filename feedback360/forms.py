@@ -1,3 +1,4 @@
+# -*- coding: UTF-8 -*-
 __author__ = 'horacioibrahim'
 
 from django import forms
@@ -56,3 +57,21 @@ class AsksForm(DocumentForm):
 
 class RepliesForm(forms.Form):
     wrapform = forms.CharField(max_length=120)
+
+
+class MarketFit(DocumentForm):
+    personal_use = forms.BooleanField(required=False,
+    label='Marque se gostaria de ter uma avaliação 360º')
+    company_use = forms.BooleanField(required=False,
+    label='Marque se acredita que pode ser útil para sua Empresa')
+    company_name = forms.CharField(required=False,
+        label='Se respondeu a questão anterior informe o nome da sua Empresa')
+    email = forms.CharField(required=True,
+        label='Se respondeu a questão anterior informe o seu e-mail')
+    name = forms.CharField(required=False,
+        label='Seu nome para contato')
+
+    class Meta:
+        model = models.MarketFit
+        fields = ['personal_use', 'company_use', 'company_name', 'email',
+                    'name']

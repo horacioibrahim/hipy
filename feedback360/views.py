@@ -136,8 +136,27 @@ def replies(request, social_name=None):
 def thanks_for_interest(request):
     return render(request, 'feedback360/thanks_for_interest.html')
 
-def thanks_for_replies(request):
-    return render(request, 'feedback360/thanks_for_replies.html')
+def thanks_for_replies(request, form=None):
+    if not form:
+        form = forms.MarketFit()
+
+    return render(request, 'feedback360/thanks_for_replies.html',
+                                                dict(form=form))
+
+def marketfit(request):
+
+    if request.method == "POST":
+        form = forms.MarketFit(request.POST)
+        if form.is_valid():
+            form.save()
+        else:
+            return thanks_for_replies(request, form=form)
+
+    else:
+        return thanks_for_replies(request)
+
+    return render(request, 'feedback360/thanks_more_time.html')
+
 
 def remove_from_facebook(request):
     return render(request, 'feedback360/remove.html')

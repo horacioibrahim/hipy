@@ -13,5 +13,6 @@ urlpatterns = patterns('feedback360.views',
                                             name='thanks_replies'),
     url(r'^asks/add/$', 'add_ask', name='add_ask'),
     url(r'^asks/del/(?P<pk>\w+)/$', 'del_ask', name='del_ask'),
+    url(r'^marketfit/$', 'marketfit', name='marketfit'),
 
 )
