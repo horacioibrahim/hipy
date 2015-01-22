@@ -3,6 +3,7 @@
 
 {% block content %}
 <!-- Form to add invite -->
+<div class="application">
     <h1>Respostas</h1>
     <p class="lead">
     Você e dezenas de pessoas contribuem, agora, para o nosso desenvolvimento
@@ -18,7 +19,7 @@
     <div class="panel callout radius">
         <p>Suas respostas não são associadas a você. Por isso, esse formulário
         somente pode ser respondido uma vez. Tudo ou nada!
-        (<a href="https://github.com/horacioibrahim/hipy/blob/master/feedback360/models.py#L174-L181" target="_blank">código-fonte
+        (<a href="https://github.com/horacioibrahim/hipy/blob/master/feedback360/models.py#L210-L216" target="_blank">código-fonte
          </a>)
         </p>
     </div>
@@ -27,22 +28,30 @@
     <p>
     {% csrf_token %}
     {% for ask in participant.get_enunciation %}
-        <label for="id_reply"><strong>{{ ask }}</strong></label>
+        <label class="title" for="id_reply"><strong>{{ ask }}</strong></label>
         {% if ask.reply_type == 0 %}
         <textarea cols="40" id="id_reply" name="reply_{{ ask.pk }}" rows="10"></textarea>
         {% else %}
+          <ul class="small-block-grid-1 medium-block-grid-3 large-block-grid-3">
           {% for reply_accepted in ask.reply_accepted %}
-              <input type="{% if ask.reply_type == 1 %}radio{% else %}checkbox{% endif %}" name="reply_{{ ask.pk }}" value="{{ reply_accepted }}" >
-              <label>{{ reply_accepted }}</label>
+          <li><label>
+                <input type="{% if ask.reply_type == 1 %}radio{% else %}checkbox{% endif %}" name="reply_{{ ask.pk }}" value="{{ reply_accepted }}" >
+                &nbsp;{{ reply_accepted }}
+              </label>
+          </li>
           {% endfor %}
+          </ul>
         {% endif %}
         <input type="hidden" name="social_name" value="{{ participant.name }}" />
+        {% if ask.reply_type != 0 %}
+        <hr />
+        {% endif %}
     {% endfor %}
     </p>
     <p>
     <a href="/" class="button secondary radius">Responder mais tarde...</a>
     <input type="submit" class="button radius" value="Enviar">
     </p>
-    </form>
-
+  </form>
+</div>
 {% endblock %}

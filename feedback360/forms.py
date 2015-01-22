@@ -54,9 +54,5 @@ class AsksForm(DocumentForm):
         return data
 
 
-class RepliesForm(DocumentForm):
-    reply = CharField(widget=forms.Textarea)
-
-    class Meta:
-        model = models.Replies
-        fields = ['reply', 'ask', 'proximity']
+class RepliesForm(forms.Form):
+    wrapform = forms.CharField(max_length=120)

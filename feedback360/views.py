@@ -4,6 +4,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.core.urlresolvers import reverse
+from django.core.exceptions import ValidationError
+from django.forms.forms import NON_FIELD_ERRORS
 from django.http import HttpResponse, Http404
 from django.utils.translation import ugettext_lazy as _
 from mongoengine import DoesNotExist, NotUniqueError
@@ -98,11 +100,18 @@ def replies(request, social_name=None):
                                             "applicable for you.")
 
                     # Receives askid, proximity and reply for each reply
-                    # but the form submit reply_askid, social_name.
-                    doc = models.Replies(**{'ask': askid,
+                    # but the form submit only reply_askid, social_name.
+                    is_empty = filter(None, values)
+                    if is_empty:
+                        doc = models.Replies(**{'ask': askid,
                                     'proximity': participant.proximity,
                                                         'reply': values})
-                    replies_for_bulk.append(doc)
+                        replies_for_bulk.append(doc)
+                    else:
+                        messages.error(request,
+                        _('Existem uma ou mais perguntas sem resposta(s).'))
+                        return render(request, 'feedback360/replies.html',
+                                    dict(participant=participant))
 
             resp = models.Replies.objects.insert(replies_for_bulk)
             participant.sent_replies = True
@@ -110,11 +119,10 @@ def replies(request, social_name=None):
             return thanks_for_replies(request)
 
         else:
-            form = forms.RepliesForm()
-
+            pass
 
     return render(request, 'feedback360/replies.html',
-                  dict(form=form, participant=participant, empty=empty))
+                  dict(participant=participant))
 
 def thanks_for_interest(request):
     return render(request, 'feedback360/thanks_for_interest.html')

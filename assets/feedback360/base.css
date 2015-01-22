@@ -31,6 +31,13 @@
     #feedback .logo .logo-2 {
       background-color: red;
       width: 70px; }
+  #feedback button.calltoaction {
+    margin-top: 25px;
+    box-shadow: 0px 3px 1px #16A085;
+    background: none repeat scroll 0% 0% #40D47E; }
+  #feedback button.calltoaction:hover {
+    box-shadow: 0px 3px 1px #16A085;
+    background: none repeat scroll 0% 0% #20C663; }
   #feedback .main-content .menu-content {
     color: #AAA;
     background: #1d1e19;
@@ -192,6 +199,12 @@ header {
     header .logo img {
       width: 110px; }
 
+.application #form-replies label {
+  font-size: 1.2em; }
+.application #form-replies .title {
+  font-size: 1.2em;
+  line-height: 1.6em;
+  margin-bottom: 28px; }
 .application .invite {
   padding: 15px 15px 6px 15px;
   background-color: #F1F1F1;
@@ -224,6 +237,8 @@ header {
       margin-top: -3.0em; }
     #feedback .main-content .general-content #howitworks h1 {
       margin-bottom: 60px; }
+    #feedback .main-content .general-content #howitworks .post {
+      margin-bottom: 40px; }
 
   .banner {
     -o-background-size: 590px auto !important;

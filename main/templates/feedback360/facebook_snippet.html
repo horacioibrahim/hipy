@@ -24,6 +24,7 @@
     });
   }
 
+
   window.fbAsyncInit = function() {
   FB.init({
     appId      : '1433803006869179',
@@ -64,6 +65,11 @@
   // successful.  See statusChangeCallback() for when this call is made.
   function solve(response) {
       var $accessToken = response.authResponse.accessToken;
+      /*
+      FB.getLoginStatus(function(response) {
+      console.log(response.authResponse.accessToken);
+    });
+    */      
       var $form = $('form[name=form-fb]');
       var $access_token = $form.find('input[name="access_token"]');
       $access_token.val($accessToken);

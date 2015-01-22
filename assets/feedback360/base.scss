@@ -45,6 +45,18 @@ $menu-left-font-color: #AAA;
 	.action-step1-login {
 
 	}
+
+  button.calltoaction {
+    margin-top: 25px;
+    box-shadow: 0px 3px 1px #16A085;
+    background: none repeat scroll 0% 0% #40D47E;
+  }
+
+  button.calltoaction:hover {
+    box-shadow: 0px 3px 1px #16A085;
+    background: none repeat scroll 0% 0% #20C663;
+  }
+
 	.main-content {
 		.menu-content {
 			color: #AAA;
@@ -257,6 +269,16 @@ header {
 }
 
 .application {
+  #form-replies {
+    label {
+      font-size: 1.2em;
+    }
+    .title {
+      font-size: 1.2em;
+      line-height: 1.6em;
+      margin-bottom: 28px;
+    }
+  }
   .invite {
     padding: 15px 15px 6px 15px;
     background-color: #F1F1F1;
@@ -309,6 +331,9 @@ header {
     #howitworks {
       h1 {
         margin-bottom: 60px;
+      }
+      .post {
+        margin-bottom: 40px;
       }
     }
   }
