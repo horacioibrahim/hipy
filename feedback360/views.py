@@ -88,11 +88,12 @@ def replies(request, social_name=None):
         if request.method == "POST":
             replies_fields =  dict(request.POST.iterlists())
             replies_for_bulk = []
-
+            last_checker = None # if all else fails
             for fieldname, values in replies_fields.items():
                 # This moment the field social_name submitted in form
                 # already used to get the participant.
                 if fieldname.startswith('reply_'):
+                    last_checker = True
                     askid = fieldname.split('_')[1]
 
                     if askid not in asks_ids_permitted:
@@ -101,22 +102,30 @@ def replies(request, social_name=None):
 
                     # Receives askid, proximity and reply for each reply
                     # but the form submit only reply_askid, social_name.
-                    is_empty = filter(None, values)
-                    if is_empty:
+                    isnot_empty = filter(None, values)
+                    if isnot_empty:
                         doc = models.Replies(**{'ask': askid,
                                     'proximity': participant.proximity,
                                                         'reply': values})
                         replies_for_bulk.append(doc)
                     else:
+                        # TODO: to improve it
                         messages.error(request,
                         _('Existem uma ou mais perguntas sem resposta(s).'))
                         return render(request, 'feedback360/replies.html',
                                     dict(participant=participant))
 
-            resp = models.Replies.objects.insert(replies_for_bulk)
-            participant.sent_replies = True
-            participant.save()
-            return thanks_for_replies(request)
+            if last_checker:
+                resp = models.Replies.objects.insert(replies_for_bulk)
+                participant.sent_replies = True
+                participant.save()
+                return thanks_for_replies(request)
+            else:
+                # TODO: to improve it
+                messages.error(request,
+                _('Existem uma ou mais perguntas sem resposta(s).'))
+                return render(request, 'feedback360/replies.html',
+                            dict(participant=participant))
 
         else:
             pass
