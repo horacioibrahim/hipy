@@ -36,9 +36,11 @@ e competências que precisam ser melhorados." />
   </ul>
   <section class="top-bar-section">
     <!-- Right Nav Section -->
+
     <ul class="right">
+      <!--
       <li>
-        <a class="scrollTo" href="#morethanone"><i class="fa fa-thumbs-up"></i>&nbsp;Mais que +1</a>
+        <a class="scrollTo disabled" href="#morethanone"><i class="fa fa-thumbs-up"></i>&nbsp;Mais que +1</a>
       </li>
       <li>
         <a class="scrollTo" href="#howitworks"><i class="fa fa-unlock-alt"></i>&nbsp;Como Funciona</a>
@@ -49,6 +51,7 @@ e competências que precisam ser melhorados." />
       <li>
         <a class="scrollTo" href="#deploy"><i class="fa fa-gear"></i>&nbsp;Técnica</a>
       </li>
+      -->
       <li>
         <a class="scrollTo" href="#thanks"><i class="fa fa-heart"></i>&nbsp;Thanks!</a>
       </li>
@@ -66,6 +69,7 @@ e competências que precisam ser melhorados." />
           <img src="{% static 'feedback360/img/feedback_180x52.png' %}"/>
       </div>
       <ul class="menu-list">
+        <!-- menu
         <li>
           <div class="menu-icon left"><i class="fa fa-thumbs-up"></i>&nbsp;</div>
           <div class="menu-label"><a class="scrollTo" href="#morethanone">Mais que +1</a></div>
@@ -82,21 +86,15 @@ e competências que precisam ser melhorados." />
           <div class="menu-icon left"><i class="fa fa-gear"></i>&nbsp;</div>
           <div class="menu-label"><a class="scrollTo" href="#deploy">Dados técnicos</a></div>
         </li>
+      -->
         <li>
           <div class="menu-icon left"><i class="fa fa-heart"></i>&nbsp;</div>
           <div class="menu-label"><a class="scrollTo" href="#thanks">Agradecimentos</a></div>
         </li>
       </ul>
-      <!--
-      <div class="main-action">
-        <button id="start" class="start-btn btn-categories-noaction button large round">Começar!</button>
-      </div> -->
-      <!-- <div class="complement" style="margin-top:100">
-        <p>Dica: Essa página não é responsiva. Será melhor visualizada no seu
-        Mac ou PC. Poderá funcionar bem em um tablet.</p>
-      </div>-->
   </div>
   <div class="row general-content">
+    <!-- morethanone
     <div id="morethanone" class="big-section">
       <article class="post">
         <h1>Seu <i>feedback</i> vale + do que 1 like</h1>
@@ -123,10 +121,12 @@ e competências que precisam ser melhorados." />
       </article>
     </div>
     <div class="line-sep">&nbsp;</div>
+    -->
+    <!-- howitworks
     <div id="howitworks" class="big-section">
      <article class="post">
         <h1>Como funciona a Avaliação 360º</h1>
-        <!-- show only small -->
+
         <dl class="accordion show-for-small" data-accordion>
           <dd class="accordion-navigation">
             <a href="#panel1b"><i class="fa fa-question"></i>&nbsp;&nbsp;Questões</a>
@@ -178,7 +178,7 @@ e competências que precisam ser melhorados." />
             </div>
           </dd>
         </dl>
-        <!-- show only small -->
+
         <div class="container-body">
           <dl class="tabs vertical hide-for-small" data-tab="" role="tablist">
             <dd class="active"><a href="#panel1"><i class="fa fa-question"></i>&nbsp;Questões</a></dd>
@@ -230,6 +230,8 @@ e competências que precisam ser melhorados." />
      <button class="button calltoaction expand round start-btn">Começar!</button>
     </div>
     <div class="line-sep">&nbsp;</div>
+    -->
+    <!--
     <div id="invited" class="big-section">
      <article class="post">
         <h1>Os 50 convidados selecionados</h1>
@@ -287,6 +289,7 @@ e competências que precisam ser melhorados." />
      <button class="button calltoaction expand round start-btn">Agora que você chegou até os fontes. Podemos começar!</button>
     </div>
     <div class="line-sep">&nbsp;</div>
+    -->
     <div id="thanks" class="big-section">
      <article class="post">
         <h1>Agradecimentos sinceros</h1>
@@ -295,9 +298,9 @@ e competências que precisam ser melhorados." />
         <div class="container-body">
           <p>À todos os amigos e familiares agradeço sinceramente seu tempo dedicado nesse processo.
           Espero evoluir com tudo isso e claro levar toda a felicidade dessa expansão pessoal
-          para você também. Porque o que mais acredito é na mudança do contexto. Se está difícil
+          para você também. Porque o que mais acredito é na mudança do contexto. Se existe algo difícil
           podemos melhorar e em nós mesmos temos uma solução. Um colaborando com o outro,
-          assim mudando o contexto ao nosso redor, se propagando.</p>
+          assim mudando o contexto ao nosso redor.</p>
           <p>Em 2015, espero que seja um ano de mais colaboração, mais horas da sua inteligência específica da sua área - seja ela com códigos, com artesanato, com auto-conhecimento, etc - não importa em qual área: <strong>doe seu tempo para mais pessoas</strong>.</p>
           <p>Conecte-se com você e se conheça mais. Desligue a TV, solte o <i>smartphone</i> e
           <a href="http://hipy.co/post/empreendedorismo-como-gatilho-para-o-exercicio-fisico/" target="_blank">corra</a> mais!
@@ -352,7 +355,6 @@ e competências que precisam ser melhorados." />
 <script src="{% static 'js/foundation/foundation.topbar.js' %}"></script>
 <script src="{% static 'feedback360/js/app_feed.js' %}"></script>
 
-{% include 'feedback360/facebook_snippet.html' %}
 
 <script>
   // It's is bad needed.
