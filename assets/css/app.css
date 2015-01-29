@@ -45,15 +45,13 @@ body {
   cursor: default; }
 
 #main-content p {
-  font-size: 20px;
-  font-size: 1.25rem;
-  letter-spacing: 1px;
+  font-size: 18px;
+  font-size: 1.1rem;
 }
 
 #main-content table td, #main-content table th{
-  font-size: 20px;
-  font-size: 1.25rem;
-  letter-spacing: 1px;
+  font-size: 18px;
+  font-size: 1.1rem;
 }
 .adsbygoogle {
   right: 0px;
