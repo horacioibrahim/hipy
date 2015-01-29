@@ -44,6 +44,17 @@ body {
   position: relative;
   cursor: default; }
 
+#main-content p {
+  font-size: 20px;
+  font-size: 1.25rem;
+  letter-spacing: 1px;
+}
+
+#main-content table td, #main-content table th{
+  font-size: 20px;
+  font-size: 1.25rem;
+  letter-spacing: 1px;
+}
 .adsbygoogle {
   right: 0px;
   position: absolute;
@@ -5322,8 +5333,8 @@ th.hide-for-touch {
 meta.foundation-data-attribute-namespace {
   font-family: false; }
 
-/*************************** 
-* Section dashboard 
+/***************************
+* Section dashboard
 ***************************/
 .dashboard .container ul.side-nav .menu {
   margin-left: 0.3em; }
@@ -5561,7 +5572,7 @@ p {
 * Section Posts Add and Edit
 **************************************/
 /**************************************
-* Section Modal Custom 
+* Section Modal Custom
 **************************************/
 #filter-sort.sub-nav dd.default a {
   -webkit-border-radius: 1000px;
@@ -5686,8 +5697,8 @@ form.custom .custom.checkbox.checked:before {
   .footer-links h1, .footer-links h2, .footer-links h3, .footer-links h4, .footer-links h5, .footer-links h6, .footer-links p {
     color: #666666; }
 
-/*************************** 
-* Section syntax: highlight 
+/***************************
+* Section syntax: highlight
 ***************************/
 div.code {
   /* Comment */
