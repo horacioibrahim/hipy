@@ -15,7 +15,6 @@ $('#close-btn-ads').click( function () {
 
 });
 
-
 // get more posts
 $("#moreposts").click(function(){
     // get data from more posts view
@@ -188,4 +187,32 @@ $(document).on('click', '.btn-subjects-flag',  function(e) {
 
     $(this).toggleClass('selected');
 
+});
+
+function slideBanner() {
+  var bannerElement = $(".span-banner");
+
+  // var messagesBanner = getJson...
+  var messageBanner = [
+    'Um bootstrapper que transpira inovação',
+    'Um pythonista que não é xiita',
+    'Um educador em eterno estudo de campo',
+    'Um cara preocupado com a educação',
+    'Criando condições para motivcar pessoas',
+    'Fazendo experiências antropológicas sempre'
+    ];
+
+    var lengthItens = messageBanner.length;
+    var intRandom = Math.floor(Math.random() * 6)
+    bannerElement.each(function(index, item) {
+      $(item).text(messageBanner[intRandom]);
+    });
+}
+
+$(document).ready(function() {
+  slideBanner();
+});
+
+$(document).on('mouseover', '.span-banner',  function() {
+  slideBanner();
 });
