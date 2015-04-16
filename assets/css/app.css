@@ -44,6 +44,16 @@ body {
   position: relative;
   cursor: default; }
 
+span.quotes {
+  display:inline-block;
+  background: transparent url(../img/quotes.png) 0px -15px no-repeat;
+  min-height: 120px;
+  padding-left: 140px;
+  overflow: auto;
+}
+#posts-inject span.quotes {
+  padding-left: 0px;
+}
 #main-content p {
   font-size: 18px;
   font-size: 1.1rem;

@@ -198,7 +198,7 @@ function slideBanner() {
     'Um pythonista que não é xiita',
     'Um educador em eterno estudo de campo',
     'Um cara preocupado com a educação',
-    'Criando condições para motivcar pessoas',
+    'Criando condições para motivar pessoas',
     'Fazendo experiências antropológicas sempre'
     ];
 
